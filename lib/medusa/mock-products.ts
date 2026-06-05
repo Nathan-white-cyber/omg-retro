@@ -233,8 +233,28 @@ const supplementalProducts: Game[] = allSystems.flatMap((system, systemIndex) =>
   }),
 );
 
+function buildConditionVariants(product: Game) {
+  if (product.id === "n64-zelda-oot") {
+    return [
+      { type: "CIB", price: 6999, stock: 3 },
+      { type: "Loose", price: 4499, stock: 8 },
+    ];
+  }
+
+  const loosePrice =
+    product.condition === "Loose" ? product.price : Math.max(599, Math.round(product.price * 0.74));
+  const cibPrice =
+    product.condition === "CIB" ? product.price : Math.max(product.price + 500, Math.round(product.price * 1.28));
+
+  return [
+    { type: "CIB", price: cibPrice, stock: product.condition === "CIB" ? product.stock : product.stock + 3 },
+    { type: "Loose", price: loosePrice, stock: product.condition === "Loose" ? product.stock : product.stock + 5 },
+  ];
+}
+
 export const mockProducts: Game[] = [...baseMockProducts, ...supplementalProducts].map((product, index) => ({
   ...product,
+  conditionVariants: buildConditionVariants(product),
   salesCount: 2400 - index * 137,
   createdAt: new Date(Date.UTC(2026, 4, 30 - index)).toISOString(),
 }));

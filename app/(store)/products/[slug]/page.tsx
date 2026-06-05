@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PdpAddToCartButton } from "@/components/cart/PdpAddToCartButton";
+import { ProductInfo } from "@/components/pdp/ProductInfo";
 import { ConditionBadge } from "@/components/product/ConditionBadge";
 import { CoverBlock } from "@/components/product/CoverBlock";
 import { DiscountBadge } from "@/components/product/DiscountBadge";
 import { PriceDisplay } from "@/components/product/PriceDisplay";
 import { RatingStars } from "@/components/product/RatingStars";
 import { getAllProducts, getProductBySlug } from "@/lib/medusa/products";
-import { formatPrice } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -98,8 +97,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const relatedProducts = products
     .filter((product) => product.slug !== game.slug && product.vendor === game.vendor)
     .slice(0, 4);
-  const saving =
-    game.originalPrice && game.originalPrice > game.price ? game.originalPrice - game.price : 0;
 
   return (
     <>
@@ -160,28 +157,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <RatingStars rating={game.rating} reviewCount={game.reviewCount} />
             </div>
 
-            <div className="mt-6 rounded-card border border-border-cream bg-white p-5 shadow-card">
-              <div className="flex flex-wrap items-end justify-between gap-4">
-                <div>
-                  <PriceDisplay
-                    price={game.price}
-                    originalPrice={game.originalPrice}
-                    showSaving={false}
-                  />
-                  {saving > 0 ? (
-                    <p className="mt-2 text-[12px] font-bold uppercase tracking-[0.04em] text-status-success">
-                      You save {formatPrice(saving)}
-                    </p>
-                  ) : null}
-                </div>
-                <span className="font-body text-[12px] font-extrabold uppercase tracking-[0.06em] text-text-dark-muted">
-                  {game.stock} in stock
-                </span>
-              </div>
-
-              <div className="mt-5">
-                <PdpAddToCartButton game={game} />
-              </div>
+            <div className="mt-6">
+              <ProductInfo game={game} />
             </div>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-3">

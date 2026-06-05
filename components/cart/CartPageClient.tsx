@@ -288,7 +288,7 @@ function OrderSummary({ subtotal }: { subtotal: number }) {
   const total = subtotal + shipping + tax;
 
   return (
-    <aside className="sticky top-24 rounded-card border border-white/10 bg-[#1A1A1A] p-5 shadow-card">
+    <aside className="rounded-card border border-white/10 bg-[#1A1A1A] p-5 shadow-card lg:sticky lg:top-4">
       <h2 className="font-display text-4xl uppercase leading-none text-white">Order Summary</h2>
       <div className="mt-5">
         <FreeShippingProgressBar subtotal={subtotal} />
@@ -440,7 +440,7 @@ export function CartPageClient({ products }: CartPageClientProps) {
         {empty ? (
           <EmptyCartState products={products} />
         ) : (
-          <div className="grid gap-7 lg:grid-cols-[minmax(0,65fr)_minmax(320px,35fr)]">
+          <div className="grid grid-cols-1 gap-7 lg:grid-cols-[1fr_380px]">
             <section className="min-w-0">
               <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
                 <h1 className="font-display text-5xl uppercase leading-none text-white">

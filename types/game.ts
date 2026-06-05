@@ -20,6 +20,7 @@ export interface Game {
   stock: number;
   tags: string[];
   vendor: ProductVendor;
+  conditionVariants?: ProductVariantOption[];
   salesCount?: number;
   createdAt?: string;
 }

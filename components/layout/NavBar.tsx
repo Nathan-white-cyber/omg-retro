@@ -1,17 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronDown, CircleUserRound, Search, ShoppingCart } from "lucide-react";
+import { ChevronDown, CircleUserRound, Search } from "lucide-react";
+import { CartBadge } from "./CartBadge";
 import { Logo } from "./Logo";
 import { MegaMenu } from "./MegaMenu";
 import { platformMenus } from "./layout-data";
 
 interface NavBarProps {
   activePlatform?: string;
-  cartCount?: number;
 }
 
-export function NavBar({ activePlatform, cartCount = 0 }: NavBarProps) {
+export function NavBar({ activePlatform }: NavBarProps) {
   return (
     <div className="hidden md:block">
       <header className="relative z-nav border-b border-border bg-bg-surface">
@@ -42,13 +42,7 @@ export function NavBar({ activePlatform, cartCount = 0 }: NavBarProps) {
               <CircleUserRound className="h-[22px] w-[22px]" aria-hidden="true" />
               Account
             </Link>
-            <Link
-              href="/cart"
-              className="inline-flex items-center gap-2 rounded-btn border border-brand-red bg-brand-red px-4 py-2.5 text-[13.5px] font-bold text-white transition hover:bg-brand-red-dark"
-            >
-              <ShoppingCart className="h-[22px] w-[22px]" aria-hidden="true" />
-              Cart ({cartCount})
-            </Link>
+            <CartBadge />
           </div>
         </div>
       </header>

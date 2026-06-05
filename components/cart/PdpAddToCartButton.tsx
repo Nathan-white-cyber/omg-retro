@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { ControllerButton } from "@/components/product/ControllerButton";
 import type { Game } from "@/types";
 
 interface PdpAddToCartButtonProps {
@@ -8,27 +10,48 @@ interface PdpAddToCartButtonProps {
 }
 
 export function PdpAddToCartButton({ game }: PdpAddToCartButtonProps) {
-  const [adding, setAdding] = useState(false);
+  const [state, setState] = useState<"idle" | "adding" | "added">("idle");
+  const [showToast, setShowToast] = useState(false);
 
   const handleClick = async () => {
-    if (adding) return;
+    if (state === "adding") return;
 
-    setAdding(true);
+    setState("adding");
     const { useCartStore } = await import("@/lib/store/cart-store");
     useCartStore.getState().addItem(game, game.condition);
+    setShowToast(true);
+
     window.setTimeout(() => {
-      window.location.href = "/cart";
-    }, 180);
+      setState("added");
+    }, 300);
+
+    window.setTimeout(() => {
+      setState("idle");
+    }, 1100);
+
+    window.setTimeout(() => {
+      setShowToast(false);
+    }, 3600);
   };
 
   return (
-    <button
-      type="button"
-      className="flex h-[52px] w-full items-center justify-center rounded-btn bg-brand-red px-6 font-body text-[14px] font-extrabold uppercase tracking-[0.04em] text-white shadow-ctrl transition duration-normal hover:-translate-y-0.5 hover:bg-brand-red-dark disabled:cursor-wait disabled:opacity-75"
-      onClick={handleClick}
-      disabled={adding}
-    >
-      {adding ? "Adding..." : "Add to Cart"}
-    </button>
+    <>
+      <ControllerButton
+        platform={game.platform}
+        variant={4}
+        onClick={handleClick}
+        loading={state === "adding"}
+        added={state === "added"}
+        fullWidth
+      />
+      {showToast ? (
+        <div className="fixed right-5 top-5 z-50 max-w-[320px] rounded-card border border-white/10 bg-[#1A1A1A] px-4 py-3 text-sm font-bold text-white shadow-card">
+          <span>{game.title} added to cart</span>
+          <Link href="/cart" className="ml-3 whitespace-nowrap text-brand-red transition hover:text-brand-red-light">
+            View Cart →
+          </Link>
+        </div>
+      ) : null}
+    </>
   );
 }
