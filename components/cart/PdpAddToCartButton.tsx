@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { ControllerButton } from "@/components/product/ControllerButton";
+import { useToast } from "@/components/toast/ToastProvider";
 import type { Game } from "@/types";
 
 interface PdpAddToCartButtonProps {
@@ -11,7 +11,7 @@ interface PdpAddToCartButtonProps {
 
 export function PdpAddToCartButton({ game }: PdpAddToCartButtonProps) {
   const [state, setState] = useState<"idle" | "adding" | "added">("idle");
-  const [showToast, setShowToast] = useState(false);
+  const toast = useToast();
 
   const handleClick = async () => {
     if (state === "adding") return;
@@ -19,7 +19,14 @@ export function PdpAddToCartButton({ game }: PdpAddToCartButtonProps) {
     setState("adding");
     const { useCartStore } = await import("@/lib/store/cart-store");
     useCartStore.getState().addItem(game, game.condition);
-    setShowToast(true);
+    toast({
+      message: `${game.title} added to cart`,
+      action: {
+        label: "View Cart →",
+        href: "/cart",
+      },
+      duration: 3000,
+    });
 
     window.setTimeout(() => {
       setState("added");
@@ -29,9 +36,6 @@ export function PdpAddToCartButton({ game }: PdpAddToCartButtonProps) {
       setState("idle");
     }, 1100);
 
-    window.setTimeout(() => {
-      setShowToast(false);
-    }, 3600);
   };
 
   return (
@@ -44,14 +48,6 @@ export function PdpAddToCartButton({ game }: PdpAddToCartButtonProps) {
         added={state === "added"}
         fullWidth
       />
-      {showToast ? (
-        <div className="fixed right-5 top-5 z-50 max-w-[320px] rounded-card border border-white/10 bg-[#1A1A1A] px-4 py-3 text-sm font-bold text-white shadow-card">
-          <span>{game.title} added to cart</span>
-          <Link href="/cart" className="ml-3 whitespace-nowrap text-brand-red transition hover:text-brand-red-light">
-            View Cart →
-          </Link>
-        </div>
-      ) : null}
     </>
   );
 }

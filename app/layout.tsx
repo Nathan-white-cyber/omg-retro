@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, Bebas_Neue, Space_Grotesk } from "next/font/google";
+import { ToastProvider } from "@/components/toast/ToastProvider";
 import "./globals.css";
 
 const anton = Anton({
@@ -36,7 +37,7 @@ export default function RootLayout({
       className={`${anton.variable} ${bebasNeue.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-bg-dark font-body text-text-primary">
-        {children}
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );

@@ -6,6 +6,12 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    "lg:grid-cols-cart",
+    "lg:sticky",
+    "lg:top-6",
+    "lg:self-start",
+  ],
 
   theme: {
     extend: {
@@ -149,6 +155,7 @@ module.exports = {
       },
 
       gridTemplateColumns: {
+        cart: "1fr 380px",
         "products-desktop": "repeat(4, 1fr)",
         "products-tablet": "repeat(3, 1fr)",
         "products-mobile": "repeat(2, 1fr)",

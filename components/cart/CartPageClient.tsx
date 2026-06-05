@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { ConditionBadge } from "@/components/product/ConditionBadge";
 import { ControllerButton } from "@/components/product/ControllerButton";
 import { CoverBlock } from "@/components/product/CoverBlock";
 import { PriceDisplay } from "@/components/product/PriceDisplay";
 import { ProductCard } from "@/components/product/ProductCard";
+import { useToast } from "@/components/toast/ToastProvider";
 import { useCartStore } from "@/lib/store/cart-store";
 import { formatPrice } from "@/lib/utils/format";
 import type { CartItem, Game } from "@/types";
@@ -288,7 +289,10 @@ function OrderSummary({ subtotal }: { subtotal: number }) {
   const total = subtotal + shipping + tax;
 
   return (
-    <aside className="rounded-card border border-white/10 bg-[#1A1A1A] p-5 shadow-card lg:sticky lg:top-4">
+    <aside
+      className="rounded-card border border-white/10 bg-[#1A1A1A] p-5 shadow-card lg:sticky lg:top-6 lg:self-start"
+      style={{ position: "sticky", top: "24px", alignSelf: "start" }}
+    >
       <h2 className="font-display text-4xl uppercase leading-none text-white">Order Summary</h2>
       <div className="mt-5">
         <FreeShippingProgressBar subtotal={subtotal} />
@@ -387,7 +391,7 @@ export function CartPageClient({ products }: CartPageClientProps) {
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const saveForLater = useCartStore((state) => state.saveForLater);
   const moveToCart = useCartStore((state) => state.moveToCart);
-  const [toast, setToast] = useState<string | null>(null);
+  const toast = useToast();
 
   const activeItems = items.filter((item) => !item.savedForLater);
   const savedItems = items.filter((item) => item.savedForLater);
@@ -406,41 +410,30 @@ export function CartPageClient({ products }: CartPageClientProps) {
       .slice(0, 4);
   }, [activeItems, products]);
 
-  const showToast = (message: string) => {
-    setToast(message);
-    window.setTimeout(() => setToast(null), 2200);
-  };
-
   const handleRemove = (item: CartItem) => {
     removeItem(item.id);
-    showToast(`Removed ${item.game.title}`);
+    toast({ message: `Removed ${item.game.title}` });
   };
 
   const handleSave = (item: CartItem) => {
     saveForLater(item.id);
-    showToast(`Saved ${item.game.title} for later`);
+    toast({ message: `Saved ${item.game.title} for later` });
   };
 
   const handleMoveToCart = (item: CartItem) => {
     moveToCart(item.id);
-    showToast(`Moved ${item.game.title} to cart`);
+    toast({ message: `Moved ${item.game.title} to cart` });
   };
 
   const empty = activeItems.length === 0 && savedItems.length === 0;
 
   return (
     <main className="bg-bg-dark px-7 py-8 text-white md:py-12">
-      {toast ? (
-        <div className="fixed right-5 top-5 z-50 rounded-card border border-white/10 bg-[#1A1A1A] px-4 py-3 text-sm font-bold text-white shadow-card">
-          {toast}
-        </div>
-      ) : null}
-
       <div className="mx-auto max-w-[1240px]">
         {empty ? (
           <EmptyCartState products={products} />
         ) : (
-          <div className="grid grid-cols-1 gap-7 lg:grid-cols-[1fr_380px]">
+          <div className="grid grid-cols-1 gap-7 lg:grid-cols-cart">
             <section className="min-w-0">
               <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
                 <h1 className="font-display text-5xl uppercase leading-none text-white">
