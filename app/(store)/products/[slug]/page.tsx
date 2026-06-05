@@ -9,6 +9,9 @@ import { RatingStars } from "@/components/product/RatingStars";
 import { getAllProducts, getProductBySlug } from "@/lib/medusa/products";
 import { formatPrice } from "@/lib/utils/format";
 
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+
 type ProductPageProps = {
   params: Promise<{ slug: string }> | { slug: string };
 };
@@ -44,11 +47,6 @@ const assuranceItems = [
     ),
   },
 ];
-
-export async function generateStaticParams() {
-  const products = await getAllProducts();
-  return products.map((product) => ({ slug: product.slug }));
-}
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
