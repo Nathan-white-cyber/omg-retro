@@ -15,11 +15,13 @@ export default function AuthLayout({
         </div>
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[12.5px] text-white/55">
-          <span>Tested games</span>
+          <span>Authentic Games</span>
           <span className="h-1 w-1 rounded-full bg-brand-red" />
-          <span>1-year warranty</span>
+          <span>Tested</span>
           <span className="h-1 w-1 rounded-full bg-brand-red" />
-          <span>Fast U.S. shipping</span>
+          <span>1-Year Warranty</span>
+          <span className="h-1 w-1 rounded-full bg-brand-red" />
+          <span>Free Shipping $75+</span>
         </div>
 
         <Link href="/" className="mt-5 text-[12.5px] font-bold tracking-[0.04em] text-white/50 hover:text-white">

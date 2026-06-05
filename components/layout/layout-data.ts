@@ -186,7 +186,7 @@ export const accountNavItems = [
   { label: "Dashboard", href: "/account", icon: "dashboard" },
   { label: "Order History", href: "/account/orders", icon: "orders" },
   { label: "Wishlist", href: "/account/wishlist", icon: "wishlist" },
-  { label: "Settings", href: "/account/settings", icon: "settings" },
+  { label: "Account Settings", href: "/account/settings", icon: "settings" },
 ];
 
 export const drawerMinorLinks = [

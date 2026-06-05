@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   ChevronRight,
   Heart,
@@ -11,6 +11,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { accountNavItems } from "@/components/layout/layout-data";
+import { mockAccountUser } from "@/components/account/mock-account-data";
 import type { User } from "@/types";
 
 interface AccountSidebarProps {
@@ -25,17 +26,19 @@ const navIcons = {
 };
 
 export function AccountSidebar({
-  user = {
-    id: "guest",
-    email: "player@omgretro.com",
-    firstName: "Retro",
-    lastName: "Player",
-    memberSince: "2026",
-  },
+  user = mockAccountUser,
 }: AccountSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const initials = `${user.firstName?.[0] ?? "R"}${user.lastName?.[0] ?? "P"}`;
   const fullName = [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email;
+
+  const signOut = () => {
+    document.cookie = "next-auth.session-token=; path=/; max-age=0; SameSite=Lax";
+    document.cookie = "__Secure-next-auth.session-token=; path=/; max-age=0; SameSite=Lax";
+    router.push("/login");
+    router.refresh();
+  };
 
   return (
     <aside className="sticky top-5 hidden min-w-0 flex-col gap-4 lg:flex">
@@ -86,6 +89,7 @@ export function AccountSidebar({
 
         <button
           type="button"
+          onClick={signOut}
           className="flex items-center gap-3 rounded-btn px-3.5 py-3 text-left text-sm font-bold text-text-dark-muted transition hover:bg-brand-red/10 hover:text-brand-red"
         >
           <LogOut className="h-[18px] w-[18px]" aria-hidden="true" />

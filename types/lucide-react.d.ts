@@ -12,7 +12,11 @@ declare module "lucide-react" {
   export const BookOpen: LucideIcon;
   export const ChevronDown: LucideIcon;
   export const ChevronRight: LucideIcon;
+  export const Check: LucideIcon;
   export const CircleUserRound: LucideIcon;
+  export const Download: LucideIcon;
+  export const Eye: LucideIcon;
+  export const EyeOff: LucideIcon;
   export const Gamepad2: LucideIcon;
   export const Heart: LucideIcon;
   export const Home: LucideIcon;
@@ -24,6 +28,8 @@ declare module "lucide-react" {
   export const Settings: LucideIcon;
   export const ShoppingBag: LucideIcon;
   export const ShoppingCart: LucideIcon;
+  export const Star: LucideIcon;
+  export const PackagePlus: LucideIcon;
   export const Truck: LucideIcon;
   export const UserRound: LucideIcon;
   export const X: LucideIcon;
