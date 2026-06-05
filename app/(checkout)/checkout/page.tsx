@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
+import { CheckoutPageClient } from "@/components/checkout/CheckoutPageClient";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Checkout - OMG Retro",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
 export default function CheckoutPage() {
-  return (
-    <section className="mx-auto max-w-[1240px] px-7 py-12">
-      <h1 className="font-display text-display-md uppercase text-text-dark">
-        Checkout
-      </h1>
-    </section>
-  );
+  return <CheckoutPageClient />;
 }
