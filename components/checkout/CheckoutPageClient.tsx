@@ -381,10 +381,10 @@ export function CheckoutPageClient() {
   });
 
   useEffect(() => {
-    if (items.length === 0) {
+    if (!placingOrder && items.length === 0) {
       router.replace("/cart");
     }
-  }, [items.length, router]);
+  }, [items.length, placingOrder, router]);
 
   const shipping = deliveryMethod === "expedited" ? 999 : subtotal >= 7500 ? 0 : 499;
   const tax = Math.round(subtotal * 0.09);
@@ -484,7 +484,8 @@ export function CheckoutPageClient() {
                       </SelectField>
                       <TextField label="ZIP code" error={errors.zip?.message} {...register("zip")} />
                     </div>
-                    <TextField label="Country" disabled error={errors.country?.message} {...register("country")} />
+                    <input type="hidden" value="United States" {...register("country")} />
+                    <TextField label="Country" value="United States" disabled error={errors.country?.message} />
                     <TextField label="Phone optional" type="tel" error={errors.phone?.message} {...register("phone")} />
                   </div>
                 </section>

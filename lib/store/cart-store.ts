@@ -101,7 +101,7 @@ export const useCartStore = create<CartState>()(
             ),
           ),
         ),
-      clearCart: () => recalculate([]),
+      clearCart: () => set(() => recalculate([])),
     }),
     {
       name: "omg-retro-cart",
