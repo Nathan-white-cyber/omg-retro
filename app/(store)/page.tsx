@@ -12,8 +12,11 @@ import {
 import { TrustBar } from "@/components/sections/TrustBar";
 import { PlatformGridSkeleton, ProductRailSkeleton } from "@/components/sections/home-skeletons";
 
+const siteUrl = "https://omg-retro.vercel.app";
+const ogImageUrl = `${siteUrl}/images/og-placeholder.png`;
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://omgretro.com"),
+  metadataBase: new URL(siteUrl),
   title: "OMG Retro — Authentic Retro Games, Consoles & Accessories",
   description:
     "Shop authentic, tested retro games and consoles. Every item cleaned, tested on original hardware, and backed by a 1-year warranty. Free US shipping on orders over $75.",
@@ -23,12 +26,19 @@ export const metadata: Metadata = {
       "Shop authentic, tested retro games and consoles. Every item cleaned, tested on original hardware, and backed by a 1-year warranty.",
     images: [
       {
-        url: "/images/og-placeholder.png",
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: "OMG Retro",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "OMG Retro — Authentic Retro Games, Consoles & Accessories",
+    description:
+      "Shop authentic, tested retro games and consoles. Every item cleaned, tested on original hardware, and backed by a 1-year warranty.",
+    images: [ogImageUrl],
   },
 };
 

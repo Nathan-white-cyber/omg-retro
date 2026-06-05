@@ -16,10 +16,10 @@ function SystemTile({ system, active, count }: { system: SystemRoute; active: bo
       }`}
     >
       <span
-        className="flex h-12 w-12 items-center justify-center rounded-full font-body text-[12px] font-extrabold uppercase text-white shadow-ctrl-subtle"
+        className="flex h-12 w-12 items-center justify-center rounded-full px-1 font-body text-[11px] font-extrabold uppercase text-white shadow-ctrl-subtle"
         style={{ backgroundColor: system.color }}
       >
-        {system.code.slice(0, 3)}
+        {system.code}
       </span>
       <span className="mt-2 line-clamp-1 text-[12px] font-extrabold uppercase tracking-[0.04em] text-text-primary">
         {system.name}

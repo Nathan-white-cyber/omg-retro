@@ -2,12 +2,6 @@ import Link from "next/link";
 import { footerColumns } from "./layout-data";
 import { Logo } from "./Logo";
 
-const socialLinks = [
-  { label: "Facebook", short: "f", href: "#" },
-  { label: "Instagram", short: "ig", href: "#" },
-  { label: "YouTube", short: "yt", href: "#" },
-];
-
 export function Footer() {
   return (
     <footer className="bg-bg-dark text-[#c7cad2]">
@@ -18,18 +12,9 @@ export function Footer() {
             <p className="mt-4 max-w-[280px] text-[13px] leading-relaxed text-white/50">
               Your destination for authentic retro games, consoles and accessories. Relive the classics.
             </p>
-            <div className="mt-4 flex gap-3">
-              {socialLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  aria-label={link.label}
-                  className="grid h-[34px] w-[34px] place-items-center rounded-full bg-white/10 font-body text-[10px] font-extrabold uppercase text-white transition hover:bg-brand-red"
-                >
-                  {link.short}
-                </Link>
-              ))}
-            </div>
+            <p className="mt-4 font-body text-[11px] font-extrabold uppercase tracking-[0.08em] text-white/40">
+              Follow us soon
+            </p>
           </div>
 
           {footerColumns.map((column) => (
@@ -74,7 +59,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col gap-3 border-t border-white/10 py-4 text-[12.5px] text-white/50 md:flex-row md:items-center md:justify-between">
-          <span>© 2026 OMG Retro. All rights reserved.</span>
+          <span>(c) 2026 OMG Retro. All rights reserved.</span>
           <span className="flex gap-5">
             <Link href="/info/privacy" className="transition hover:text-brand-red">
               Privacy Policy

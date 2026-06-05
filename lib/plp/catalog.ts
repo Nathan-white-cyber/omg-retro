@@ -71,7 +71,7 @@ export const platformRoutes: PlatformRoute[] = [
       { name: "GameCube", code: "GCN", slug: "gamecube", href: "/nintendo/gamecube", vendor: "nintendo", color: "#1FA34A" },
       { name: "Wii", code: "Wii", slug: "wii", href: "/nintendo/wii", vendor: "nintendo", color: "#ABABAB" },
       { name: "NES", code: "NES", slug: "nes", href: "/nintendo/nes", vendor: "nintendo", color: "#8B8B8B" },
-      { name: "Switch", code: "Switch", slug: "switch", href: "/nintendo/switch", vendor: "nintendo", color: "#E60012" },
+      { name: "Switch", code: "SW", slug: "switch", href: "/nintendo/switch", vendor: "nintendo", color: "#E60012" },
       { name: "Game Boy", code: "GB", slug: "game-boy", href: "/nintendo/game-boy", vendor: "nintendo", color: "#6B6B6B" },
       { name: "Game Boy Advance", code: "GBA", slug: "gba", href: "/nintendo/gba", vendor: "nintendo", color: "#5E3F8E" },
       { name: "Nintendo DS", code: "DS", slug: "ds", href: "/nintendo/ds", vendor: "nintendo", color: "#C42D2D" },
@@ -96,7 +96,7 @@ export const platformRoutes: PlatformRoute[] = [
     color: "#107C10",
     systems: [
       { name: "Original Xbox", code: "Xbox", slug: "original-xbox", href: "/xbox/original-xbox", vendor: "xbox", color: "#107C10" },
-      { name: "Xbox 360", code: "Xbox 360", slug: "xbox-360", href: "/xbox/xbox-360", vendor: "xbox", color: "#107C10" },
+      { name: "Xbox 360", code: "360", slug: "xbox-360", href: "/xbox/xbox-360", vendor: "xbox", color: "#107C10" },
     ],
   },
   {
@@ -105,10 +105,10 @@ export const platformRoutes: PlatformRoute[] = [
     href: "/sega",
     color: "#003087",
     systems: [
-      { name: "Genesis", code: "Genesis", slug: "genesis", href: "/sega/genesis", vendor: "sega", color: "#555555" },
-      { name: "Saturn", code: "Saturn", slug: "saturn", href: "/sega/saturn", vendor: "sega", color: "#555555" },
-      { name: "Dreamcast", code: "Dreamcast", slug: "dreamcast", href: "/sega/dreamcast", vendor: "sega", color: "#E67E22" },
-      { name: "Game Gear", code: "Game Gear", slug: "game-gear", href: "/sega/game-gear", vendor: "sega", color: "#444444" },
+      { name: "Genesis", code: "GEN", slug: "genesis", href: "/sega/genesis", vendor: "sega", color: "#555555" },
+      { name: "Saturn", code: "SAT", slug: "saturn", href: "/sega/saturn", vendor: "sega", color: "#555555" },
+      { name: "Dreamcast", code: "DC", slug: "dreamcast", href: "/sega/dreamcast", vendor: "sega", color: "#E67E22" },
+      { name: "Game Gear", code: "GG", slug: "game-gear", href: "/sega/game-gear", vendor: "sega", color: "#444444" },
     ],
   },
 ];

@@ -182,6 +182,15 @@ async function getProducts() {
   return response?.products.length ? response.products : mockProducts;
 }
 
+export async function getAllProducts() {
+  return getProducts();
+}
+
+export async function getProductBySlug(slug: string) {
+  const products = await getProducts();
+  return products.find((product) => product.slug === slug) ?? null;
+}
+
 function matchesGenre(product: Game, genre: string) {
   const tags = product.tags.map((tag) => tag.toLowerCase());
   const matchers = genreMatchers[genre] ?? [genre];

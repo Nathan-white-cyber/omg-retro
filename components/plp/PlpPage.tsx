@@ -148,7 +148,6 @@ export async function PlpPage({
         platformCode={context.platformCode}
         platformColor={context.system?.color ?? context.platform?.color}
       />
-      <TrustBar variant="compact" />
       {showConsoleRow ? (
         <ConsoleIconRow
           platform={context.kind === "platform" ? context.platform : undefined}
