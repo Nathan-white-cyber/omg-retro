@@ -103,3 +103,6 @@ export const wishlistFallbackProducts = mockProducts
   .sort((a, b) => (b.salesCount ?? 0) - (a.salesCount ?? 0))
   .slice(0, 4);
 
+export function findMockOrder(id: string) {
+  return mockOrders.find((order) => order.id === id);
+}

@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
-import { AccountOrderDetailClient, findMockOrder } from "@/components/account/AccountOrderDetailClient";
+import { AccountOrderDetailClient } from "@/components/account/AccountOrderDetailClient";
+import { findMockOrder } from "@/components/account/mock-account-data";
 
 type AccountOrderDetailPageProps = {
-  params: Promise<{ id: string }> | { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export const dynamic = "force-dynamic";
@@ -19,4 +20,3 @@ export default async function AccountOrderDetailPage({
 
   return <AccountOrderDetailClient order={order} />;
 }
-

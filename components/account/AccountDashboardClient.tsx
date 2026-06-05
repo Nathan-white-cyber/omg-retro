@@ -46,6 +46,7 @@ function StatCard({
 
 export function AccountDashboardClient() {
   const wishlistIds = useWishlistStore((state) => state.items);
+  const wishlistCount = wishlistIds.length;
   const wishlistProducts = wishlistIds
     .map((id) => mockProducts.find((product) => product.id === id))
     .filter((product): product is (typeof mockProducts)[number] => Boolean(product));
@@ -64,7 +65,7 @@ export function AccountDashboardClient() {
 
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard label="Total Orders" value="12" icon={ShoppingBag} />
-        <StatCard label="Wishlist Items" value="5" icon={Heart} />
+        <StatCard label="Wishlist Items" value={String(wishlistCount)} icon={Heart} />
         <StatCard label="Rewards Points" value="340" icon={Star} />
       </div>
 

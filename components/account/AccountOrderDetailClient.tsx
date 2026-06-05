@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Check, Download, PackagePlus } from "lucide-react";
-import { mockOrders, type MockOrder } from "@/components/account/mock-account-data";
+import type { MockOrder } from "@/components/account/mock-account-data";
 import { ConditionBadge } from "@/components/product/ConditionBadge";
 import { CoverBlock } from "@/components/product/CoverBlock";
 import { useToast } from "@/components/toast/ToastProvider";
@@ -200,8 +200,3 @@ export function AccountOrderDetailClient({ order }: { order: MockOrder }) {
     </div>
   );
 }
-
-export function findMockOrder(id: string) {
-  return mockOrders.find((order) => order.id === id);
-}
-
