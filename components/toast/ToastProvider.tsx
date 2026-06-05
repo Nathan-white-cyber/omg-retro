@@ -31,6 +31,7 @@ interface ToastContextValue {
 }
 
 const ToastContext = createContext<ToastContextValue | null>(null);
+const DEFAULT_TOAST_DURATION_MS = 3000;
 
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastState[]>([]);
@@ -45,13 +46,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {
         ...input,
         id,
-        duration: input.duration ?? 3000,
+        duration: input.duration ?? DEFAULT_TOAST_DURATION_MS,
       },
     ]);
 
     window.setTimeout(() => {
       setToasts((current) => current.filter((item) => item.id !== id));
-    }, input.duration ?? 3000);
+    }, input.duration ?? DEFAULT_TOAST_DURATION_MS);
   }, []);
 
   const value = useMemo(() => ({ toast }), [toast]);
