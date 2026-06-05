@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PdpAddToCartButton } from "@/components/cart/PdpAddToCartButton";
 import { ConditionBadge } from "@/components/product/ConditionBadge";
 import { CoverBlock } from "@/components/product/CoverBlock";
 import { DiscountBadge } from "@/components/product/DiscountBadge";
@@ -179,12 +180,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
 
               <div className="mt-5">
-                <a
-                  href="/cart"
-                  className="flex h-[52px] w-full items-center justify-center rounded-btn bg-brand-red px-6 font-body text-[14px] font-extrabold uppercase tracking-[0.04em] text-white shadow-ctrl transition duration-normal hover:-translate-y-0.5 hover:bg-brand-red-dark"
-                >
-                  Add to Cart
-                </a>
+                <PdpAddToCartButton game={game} />
               </div>
             </div>
 

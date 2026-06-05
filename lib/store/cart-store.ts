@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { mockProducts } from "@/lib/medusa/mock-products";
 import type { CartItem, Game } from "@/types";
 
 interface CartState {
@@ -12,8 +13,25 @@ interface CartState {
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   saveForLater: (id: string) => void;
+  moveToCart: (id: string) => void;
   clearCart: () => void;
 }
+
+const sampleCartItems = [
+  "n64-zelda-oot",
+  "gba-pokemon-emerald",
+  "ps2-metal-gear-solid-2",
+]
+  .map((id) => mockProducts.find((game) => game.id === id))
+  .filter((game): game is Game => Boolean(game))
+  .map<CartItem>((game) => ({
+    id: `${game.id}:${game.condition}`,
+    game,
+    condition: game.condition,
+    quantity: 1,
+    unitPrice: game.price,
+    savedForLater: false,
+  }));
 
 function recalculate(items: CartItem[]) {
   return {
@@ -32,9 +50,7 @@ function recalculate(items: CartItem[]) {
 export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
-      items: [],
-      subtotal: 0,
-      itemCount: 0,
+      ...recalculate(sampleCartItems),
       addItem: (game, condition = game.condition) =>
         set((state) => {
           const id = `${game.id}:${condition}`;
@@ -65,7 +81,7 @@ export const useCartStore = create<CartState>()(
         set((state) =>
           recalculate(
             state.items.map((item) =>
-              item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item,
+              item.id === id ? { ...item, quantity: Math.min(10, Math.max(1, quantity)) } : item,
             ),
           ),
         ),
@@ -74,6 +90,14 @@ export const useCartStore = create<CartState>()(
           recalculate(
             state.items.map((item) =>
               item.id === id ? { ...item, savedForLater: true } : item,
+            ),
+          ),
+        ),
+      moveToCart: (id) =>
+        set((state) =>
+          recalculate(
+            state.items.map((item) =>
+              item.id === id ? { ...item, savedForLater: false, quantity: Math.max(1, item.quantity) } : item,
             ),
           ),
         ),
