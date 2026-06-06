@@ -30,18 +30,36 @@ function sortProducts(products: Game[], sort: SortMode) {
 }
 
 function EmptyWishlist() {
+  const recommendedGames = mockProducts
+    .slice()
+    .sort((a, b) => (b.salesCount ?? 0) - (a.salesCount ?? 0))
+    .slice(0, 4);
+
   return (
-    <section className="rounded-card border border-border-cream bg-white p-10 text-center shadow-card">
-      <Heart className="mx-auto h-16 w-16 text-brand-red" />
-      <h2 className="mt-5 font-display text-5xl uppercase leading-none text-text-dark">
-        Your Wishlist Is Empty
-      </h2>
-      <p className="mx-auto mt-3 max-w-[420px] text-sm leading-relaxed text-text-dark-muted">
-        Save games by tapping the {"\u2661"} on any product.
-      </p>
-      <Link href="/products" className="mt-6 inline-flex h-11 items-center rounded-btn bg-brand-red px-7 text-sm font-extrabold uppercase tracking-[0.08em] text-white transition hover:bg-brand-red-dark">
-        Start Browsing
-      </Link>
+    <section className="space-y-8">
+      <div className="rounded-card border border-border-cream bg-white p-10 text-center shadow-card">
+        <Heart className="mx-auto h-16 w-16 text-brand-red" />
+        <h2 className="mt-5 font-display text-5xl uppercase leading-none text-text-dark">
+          Your Wishlist Is Empty
+        </h2>
+        <p className="mx-auto mt-3 max-w-[420px] text-sm leading-relaxed text-text-dark-muted">
+          Save games by tapping the {"\u2661"} on any product. We will keep your favorites here.
+        </p>
+        <Link href="/products" className="mt-6 inline-flex h-11 items-center rounded-btn bg-brand-red px-7 text-sm font-extrabold uppercase tracking-[0.08em] text-white transition hover:bg-brand-red-dark">
+          Start Browsing
+        </Link>
+      </div>
+
+      <div>
+        <h2 className="mb-4 font-display text-4xl uppercase leading-none text-text-dark">
+          Best Sellers To Start With
+        </h2>
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {recommendedGames.map((game) => (
+            <ProductCard key={game.id} game={game} ctaVariant={2} />
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

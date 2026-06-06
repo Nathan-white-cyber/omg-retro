@@ -9,7 +9,7 @@ interface ProductGridProps {
 
 export function EmptyState({ query }: { query?: string }) {
   return (
-    <div className="flex min-h-[460px] flex-col items-center justify-center rounded-card border border-border-cream bg-white p-8 text-center shadow-card">
+    <div className="flex min-h-[520px] flex-col items-center justify-center rounded-card border border-border-cream bg-white p-8 text-center shadow-card">
       <div className="flex h-20 w-20 items-center justify-center rounded-full bg-bg-cream-dark text-brand-red">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-9 w-9" aria-hidden="true">
           <circle cx="11" cy="11" r="7" />
@@ -20,7 +20,7 @@ export function EmptyState({ query }: { query?: string }) {
         NO GAMES FOUND
       </h2>
       <p className="mt-3 max-w-md text-[14px] leading-relaxed text-text-dark-muted">
-        Try adjusting your filters or searching for something else.
+        Try adjusting your filters, checking the spelling, or searching for another system.
       </p>
       <form action="/search" className="mt-6 flex w-full max-w-md gap-2">
         <input
@@ -33,6 +33,17 @@ export function EmptyState({ query }: { query?: string }) {
           Search
         </button>
       </form>
+      <div className="mt-4 flex flex-wrap justify-center gap-2">
+        {["Zelda", "Mario", "Pokemon", "Final Fantasy"].map((term) => (
+          <Link
+            key={term}
+            href={`/search?q=${encodeURIComponent(term)}`}
+            className="rounded-full bg-bg-cream px-3 py-1.5 text-[12px] font-bold text-text-dark-muted transition hover:bg-brand-red hover:text-white"
+          >
+            {term}
+          </Link>
+        ))}
+      </div>
       <div className="mt-5 flex flex-wrap justify-center gap-3">
         <Link href="/products" className="rounded-btn border border-border-cream px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.06em] text-text-dark transition hover:border-brand-red hover:text-brand-red">
           Clear All Filters
