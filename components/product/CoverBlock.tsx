@@ -35,10 +35,11 @@ export function CoverBlock({
       {imageUrl ? (
         <Image
           src={imageUrl}
-          alt={title}
+          alt={`${title} cover`}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
           priority={priority}
+          loading={priority ? undefined : "lazy"}
           className="object-cover"
         />
       ) : (

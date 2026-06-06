@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import { InfoSection } from "@/components/info/InfoBlocks";
 import { InfoPageLayout } from "@/components/info/InfoPageLayout";
+import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = createMetadata({
+  title: "Terms of Service — OMG Retro",
+  description: "Read the OMG Retro terms for orders, payment, product condition, returns, warranty, and site use.",
+  path: "/info/terms",
+});
 
 export default function TermsPage() {
   return (
@@ -34,4 +41,3 @@ export default function TermsPage() {
     </InfoPageLayout>
   );
 }
-

@@ -34,6 +34,7 @@ export function EmptyState({ query }: { query?: string }) {
         </p>
         <form action="/search" className="mt-6 flex w-full max-w-md gap-2">
           <input
+            aria-label="Search games"
             name="q"
             defaultValue={query}
             placeholder="Search games"

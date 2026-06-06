@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { ContactForm } from "@/components/info/ContactForm";
 import { DarkCallout, FeatureCard, InfoSection } from "@/components/info/InfoBlocks";
 import { InfoPageLayout } from "@/components/info/InfoPageLayout";
+import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = createMetadata({
+  title: "Contact Us — OMG Retro",
+  description: "Contact the OMG Retro support team for order help, returns, warranty, and game questions.",
+  path: "/info/contact",
+});
 
 export default function ContactPage() {
   return (

@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { DarkCallout, FeatureCard, InfoSection } from "@/components/info/InfoBlocks";
 import { InfoPageLayout } from "@/components/info/InfoPageLayout";
+import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = createMetadata({
+  title: "About Us — OMG Retro",
+  description: "Learn the story behind OMG Retro and our authentic, tested retro game promise.",
+  path: "/info/about",
+});
 
 export default function AboutPage() {
   return (
@@ -71,4 +78,3 @@ export default function AboutPage() {
     </InfoPageLayout>
   );
 }
-

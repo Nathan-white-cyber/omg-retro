@@ -223,6 +223,7 @@ export function PlpChrome({
           </span>
         </div>
         <input
+          aria-label="Maximum price"
           type="range"
           min="0"
           max="200"

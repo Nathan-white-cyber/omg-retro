@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import { InfoSection } from "@/components/info/InfoBlocks";
 import { InfoPageLayout } from "@/components/info/InfoPageLayout";
+import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = createMetadata({
+  title: "Privacy Policy — OMG Retro",
+  description: "Read how OMG Retro collects, uses, protects, and shares customer information.",
+  path: "/info/privacy",
+});
 
 export default function PrivacyPage() {
   return (
@@ -34,4 +41,3 @@ export default function PrivacyPage() {
     </InfoPageLayout>
   );
 }
-

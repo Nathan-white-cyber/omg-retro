@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { createMetadata } from "@/lib/seo";
 import type { ProductVendor } from "@/types";
 
 export interface SystemRoute {
@@ -199,17 +200,27 @@ export function getPlpRouteContext(kind: PlpRouteContext["kind"], options: { ven
 }
 
 export function metadataForPlp(context: PlpRouteContext): Metadata {
-  const title =
-    context.kind === "products"
-      ? "Shop All Retro Games — OMG Retro"
-      : context.kind === "system" && context.system
-        ? `${context.system.name} Games — OMG Retro`
-        : context.kind === "platform" && context.platform
-          ? `${context.platform.name} Games & Consoles — OMG Retro`
-          : `${context.title.replace(/\s+/g, " ")} — OMG Retro`;
+  const specialTitles: Partial<Record<PlpRouteContext["kind"], string>> = {
+    products: "Shop All Retro Games — OMG Retro",
+    deals: "Deals — OMG Retro",
+    "best-sellers": "Best Sellers — OMG Retro",
+    "new-arrivals": "New Arrivals — OMG Retro",
+    search: "Search Games — OMG Retro",
+  };
+  const systemTitleOverrides: Record<string, string> = {
+    ps1: "PlayStation 1 Games — OMG Retro",
+  };
 
-  return {
+  const title = specialTitles[context.kind] ??
+    (context.kind === "system" && context.system
+      ? systemTitleOverrides[context.system.slug] ?? `${context.system.name} Games — OMG Retro`
+      : context.kind === "platform" && context.platform
+        ? `${context.platform.name} Games & Consoles — OMG Retro`
+        : `${context.title.replace(/\s+/g, " ")} — OMG Retro`);
+
+  return createMetadata({
     title,
     description: context.subtitle,
-  };
+    path: context.href,
+  });
 }

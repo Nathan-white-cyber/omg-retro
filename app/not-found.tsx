@@ -17,7 +17,7 @@ export default function NotFound() {
       <MobileHeader />
       <NavBar />
 
-      <main className="flex-1 px-7 py-14">
+      <main id="main-content" className="flex-1 px-7 py-14">
         <section className="mx-auto max-w-[600px] text-center">
           <p className="omg-glitch font-display text-[110px] uppercase leading-none text-brand-red sm:text-[150px]" data-text="404">
             404
@@ -34,6 +34,7 @@ export default function NotFound() {
 
           <form action="/search" className="mt-7 flex gap-2 rounded-card border border-white/10 bg-[#1A1A1A] p-2">
             <input
+              aria-label="Search games, systems, accessories"
               name="q"
               placeholder="Search games, systems, accessories..."
               className="min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-white/35"

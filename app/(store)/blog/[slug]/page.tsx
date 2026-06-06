@@ -6,6 +6,7 @@ import { ShareButtons } from "@/components/blog/ShareButtons";
 import { ProductCard } from "@/components/product/ProductCard";
 import { getBlogPost, getRelatedPosts } from "@/lib/blog/posts";
 import { mockProducts } from "@/lib/medusa/mock-products";
+import { createMetadata } from "@/lib/seo";
 
 type BlogArticlePageProps = {
   params: Promise<{ slug: string }>;
@@ -20,15 +21,19 @@ export async function generateMetadata({
   const post = getBlogPost(slug);
 
   if (!post) {
-    return {
-      title: "Article Not Found - OMG Retro Blog",
-    };
+    return createMetadata({
+      title: "Article Not Found — OMG Retro",
+      description: "The requested OMG Retro blog article could not be found.",
+      path: `/blog/${slug}`,
+      index: false,
+    });
   }
 
-  return {
-    title: `${post.title} - OMG Retro Blog`,
+  return createMetadata({
+    title: `${post.title} — OMG Retro`,
     description: post.excerpt.slice(0, 160),
-  };
+    path: `/blog/${post.slug}`,
+  });
 }
 
 function relatedGamesFor(slug: string) {
@@ -168,4 +173,3 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
     </div>
   );
 }
-

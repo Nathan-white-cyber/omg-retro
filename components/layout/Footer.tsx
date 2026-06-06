@@ -43,6 +43,7 @@ export function Footer() {
             </p>
             <form className="flex" action="/newsletter">
               <input
+                aria-label="Email address for newsletter"
                 type="email"
                 name="email"
                 placeholder="Email address"

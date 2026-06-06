@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
+import { noIndexMetadata } from "@/lib/seo";
 import { AtomsTestClient } from "./AtomsTestClient";
+
+export const metadata: Metadata = noIndexMetadata(
+  "Product Atoms Test — OMG Retro",
+  "Internal OMG Retro product atom test page.",
+  "/test/atoms",
+);
 
 export default function ProductAtomsTestPage() {
   return (

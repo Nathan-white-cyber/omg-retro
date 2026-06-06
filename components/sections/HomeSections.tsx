@@ -71,6 +71,7 @@ export function HeroBanner() {
           </p>
           <Link
             href="/products"
+            prefetch={true}
             className="mt-8 inline-flex h-[52px] items-center justify-center rounded-btn bg-brand-red px-8 font-body text-label-lg uppercase text-white transition hover:bg-brand-red-dark"
           >
             Shop Now

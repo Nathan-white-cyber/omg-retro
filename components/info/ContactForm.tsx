@@ -41,7 +41,7 @@ function CheckIcon() {
 }
 
 function ErrorText({ message }: { message?: string }) {
-  return message ? <p className="mt-1 text-[12px] font-bold text-brand-red">{message}</p> : null;
+  return message ? <p role="alert" className="mt-1 text-[12px] font-bold text-brand-red">{message}</p> : null;
 }
 
 const inputClass =
@@ -116,6 +116,7 @@ export function ContactForm() {
           <span className="mb-2 block text-[11px] font-extrabold uppercase tracking-[0.08em] text-text-dark-muted">First Name</span>
           <input
             required
+            aria-required="true"
             value={form.firstName}
             onChange={(event) => setValue("firstName", event.target.value)}
             className={inputClass}
@@ -126,6 +127,7 @@ export function ContactForm() {
           <span className="mb-2 block text-[11px] font-extrabold uppercase tracking-[0.08em] text-text-dark-muted">Last Name</span>
           <input
             required
+            aria-required="true"
             value={form.lastName}
             onChange={(event) => setValue("lastName", event.target.value)}
             className={inputClass}
@@ -138,6 +140,7 @@ export function ContactForm() {
         <span className="mb-2 block text-[11px] font-extrabold uppercase tracking-[0.08em] text-text-dark-muted">Email</span>
         <input
           required
+          aria-required="true"
           type="email"
           value={form.email}
           onChange={(event) => setValue("email", event.target.value)}
@@ -158,6 +161,7 @@ export function ContactForm() {
       <label className="block">
         <span className="mb-2 block text-[11px] font-extrabold uppercase tracking-[0.08em] text-text-dark-muted">Subject</span>
         <select
+          aria-label="Subject"
           value={form.subject}
           onChange={(event) => setValue("subject", event.target.value)}
           className={inputClass}
@@ -179,6 +183,8 @@ export function ContactForm() {
       <label className="block">
         <span className="mb-2 block text-[11px] font-extrabold uppercase tracking-[0.08em] text-text-dark-muted">Message</span>
         <textarea
+          required
+          aria-required="true"
           rows={6}
           value={form.message}
           onChange={(event) => setValue("message", event.target.value)}

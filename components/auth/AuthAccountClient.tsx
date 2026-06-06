@@ -69,6 +69,7 @@ function PasswordField({
       <span className="flex h-12 items-center rounded-btn border border-border-cream bg-white px-3 focus-within:border-brand-red focus-within:ring-2 focus-within:ring-brand-red/20">
         <input
           required
+          aria-required="true"
           type={showPassword ? "text" : "password"}
           value={value}
           placeholder={placeholder}
@@ -155,6 +156,7 @@ export function AuthAccountClient({ initialTab = "sign-in" }: AuthAccountClientP
             </span>
             <input
               required
+              aria-required="true"
               type="email"
               value={loginEmail}
               onChange={(event) => setLoginEmail(event.target.value)}
@@ -205,20 +207,20 @@ export function AuthAccountClient({ initialTab = "sign-in" }: AuthAccountClientP
               <span className="mb-2 block text-[11px] font-extrabold uppercase tracking-[0.08em] text-text-dark-muted">
                 First name
               </span>
-              <input required value={firstName} onChange={(event) => setFirstName(event.target.value)} className="h-12 w-full rounded-btn border border-border-cream bg-white px-3 text-sm text-text-dark outline-none transition focus:border-brand-red focus:ring-2 focus:ring-brand-red/20" />
+              <input required aria-required="true" value={firstName} onChange={(event) => setFirstName(event.target.value)} className="h-12 w-full rounded-btn border border-border-cream bg-white px-3 text-sm text-text-dark outline-none transition focus:border-brand-red focus:ring-2 focus:ring-brand-red/20" />
             </label>
             <label className="block">
               <span className="mb-2 block text-[11px] font-extrabold uppercase tracking-[0.08em] text-text-dark-muted">
                 Last name
               </span>
-              <input required value={lastName} onChange={(event) => setLastName(event.target.value)} className="h-12 w-full rounded-btn border border-border-cream bg-white px-3 text-sm text-text-dark outline-none transition focus:border-brand-red focus:ring-2 focus:ring-brand-red/20" />
+              <input required aria-required="true" value={lastName} onChange={(event) => setLastName(event.target.value)} className="h-12 w-full rounded-btn border border-border-cream bg-white px-3 text-sm text-text-dark outline-none transition focus:border-brand-red focus:ring-2 focus:ring-brand-red/20" />
             </label>
           </div>
           <label className="block">
             <span className="mb-2 block text-[11px] font-extrabold uppercase tracking-[0.08em] text-text-dark-muted">
               Email
             </span>
-            <input required type="email" value={registerEmail} onChange={(event) => setRegisterEmail(event.target.value)} className="h-12 w-full rounded-btn border border-border-cream bg-white px-3 text-sm text-text-dark outline-none transition focus:border-brand-red focus:ring-2 focus:ring-brand-red/20" />
+            <input required aria-required="true" type="email" value={registerEmail} onChange={(event) => setRegisterEmail(event.target.value)} className="h-12 w-full rounded-btn border border-border-cream bg-white px-3 text-sm text-text-dark outline-none transition focus:border-brand-red focus:ring-2 focus:ring-brand-red/20" />
           </label>
           <PasswordField value={registerPassword} onChange={setRegisterPassword} />
           <div>
@@ -247,4 +249,3 @@ export function AuthAccountClient({ initialTab = "sign-in" }: AuthAccountClientP
     </div>
   );
 }
-

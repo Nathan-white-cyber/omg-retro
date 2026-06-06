@@ -80,7 +80,7 @@ const shippingResolver: Resolver<ShippingFormData> = async (values) => {
 };
 
 function FieldError({ message }: { message?: string }) {
-  return message ? <p className="mt-1.5 text-[12px] font-bold text-brand-red">{message}</p> : null;
+  return message ? <p role="alert" className="mt-1.5 text-[12px] font-bold text-brand-red">{message}</p> : null;
 }
 
 function TextField({
@@ -96,6 +96,7 @@ function TextField({
       </span>
       <input
         {...props}
+        aria-required={props.required ? "true" : undefined}
         className={`h-11 w-full rounded-btn border bg-[#1A1A1A] px-3 text-sm text-white outline-none transition placeholder:text-white/25 focus:border-brand-red focus:ring-2 focus:ring-brand-red/25 ${
           error ? "border-brand-red" : "border-border"
         } ${className}`}
@@ -118,6 +119,7 @@ function SelectField({
       </span>
       <select
         {...props}
+        aria-required={props.required ? "true" : undefined}
         className={`h-11 w-full rounded-btn border bg-[#1A1A1A] px-3 text-sm text-white outline-none transition focus:border-brand-red focus:ring-2 focus:ring-brand-red/25 ${
           error ? "border-brand-red" : "border-border"
         }`}

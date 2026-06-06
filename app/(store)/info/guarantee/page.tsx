@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import { DarkCallout, FeatureCard, InfoSection } from "@/components/info/InfoBlocks";
 import { InfoPageLayout } from "@/components/info/InfoPageLayout";
+import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = createMetadata({
+  title: "Our Guarantee — OMG Retro",
+  description: "Every OMG Retro game is authentic, cleaned, tested on original hardware, and backed for 1 year.",
+  path: "/info/guarantee",
+});
 
 export default function GuaranteePage() {
   return (
@@ -41,4 +48,3 @@ export default function GuaranteePage() {
     </InfoPageLayout>
   );
 }
-

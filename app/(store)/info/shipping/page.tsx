@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import { DarkCallout, FeatureCard, InfoSection } from "@/components/info/InfoBlocks";
 import { InfoPageLayout } from "@/components/info/InfoPageLayout";
+import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = createMetadata({
+  title: "Shipping Info — OMG Retro",
+  description: "Review OMG Retro shipping options, processing times, tracking, and careful packaging details.",
+  path: "/info/shipping",
+});
 
 export default function ShippingPage() {
   return (
@@ -43,4 +50,3 @@ export default function ShippingPage() {
     </InfoPageLayout>
   );
 }
-

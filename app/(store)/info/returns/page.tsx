@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import { DarkCallout, FeatureCard, InfoSection } from "@/components/info/InfoBlocks";
 import { InfoPageLayout } from "@/components/info/InfoPageLayout";
+import { createMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = createMetadata({
+  title: "Returns Policy — OMG Retro",
+  description: "Learn how OMG Retro returns, refunds, replacements, and 1-year warranty claims work.",
+  path: "/info/returns",
+});
 
 export default function ReturnsPage() {
   return (
@@ -38,4 +45,3 @@ export default function ReturnsPage() {
     </InfoPageLayout>
   );
 }
-

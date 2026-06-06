@@ -139,6 +139,7 @@ export function AccountWishlistClient() {
           </div>
           <form className="flex min-w-0 flex-col gap-3 sm:flex-row">
             <input
+              aria-label="Email for price drop notifications"
               type="email"
               placeholder="alex@example.com"
               className="h-11 min-w-0 rounded-btn border border-white/10 bg-black/25 px-3 text-sm text-white outline-none placeholder:text-white/30 focus:border-brand-red focus:ring-2 focus:ring-brand-red/25 sm:w-[260px]"

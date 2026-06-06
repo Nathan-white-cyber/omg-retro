@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { BlogListingClient } from "@/components/blog/BlogListingClient";
 import { blogPosts } from "@/lib/blog/posts";
+import { createMetadata } from "@/lib/seo";
 
 type BlogPageProps = {
   searchParams?: Promise<{ category?: string; tag?: string; author?: string }> | { category?: string; tag?: string; author?: string };
@@ -10,9 +11,11 @@ type BlogPageProps = {
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "The OMG Retro Blog - Retro Gaming Guides, Tips & News",
-  description:
-    "Collecting guides, game spotlights, and retro gaming culture from the team at OMG Retro.",
+  ...createMetadata({
+    title: "The OMG Retro Blog — Retro Gaming Guides, Tips & News",
+    description: "Collecting guides, game spotlights, and retro gaming culture from the team at OMG Retro.",
+    path: "/blog",
+  }),
 };
 
 export default async function BlogPage({ searchParams = {} }: BlogPageProps) {
@@ -43,4 +46,3 @@ export default async function BlogPage({ searchParams = {} }: BlogPageProps) {
     </div>
   );
 }
-

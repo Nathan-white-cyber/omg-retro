@@ -8,6 +8,7 @@ import { DiscountBadge } from "@/components/product/DiscountBadge";
 import { PriceDisplay } from "@/components/product/PriceDisplay";
 import { RatingStars } from "@/components/product/RatingStars";
 import { getAllProducts, getProductBySlug } from "@/lib/medusa/products";
+import { createMetadata, ogImageUrl } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -16,7 +17,6 @@ type ProductPageProps = {
   params: Promise<{ slug: string }> | { slug: string };
 };
 
-const ogImageUrl = "https://omg-retro.vercel.app/images/og-placeholder.png";
 const assuranceItems = [
   {
     title: "Authentic",
@@ -53,36 +53,23 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const game = await getProductBySlug(slug);
 
   if (!game) {
-    return {
-      title: "Product Not Found - OMG Retro",
-    };
+    return createMetadata({
+      title: "Product Not Found — OMG Retro",
+      description: "The requested OMG Retro product could not be found.",
+      path: `/products/${slug}`,
+      index: false,
+    });
   }
 
-  const title = `${game.title} (${game.system}) - OMG Retro`;
+  const title = `${game.title} (${game.system}) — OMG Retro`;
   const description = `Shop ${game.title} for ${game.system}. Authentic, cleaned, tested, and backed by a 1-year warranty.`;
 
-  return {
+  return createMetadata({
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      images: [
-        {
-          url: game.images[0] ?? ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: game.title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [game.images[0] ?? ogImageUrl],
-    },
-  };
+    path: `/products/${game.slug}`,
+    image: game.images[0] ?? ogImageUrl,
+  });
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {

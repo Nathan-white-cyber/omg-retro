@@ -13,7 +13,7 @@ export default function AccountLayout({
       <UtilityBar />
       <MobileHeader />
       <NavBar />
-      <main className="mx-auto grid max-w-[1240px] gap-8 px-7 py-8 lg:grid-cols-[280px_1fr] lg:py-11">
+      <main id="main-content" className="mx-auto grid max-w-[1240px] gap-8 px-7 py-8 lg:grid-cols-[280px_1fr] lg:py-11">
         <AccountSidebar />
         <section className="min-w-0">{children}</section>
       </main>

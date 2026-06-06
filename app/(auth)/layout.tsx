@@ -7,7 +7,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-bg-dark px-5 py-10 text-text-dark before:absolute before:inset-0 before:bg-[radial-gradient(120%_90%_at_50%_-10%,rgba(204,30,30,.16),transparent_55%),radial-gradient(90%_70%_at_50%_120%,rgba(0,48,135,.08),transparent_60%)]">
+    <main id="main-content" className="relative flex min-h-screen items-center justify-center overflow-hidden bg-bg-dark px-5 py-10 text-text-dark before:absolute before:inset-0 before:bg-[radial-gradient(120%_90%_at_50%_-10%,rgba(204,30,30,.16),transparent_55%),radial-gradient(90%_70%_at_50%_120%,rgba(0,48,135,.08),transparent_60%)]">
       <div className="relative z-10 flex w-full max-w-[480px] flex-col items-center">
         <div className="w-full rounded-card border border-white/10 bg-bg-cream p-7 shadow-[0_1px_2px_rgba(0,0,0,.3),0_30px_70px_rgba(0,0,0,.55)] sm:p-10">
           <Logo className="mb-6 items-center [&_.text-text-primary]:text-text-dark" />

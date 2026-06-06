@@ -155,6 +155,7 @@ export function FaqContent() {
 
         <div className="mt-5 flex rounded-btn border border-border-cream bg-bg-cream focus-within:border-brand-red focus-within:ring-2 focus-within:ring-brand-red/20">
           <input
+            aria-label="Search help articles"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search help articles..."

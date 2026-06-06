@@ -26,7 +26,7 @@ export default function CheckoutLayout({
           </span>
         </div>
       </header>
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
     </div>
   );
 }

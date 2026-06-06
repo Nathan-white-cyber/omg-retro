@@ -1,8 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { noIndexMetadata } from "@/lib/seo";
 
 type OrderConfirmationPageProps = {
   searchParams?: Promise<{ orderId?: string }> | { orderId?: string };
 };
+
+export const metadata: Metadata = noIndexMetadata(
+  "Order Confirmation — OMG Retro",
+  "Confirmation details for your OMG Retro order.",
+  "/order-confirmation",
+);
 
 export default async function OrderConfirmationPage({
   searchParams = {},
@@ -11,7 +19,7 @@ export default async function OrderConfirmationPage({
   const orderId = params.orderId ?? "OMG-PENDING";
 
   return (
-    <main className="min-h-screen bg-bg-dark px-7 py-16 text-white">
+    <main id="main-content" className="min-h-screen bg-bg-dark px-7 py-16 text-white">
       <section className="mx-auto max-w-[720px] rounded-card border border-border bg-bg-surface p-8 text-center shadow-card">
         <p className="font-body text-[12px] font-extrabold uppercase tracking-[0.12em] text-status-success">
           Order Confirmed

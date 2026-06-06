@@ -20,6 +20,7 @@ export function NavBar({ activePlatform }: NavBarProps) {
 
           <form action="/search" className="flex max-w-[560px] flex-1">
             <input
+              aria-label="Search games, consoles, accessories"
               name="q"
               type="search"
               placeholder="Search games, consoles, accessories..."
@@ -59,6 +60,7 @@ export function NavBar({ activePlatform }: NavBarProps) {
               >
                 <Link
                   href={menu.href}
+                  prefetch={menu.href === "/nintendo" ? true : undefined}
                   className={isActive ? "text-brand-red" : undefined}
                   aria-current={isActive ? "page" : undefined}
                 >
@@ -75,6 +77,7 @@ export function NavBar({ activePlatform }: NavBarProps) {
 
           <Link
             href="/deals"
+            prefetch={true}
             className="flex items-center border-b-[3px] border-brand-red px-4 font-body text-[14.5px] font-bold uppercase tracking-[0.03em] text-brand-red transition hover:bg-brand-red/10"
           >
             Deals
