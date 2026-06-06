@@ -178,7 +178,6 @@ export const footerColumns = [
       { label: "About Us", href: "/info/about" },
       { label: "Our Guarantee", href: "/info/guarantee" },
       { label: "Reviews", href: "/info/guarantee#reviews" },
-      { label: "Blog", href: "/blog" },
     ],
   },
 ];
