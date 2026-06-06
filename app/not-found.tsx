@@ -22,8 +22,11 @@ export default function NotFound() {
           <p className="omg-glitch font-display text-[110px] uppercase leading-none text-brand-red sm:text-[150px]" data-text="404">
             404
           </p>
-          <h1 className="mt-3 font-display text-5xl uppercase leading-none text-white sm:text-6xl">
-            Page Not Found
+          <p className="mt-3 font-display text-5xl uppercase leading-none text-white sm:text-[48px]">
+            GAME OVER
+          </p>
+          <h1 className="mt-2 font-display text-[32px] uppercase leading-none text-brand-red">
+            PAGE NOT FOUND
           </h1>
           <p className="mx-auto mt-4 max-w-[480px] text-sm leading-relaxed text-white/55">
             This page is missing from the cartridge slot. Try searching the catalog or head back to the games.
@@ -68,4 +71,3 @@ export default function NotFound() {
     </div>
   );
 }
-
