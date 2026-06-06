@@ -159,6 +159,7 @@ export const footerColumns = [
       { label: "Xbox", href: "/xbox" },
       { label: "Sega", href: "/sega" },
       { label: "All Systems", href: "/products" },
+      { label: "Blog", href: "/blog" },
     ],
   },
   {
@@ -193,6 +194,7 @@ export const drawerMinorLinks = [
   { label: "Help Centre", href: "/info/faq", icon: "help" },
   { label: "Track Order", href: "/account/orders", icon: "package-check" },
   { label: "About Us", href: "/info/about", icon: "book" },
+  { label: "Blog", href: "/blog", icon: "book" },
 ];
 
 export const headerActionLinks = [
