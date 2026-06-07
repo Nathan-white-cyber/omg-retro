@@ -10,17 +10,28 @@ interface MedusaProductResponse {
     thumbnail?: string | null;
     images?: { url: string }[];
     metadata?: Record<string, unknown> | null;
+    categories?: { name?: string; handle?: string }[] | null;
+    tags?: { value?: string }[] | null;
+    created_at?: string;
     variants?: Array<{
+      title?: string;
+      sku?: string | null;
+      inventory_quantity?: number;
+      metadata?: Record<string, unknown> | null;
       calculated_price?: {
         calculated_amount?: number;
         original_amount?: number;
       };
+      prices?: { amount?: number }[];
     }>;
   }>;
   count?: number;
   limit?: number;
   offset?: number;
 }
+
+type MedusaProduct = NonNullable<MedusaProductResponse["products"]>[number];
+type MedusaVariant = NonNullable<MedusaProduct["variants"]>[number];
 
 export interface PlpFacets {
   platforms: Record<ProductVendor, number>;
@@ -68,15 +79,21 @@ const genreMatchers: Record<string, string[]> = {
   fighting: ["fighting"],
 };
 
-function medusaUrl(path: string) {
-  const baseUrl =
-    process.env.MEDUSA_BACKEND_URL ?? process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL;
+const MEDUSA_URL =
+  process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL ?? process.env.MEDUSA_BACKEND_URL;
+const PUB_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY;
 
-  if (!baseUrl) {
+const medusaHeaders = {
+  "x-publishable-api-key": PUB_KEY || "",
+  "Content-Type": "application/json",
+};
+
+function medusaUrl(path: string) {
+  if (!MEDUSA_URL) {
     return null;
   }
 
-  return `${baseUrl.replace(/\/$/, "")}${path}`;
+  return `${MEDUSA_URL.replace(/\/$/, "")}${path}`;
 }
 
 function metadataString(metadata: Record<string, unknown> | null | undefined, key: string) {
@@ -94,33 +111,140 @@ function metadataStringArray(metadata: Record<string, unknown> | null | undefine
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
 }
 
-function mapProduct(product: NonNullable<MedusaProductResponse["products"]>[number]): Game {
+const inferredSystemByToken: Record<
+  string,
+  { platform: string; system: string; systemCode: string; vendor: ProductVendor; coverColor: string }
+> = {
+  N64: {
+    platform: "N64",
+    system: "Nintendo 64",
+    systemCode: "N64",
+    vendor: "nintendo",
+    coverColor: "#b8902f",
+  },
+  GBA: {
+    platform: "GBA",
+    system: "Game Boy Advance",
+    systemCode: "GBA",
+    vendor: "nintendo",
+    coverColor: "#5E3F8E",
+  },
+  SNES: {
+    platform: "SNES",
+    system: "Super Nintendo",
+    systemCode: "SNES",
+    vendor: "nintendo",
+    coverColor: "#9B2FAE",
+  },
+  PS1: {
+    platform: "PS1",
+    system: "PlayStation",
+    systemCode: "PS1",
+    vendor: "playstation",
+    coverColor: "#003087",
+  },
+  PS2: {
+    platform: "PS2",
+    system: "PlayStation 2",
+    systemCode: "PS2",
+    vendor: "playstation",
+    coverColor: "#003087",
+  },
+  XBOX: {
+    platform: "Xbox",
+    system: "Original Xbox",
+    systemCode: "Xbox",
+    vendor: "xbox",
+    coverColor: "#107C10",
+  },
+  DC: {
+    platform: "Dreamcast",
+    system: "Sega Dreamcast",
+    systemCode: "DC",
+    vendor: "sega",
+    coverColor: "#E67E22",
+  },
+};
+
+function firstVariantPrice(product: MedusaProduct) {
+  const variant = product.variants?.[0];
+  return variant?.calculated_price?.calculated_amount ?? variant?.prices?.[0]?.amount;
+}
+
+function inferSystem(product: MedusaProduct) {
+  const source = [
+    product.handle,
+    product.categories?.map((category) => `${category.name ?? ""} ${category.handle ?? ""}`).join(" "),
+    product.tags?.map((tag) => tag.value).join(" "),
+    product.variants?.map((variant) => variant.sku).join(" "),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toUpperCase();
+
+  return (
+    Object.entries(inferredSystemByToken).find(([token]) => source.includes(token))?.[1] ??
+    inferredSystemByToken.N64
+  );
+}
+
+function variantCondition(variant: MedusaVariant) {
+  return (variant.title === "CIB" || variant.title === "Loose" || variant.title === "New/Sealed"
+    ? variant.title
+    : "Loose") satisfies ProductCondition;
+}
+
+function mapProduct(product: MedusaProduct): Game {
   const metadata = product.metadata;
+  const fallback = mockProducts.find((mockProduct) => mockProduct.slug === product.handle);
+  const inferredSystem = inferSystem(product);
   const calculatedPrice = product.variants?.[0]?.calculated_price;
-  const price = calculatedPrice?.calculated_amount ?? metadataNumber(metadata, "price") ?? 0;
+  const price =
+    firstVariantPrice(product) ?? metadataNumber(metadata, "price") ?? fallback?.price ?? 0;
   const originalPrice =
-    calculatedPrice?.original_amount ?? metadataNumber(metadata, "originalPrice");
+    calculatedPrice?.original_amount ?? metadataNumber(metadata, "originalPrice") ?? fallback?.originalPrice;
+  const condition =
+    (product.variants?.[0] ? variantCondition(product.variants[0]) : undefined) ??
+    (metadataString(metadata, "condition") as ProductCondition | undefined) ??
+    fallback?.condition ??
+    "Loose";
+  const tags = [
+    ...metadataStringArray(metadata, "tags"),
+    ...(product.tags?.map((tag) => tag.value).filter((tag): tag is string => Boolean(tag)) ?? []),
+    ...(fallback?.tags ?? []),
+  ];
 
   return {
     id: product.id,
     title: product.title,
     slug: product.handle ?? product.id,
-    platform: metadataString(metadata, "platform") ?? "NES",
-    system: metadataString(metadata, "system") ?? "NES",
-    systemCode: metadataString(metadata, "systemCode") ?? "NES",
-    condition: (metadataString(metadata, "condition") as Game["condition"]) ?? "Loose",
+    platform: metadataString(metadata, "platform") ?? fallback?.platform ?? inferredSystem.platform,
+    system: metadataString(metadata, "system") ?? fallback?.system ?? inferredSystem.system,
+    systemCode: metadataString(metadata, "systemCode") ?? fallback?.systemCode ?? inferredSystem.systemCode,
+    condition,
     price,
     originalPrice,
-    discountPercent: metadataNumber(metadata, "discountPercent"),
-    coverColor: metadataString(metadata, "coverColor") ?? "#8B8B8B",
+    discountPercent: metadataNumber(metadata, "discountPercent") ?? fallback?.discountPercent,
+    coverColor: metadataString(metadata, "coverColor") ?? fallback?.coverColor ?? inferredSystem.coverColor,
     images: product.images?.map((image) => image.url) ?? (product.thumbnail ? [product.thumbnail] : []),
-    rating: metadataNumber(metadata, "rating") ?? 4.8,
-    reviewCount: metadataNumber(metadata, "reviewCount") ?? 0,
-    stock: metadataNumber(metadata, "stock") ?? 0,
-    tags: metadataStringArray(metadata, "tags"),
-    vendor: (metadataString(metadata, "vendor") as ProductVendor) ?? "nintendo",
-    salesCount: metadataNumber(metadata, "salesCount") ?? metadataNumber(metadata, "sales_count"),
-    createdAt: metadataString(metadata, "createdAt") ?? metadataString(metadata, "created_at"),
+    rating: metadataNumber(metadata, "rating") ?? fallback?.rating ?? 4.8,
+    reviewCount: metadataNumber(metadata, "reviewCount") ?? fallback?.reviewCount ?? 0,
+    stock: metadataNumber(metadata, "stock") ?? product.variants?.[0]?.inventory_quantity ?? fallback?.stock ?? 10,
+    tags: Array.from(new Set(tags)),
+    vendor: (metadataString(metadata, "vendor") as ProductVendor) ?? fallback?.vendor ?? inferredSystem.vendor,
+    salesCount:
+      metadataNumber(metadata, "salesCount") ?? metadataNumber(metadata, "sales_count") ?? fallback?.salesCount,
+    createdAt:
+      metadataString(metadata, "createdAt") ??
+      metadataString(metadata, "created_at") ??
+      product.created_at ??
+      fallback?.createdAt,
+    conditionVariants:
+      product.variants?.map((variant) => ({
+        type: variantCondition(variant),
+        price: variant.calculated_price?.calculated_amount ?? variant.prices?.[0]?.amount ?? price,
+        stock: variant.inventory_quantity ?? fallback?.stock ?? 10,
+      })) ?? fallback?.conditionVariants,
   };
 }
 
@@ -133,6 +257,7 @@ async function fetchProductsFromMedusa(query = "") {
 
   try {
     const response = await fetch(url, {
+      headers: medusaHeaders,
       next: { revalidate: 300 },
     });
 
