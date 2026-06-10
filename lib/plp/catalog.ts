@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { createMetadata } from "@/lib/seo";
+import { getPlatformConfig } from "@/lib/utils/platform";
 import type { ProductVendor } from "@/types";
 
 export interface SystemRoute {
@@ -60,56 +61,58 @@ export const genreOptions = [
 
 export const conditionOptions = ["CIB", "Loose", "New/Sealed"] as const;
 
+const platformColor = (name: string) => getPlatformConfig(name).shopBtnBg;
+
 export const platformRoutes: PlatformRoute[] = [
   {
     name: "Nintendo",
     vendor: "nintendo",
     href: "/nintendo",
-    color: "#CC1E1E",
+    color: platformColor("Nintendo"),
     systems: [
-      { name: "Nintendo 64", code: "N64", slug: "n64", href: "/nintendo/n64", vendor: "nintendo", color: "#1FA34A" },
-      { name: "Super Nintendo", code: "SNES", slug: "snes", href: "/nintendo/snes", vendor: "nintendo", color: "#9B2FAE" },
-      { name: "GameCube", code: "GCN", slug: "gamecube", href: "/nintendo/gamecube", vendor: "nintendo", color: "#1FA34A" },
-      { name: "Wii", code: "Wii", slug: "wii", href: "/nintendo/wii", vendor: "nintendo", color: "#ABABAB" },
-      { name: "NES", code: "NES", slug: "nes", href: "/nintendo/nes", vendor: "nintendo", color: "#8B8B8B" },
-      { name: "Switch", code: "SW", slug: "switch", href: "/nintendo/switch", vendor: "nintendo", color: "#E60012" },
-      { name: "Game Boy", code: "GB", slug: "game-boy", href: "/nintendo/game-boy", vendor: "nintendo", color: "#6B6B6B" },
-      { name: "Game Boy Advance", code: "GBA", slug: "gba", href: "/nintendo/gba", vendor: "nintendo", color: "#5E3F8E" },
-      { name: "Nintendo DS", code: "DS", slug: "ds", href: "/nintendo/ds", vendor: "nintendo", color: "#C42D2D" },
+      { name: "Nintendo 64", code: "N64", slug: "n64", href: "/nintendo/n64", vendor: "nintendo", color: platformColor("Nintendo 64") },
+      { name: "Super Nintendo", code: "SNES", slug: "snes", href: "/nintendo/snes", vendor: "nintendo", color: platformColor("Super Nintendo") },
+      { name: "GameCube", code: "GCN", slug: "gamecube", href: "/nintendo/gamecube", vendor: "nintendo", color: platformColor("GameCube") },
+      { name: "Wii", code: "Wii", slug: "wii", href: "/nintendo/wii", vendor: "nintendo", color: platformColor("Wii") },
+      { name: "NES", code: "NES", slug: "nes", href: "/nintendo/nes", vendor: "nintendo", color: platformColor("NES") },
+      { name: "Switch", code: "SW", slug: "switch", href: "/nintendo/switch", vendor: "nintendo", color: platformColor("Switch") },
+      { name: "Game Boy", code: "GB", slug: "game-boy", href: "/nintendo/game-boy", vendor: "nintendo", color: platformColor("Game Boy") },
+      { name: "Game Boy Advance", code: "GBA", slug: "gba", href: "/nintendo/gba", vendor: "nintendo", color: platformColor("Game Boy Advance") },
+      { name: "Nintendo DS", code: "DS", slug: "ds", href: "/nintendo/ds", vendor: "nintendo", color: platformColor("Nintendo DS") },
     ],
   },
   {
     name: "PlayStation",
     vendor: "playstation",
     href: "/playstation",
-    color: "#003087",
+    color: platformColor("PlayStation"),
     systems: [
-      { name: "PlayStation", code: "PS1", slug: "ps1", href: "/playstation/ps1", vendor: "playstation", color: "#003087" },
-      { name: "PlayStation 2", code: "PS2", slug: "ps2", href: "/playstation/ps2", vendor: "playstation", color: "#003087" },
-      { name: "PlayStation 3", code: "PS3", slug: "ps3", href: "/playstation/ps3", vendor: "playstation", color: "#003087" },
-      { name: "PSP", code: "PSP", slug: "psp", href: "/playstation/psp", vendor: "playstation", color: "#003087" },
+      { name: "PlayStation", code: "PS1", slug: "ps1", href: "/playstation/ps1", vendor: "playstation", color: platformColor("PlayStation") },
+      { name: "PlayStation 2", code: "PS2", slug: "ps2", href: "/playstation/ps2", vendor: "playstation", color: platformColor("PlayStation 2") },
+      { name: "PlayStation 3", code: "PS3", slug: "ps3", href: "/playstation/ps3", vendor: "playstation", color: platformColor("PlayStation 3") },
+      { name: "PSP", code: "PSP", slug: "psp", href: "/playstation/psp", vendor: "playstation", color: platformColor("PSP") },
     ],
   },
   {
     name: "Xbox",
     vendor: "xbox",
     href: "/xbox",
-    color: "#107C10",
+    color: platformColor("Xbox"),
     systems: [
-      { name: "Original Xbox", code: "Xbox", slug: "original-xbox", href: "/xbox/original-xbox", vendor: "xbox", color: "#107C10" },
-      { name: "Xbox 360", code: "360", slug: "xbox-360", href: "/xbox/xbox-360", vendor: "xbox", color: "#107C10" },
+      { name: "Original Xbox", code: "Xbox", slug: "original-xbox", href: "/xbox/original-xbox", vendor: "xbox", color: platformColor("Original Xbox") },
+      { name: "Xbox 360", code: "360", slug: "xbox-360", href: "/xbox/xbox-360", vendor: "xbox", color: platformColor("Xbox 360") },
     ],
   },
   {
     name: "Sega",
     vendor: "sega",
     href: "/sega",
-    color: "#003087",
+    color: platformColor("Sega"),
     systems: [
-      { name: "Genesis", code: "GEN", slug: "genesis", href: "/sega/genesis", vendor: "sega", color: "#555555" },
-      { name: "Saturn", code: "SAT", slug: "saturn", href: "/sega/saturn", vendor: "sega", color: "#555555" },
-      { name: "Dreamcast", code: "DC", slug: "dreamcast", href: "/sega/dreamcast", vendor: "sega", color: "#E67E22" },
-      { name: "Game Gear", code: "GG", slug: "game-gear", href: "/sega/game-gear", vendor: "sega", color: "#444444" },
+      { name: "Genesis", code: "GEN", slug: "genesis", href: "/sega/genesis", vendor: "sega", color: platformColor("Genesis") },
+      { name: "Saturn", code: "SAT", slug: "saturn", href: "/sega/saturn", vendor: "sega", color: platformColor("Saturn") },
+      { name: "Dreamcast", code: "DC", slug: "dreamcast", href: "/sega/dreamcast", vendor: "sega", color: platformColor("Dreamcast") },
+      { name: "Game Gear", code: "GG", slug: "game-gear", href: "/sega/game-gear", vendor: "sega", color: platformColor("Game Gear") },
     ],
   },
 ];

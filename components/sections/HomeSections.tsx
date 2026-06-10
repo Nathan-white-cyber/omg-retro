@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { ProductCard } from "@/components/product";
 import { getBestSellers, getFeaturedDeals, getPlatformCounts, getRecentlyAdded } from "@/lib/medusa/products";
+import { getPlatformConfig } from "@/lib/utils/platform";
 import type { Game, ProductVendor } from "@/types";
 
 function ArrowIcon() {
@@ -108,12 +109,11 @@ const platformTiles: Array<{
   name: string;
   href: string;
   cta: string;
-  dataPf: string;
 }> = [
-  { vendor: "nintendo", name: "Nintendo", href: "/nintendo", cta: "Shop Nintendo", dataPf: "nintendo" },
-  { vendor: "playstation", name: "PlayStation", href: "/playstation", cta: "Shop PlayStation", dataPf: "playstation" },
-  { vendor: "xbox", name: "Xbox", href: "/xbox", cta: "Shop Xbox", dataPf: "xbox" },
-  { vendor: "sega", name: "Sega", href: "/sega", cta: "Shop Sega", dataPf: "sega" },
+  { vendor: "nintendo", name: "Nintendo", href: "/nintendo", cta: "Shop Nintendo" },
+  { vendor: "playstation", name: "PlayStation", href: "/playstation", cta: "Shop PlayStation" },
+  { vendor: "xbox", name: "Xbox", href: "/xbox", cta: "Shop Xbox" },
+  { vendor: "sega", name: "Sega", href: "/sega", cta: "Shop Sega" },
 ];
 
 export async function ShopByPlatformSection() {
@@ -124,20 +124,25 @@ export async function ShopByPlatformSection() {
       <div className="omg-container">
         <SectionHeader title="Shop by Platform" href="/products" linkLabel="All Systems" />
         <div className="omg-platform-grid">
-          {platformTiles.map((platform) => (
-            <Link
-              key={platform.vendor}
-              href={platform.href}
-              className="omg-platform-card"
-              data-pf={platform.dataPf}
-              aria-label={`${platform.cta} - ${counts[platform.vendor]} products`}
-            >
-              <div className="omg-platform-scene">
-                <span className="omg-platform-logo">{platform.name}</span>
-              </div>
-              <div className="omg-platform-bar">{platform.cta}</div>
-            </Link>
-          ))}
+          {platformTiles.map((platform) => {
+            const config = getPlatformConfig(platform.name);
+
+            return (
+              <Link
+                key={platform.vendor}
+                href={platform.href}
+                className="omg-platform-card"
+                aria-label={`${platform.cta} - ${counts[platform.vendor]} products`}
+              >
+                <div className="omg-platform-scene" style={{ background: config.tileBg }}>
+                  <span className="omg-platform-logo">{platform.name}</span>
+                </div>
+                <div className="omg-platform-bar" style={{ background: config.shopBtnBg }}>
+                  {platform.cta}
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

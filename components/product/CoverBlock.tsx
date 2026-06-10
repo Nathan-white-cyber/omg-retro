@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
-import { getPlatformColor } from "@/lib/utils/platform";
+import { getPlatformConfig } from "@/lib/utils/platform";
 
 export interface CoverBlockProps {
   platform: string;
@@ -23,7 +23,7 @@ export function CoverBlock({
   priority = false,
   className = "",
 }: CoverBlockProps) {
-  const color = coverColor ?? getPlatformColor(platform);
+  const color = coverColor ?? getPlatformConfig(platform).shopBtnBg;
   const aspectClass =
     aspect === "landscape" ? "aspect-[4/3]" : aspect === "square" ? "aspect-square" : "aspect-[3/4]";
 

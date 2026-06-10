@@ -88,10 +88,6 @@ select {
   --omg-line: #e7e1d3;
   --omg-red: #e8232b;
   --omg-red-ink: #ffffff;
-  --omg-pf-nintendo: #ff2b32;
-  --omg-pf-playstation: #2f6bff;
-  --omg-pf-xbox: #34d957;
-  --omg-pf-sega: #3d7bff;
   --omg-radius: 6px;
   --omg-radius-lg: 8px;
   --omg-container: 1240px;
@@ -476,7 +472,6 @@ body {
 .omg-platform-card {
   position: relative;
   display: flex;
-  aspect-ratio: 1 / 1.12;
   flex-direction: column;
   overflow: hidden;
   border-radius: var(--omg-radius-lg);
@@ -491,11 +486,14 @@ body {
 
 .omg-platform-scene {
   position: relative;
-  display: grid;
-  flex: 1;
-  padding: 18px;
-  background: radial-gradient(110% 90% at 50% 18%, color-mix(in srgb, var(--pf) 26%, #101016), #0b0b10 78%);
-  place-items: center;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 220px;
+  flex: 0 0 220px;
+  overflow: hidden;
+  border-radius: 10px 10px 0 0;
+  padding: 16px;
 }
 
 .omg-platform-logo {
@@ -506,13 +504,11 @@ body {
   font-size: clamp(20px, 2.1vw, 26px);
   font-weight: 900;
   opacity: 0.95;
-  text-align: center;
-  text-shadow: 0 0 18px color-mix(in srgb, var(--pf) 70%, transparent);
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.18);
   text-transform: uppercase;
 }
 
 .omg-platform-bar {
-  background: var(--pf, #444444);
   color: #ffffff;
   font-family: var(--font-display-alt), var(--font-body), sans-serif;
   font-size: 15px;
@@ -521,22 +517,6 @@ body {
   padding: 16px;
   text-align: center;
   text-transform: uppercase;
-}
-
-.omg-platform-card[data-pf="nintendo"] {
-  --pf: var(--omg-pf-nintendo);
-}
-
-.omg-platform-card[data-pf="playstation"] {
-  --pf: var(--omg-pf-playstation);
-}
-
-.omg-platform-card[data-pf="xbox"] {
-  --pf: var(--omg-pf-xbox);
-}
-
-.omg-platform-card[data-pf="sega"] {
-  --pf: var(--omg-pf-sega);
 }
 
 .omg-deal-grid {

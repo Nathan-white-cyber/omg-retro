@@ -50,27 +50,6 @@ module.exports = {
           error: "#CC1E1E",
         },
 
-        platform: {
-          nes: "#8B8B8B",
-          snes: "#9B2FAE",
-          n64: "#1FA34A",
-          gcn: "#1FA34A",
-          wii: "#ABABAB",
-          switch: "#E60012",
-          gb: "#6B6B6B",
-          gba: "#5E3F8E",
-          ds: "#C42D2D",
-          ps1: "#003087",
-          ps2: "#003087",
-          ps3: "#003087",
-          psp: "#003087",
-          xbox: "#107C10",
-          xbox360: "#107C10",
-          genesis: "#555555",
-          saturn: "#555555",
-          dreamcast: "#E67E22",
-          gamegear: "#444444",
-        },
       },
 
       fontFamily: {

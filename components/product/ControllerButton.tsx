@@ -2,7 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
-import { getPlatformVisual } from "@/lib/utils/platform";
+import { getPlatformConfig } from "@/lib/utils/platform";
 import styles from "./ControllerButton.module.css";
 
 export interface ControllerButtonProps {
@@ -52,7 +52,7 @@ export function ControllerButton({
   className = "",
 }: ControllerButtonProps) {
   const [flashAdded, setFlashAdded] = useState(false);
-  const visual = getPlatformVisual(platform);
+  const config = getPlatformConfig(platform);
   const isAdded = added || flashAdded;
   const rootClass = `${styles.root} ${fullWidth ? styles.rootFull : ""} ${
     style === "3d" ? styles.style3d : styles.styleSubtle
@@ -85,8 +85,8 @@ export function ControllerButton({
   };
 
   const cssVars = {
-    "--ctrl-color": visual.color,
-    "--ctrl-text": visual.textColor,
+    "--ctrl-color": config.btnBg,
+    "--ctrl-text": config.btnColor,
   } as CSSProperties;
 
   const label = loading ? "Adding..." : isAdded ? "Added! \u2713" : "Add to Cart";
@@ -103,15 +103,15 @@ export function ControllerButton({
         aria-label={variant === 1 ? `${label} ${platform}` : undefined}
       >
         {variant === 1 ? (
-          <Glyph letter={isAdded ? "\u2713" : visual.letter} />
+          <Glyph letter={isAdded ? "\u2713" : config.symbol} />
         ) : (
           <>
             <span className={styles.icon}>
-              <Glyph letter={visual.letter} />
+              <Glyph letter={config.symbol} />
             </span>
             <span className={styles.label}>
               {variant === 3 && !loading && !isAdded
-                ? `Press ${pressWord(visual.letter)} to Add`
+                ? `Press ${pressWord(config.symbol)} to Add`
                 : label}
             </span>
             {variant === 4 ? <CartIcon /> : null}

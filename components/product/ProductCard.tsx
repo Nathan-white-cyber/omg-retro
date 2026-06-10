@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import type { CSSProperties, KeyboardEvent } from "react";
 import { useCartStore } from "@/lib/store/cart-store";
 import { formatPrice } from "@/lib/utils/format";
-import { getPlatformColor } from "@/lib/utils/platform";
+import { getPlatformConfig } from "@/lib/utils/platform";
 import type { Game } from "@/types";
 import { ConditionBadge } from "./ConditionBadge";
 import { ControllerButton } from "./ControllerButton";
@@ -59,7 +59,8 @@ export function ProductCard({
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
   const href = `/products/${game.slug}`;
-  const coverColor = game.coverColor ?? getPlatformColor(game.platform);
+  const platformConfig = getPlatformConfig(game.system || game.platform);
+  const coverColor = game.coverColor ?? platformConfig.shopBtnBg;
   const hasDiscount = Boolean(game.originalPrice && game.originalPrice > game.price);
   const saving = hasDiscount && game.originalPrice ? game.originalPrice - game.price : 0;
   const discountPercent =
@@ -160,7 +161,12 @@ export function ProductCard({
           />
         ) : null}
         <div className="omg-card-badges">
-          <span className="omg-platform-badge">{game.system}</span>
+          <span
+            className="omg-platform-badge"
+            style={{ background: platformConfig.badgeBg, color: platformConfig.badgeColor }}
+          >
+            {game.system}
+          </span>
           {discountPercent > 0 ? (
             <span className="omg-discount-badge">{discountPercent}% OFF</span>
           ) : null}
