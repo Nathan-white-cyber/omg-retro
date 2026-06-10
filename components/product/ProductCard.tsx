@@ -143,7 +143,7 @@ export function ProductCard({
       aria-label={`View ${game.title}`}
       onClick={navigate}
       onKeyDown={handleKeyDown}
-      className="omg-product-card group cursor-pointer"
+      className="omg-product-card group cursor-pointer transition-all duration-200 hover:-translate-y-[3px] hover:shadow-[0_0_0_1px_#CC1E1E,0_12px_28px_rgba(204,30,30,0.2)]"
     >
       <div
         className="omg-card-cover"
@@ -229,6 +229,7 @@ export function ProductCard({
             variant={ctaVariant ?? 2}
             onClick={addToCart}
             fullWidth
+            groupHover
           />
         </div>
       </div>

@@ -1084,7 +1084,7 @@ body {
 }
 
 .omg-section-hero {
-  min-height: 100vh;
+  min-height: min(80vh, 680px);
   background:
     radial-gradient(ellipse at bottom left, rgba(180, 20, 20, 0.45) 0%, transparent 55%),
     radial-gradient(ellipse at top right, rgba(20, 30, 100, 0.4) 0%, transparent 55%),
@@ -1196,10 +1196,11 @@ body {
   background: #1E1E1E;
   box-shadow: none;
   padding: 0;
+  transition: all 0.2s ease;
 }
 
 .omg-product-card:hover {
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 0 0 1px #CC1E1E, 0 12px 28px rgba(204, 30, 30, 0.2);
   transform: translateY(-3px);
 }
 
@@ -1313,7 +1314,7 @@ body {
   margin-bottom: 8px;
   overflow: hidden;
   color: #ffffff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.3;
   text-overflow: ellipsis;
@@ -1330,12 +1331,12 @@ body {
 .omg-card-price {
   color: #CC1E1E;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .omg-price-was {
   color: #666666;
-  font-size: 11px;
+  font-size: 13px;
   text-decoration: line-through;
 }
 

@@ -13,6 +13,7 @@ export interface ControllerButtonProps {
   loading?: boolean;
   added?: boolean;
   fullWidth?: boolean;
+  groupHover?: boolean;
   className?: string;
 }
 
@@ -49,6 +50,7 @@ export function ControllerButton({
   loading = false,
   added = false,
   fullWidth = false,
+  groupHover = false,
   className = "",
 }: ControllerButtonProps) {
   const [flashAdded, setFlashAdded] = useState(false);
@@ -90,6 +92,10 @@ export function ControllerButton({
   } as CSSProperties;
 
   const label = loading ? "Adding..." : isAdded ? "Added! \u2713" : "Add to Cart";
+  const groupHoverButtonClass = groupHover
+    ? "transition-colors duration-200 group-hover:bg-[#CC1E1E] group-hover:text-white"
+    : "";
+  const groupHoverIconClass = groupHover ? "transition-transform group-hover:scale-105" : "";
 
   return (
     <span className={rootClass} style={cssVars}>
@@ -97,7 +103,7 @@ export function ControllerButton({
         type="button"
         className={`${styles.button} ${variantClass} ${isAdded ? styles.added : ""} ${
           loading ? styles.loading : ""
-        }`}
+        } ${groupHoverButtonClass}`}
         onClick={handleClick}
         disabled={loading}
         aria-label={variant === 1 ? `${label} ${platform}` : undefined}
@@ -106,7 +112,7 @@ export function ControllerButton({
           <Glyph letter={isAdded ? "\u2713" : config.symbol} />
         ) : (
           <>
-            <span className={styles.icon}>
+            <span className={`${styles.icon} ${groupHoverIconClass}`}>
               <Glyph letter={config.symbol} />
             </span>
             <span className={styles.label}>
