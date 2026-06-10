@@ -46,7 +46,7 @@ interface TrustBarProps {
 export function TrustBar({ variant = "default" }: TrustBarProps) {
   if (variant === "compact") {
     return (
-      <section className="bg-bg-surface">
+      <section className="border-y-2 border-b-brand-red/30 border-t-brand-red bg-[#1a1a1a]">
         <div className="mx-auto max-w-[1240px] px-7 py-3">
           <p className="text-center font-body text-[12px] font-extrabold uppercase tracking-[0.08em] text-text-primary">
             Authentic Games <span className="mx-2 text-brand-red">·</span>
@@ -60,7 +60,7 @@ export function TrustBar({ variant = "default" }: TrustBarProps) {
   }
 
   return (
-    <section className="bg-bg-surface">
+    <section className="border-y-2 border-b-brand-red/30 border-t-brand-red bg-[#1a1a1a]">
       <div className="mx-auto grid max-w-[1240px] gap-4 px-7 py-5 sm:grid-cols-2 lg:grid-cols-4">
         {trustItems.map((item) => (
           <div

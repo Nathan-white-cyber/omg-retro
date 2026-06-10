@@ -34,11 +34,11 @@ function CartIcon() {
 }
 
 function Glyph({ letter }: { letter: string }) {
-  return <span className={letter === "✕" ? styles.psCross : undefined}>{letter}</span>;
+  return <span className={letter === "\u2715" ? styles.psCross : undefined}>{letter}</span>;
 }
 
 function pressWord(letter: string) {
-  return letter === "✕" ? "✕" : letter;
+  return letter === "\u2715" ? "\u2715" : letter;
 }
 
 export function ControllerButton({
@@ -89,7 +89,7 @@ export function ControllerButton({
     "--ctrl-text": visual.textColor,
   } as CSSProperties;
 
-  const label = loading ? "Adding..." : isAdded ? "Added! ✓" : "Add to Cart";
+  const label = loading ? "Adding..." : isAdded ? "Added! \u2713" : "Add to Cart";
 
   return (
     <span className={rootClass} style={cssVars}>
@@ -103,7 +103,7 @@ export function ControllerButton({
         aria-label={variant === 1 ? `${label} ${platform}` : undefined}
       >
         {variant === 1 ? (
-          <Glyph letter={isAdded ? "✓" : visual.letter} />
+          <Glyph letter={isAdded ? "\u2713" : visual.letter} />
         ) : (
           <>
             <span className={styles.icon}>

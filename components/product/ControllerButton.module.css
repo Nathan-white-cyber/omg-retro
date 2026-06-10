@@ -85,21 +85,28 @@
 }
 
 .combo {
-  gap: 10px;
+  gap: 8px;
   overflow: hidden;
-  border-radius: 30px;
-  background: var(--ctrl-tint);
-  padding: 8px 18px 8px 8px;
-  color: var(--ctrl-label);
+  justify-content: flex-start;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  background: #222222;
+  padding: 8px 12px;
+  color: #ffffff;
   font-family: var(--font-body), "Space Grotesk", sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .combo .icon {
-  width: 36px;
-  height: 36px;
-  font-size: 17px;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  box-shadow: none;
+  font-size: 11px;
+  font-weight: 900;
 }
 
 .press {
@@ -165,6 +172,10 @@
   pointer-events: none;
 }
 
+.combo::before {
+  display: none;
+}
+
 .combo:hover::before,
 .full:hover::before {
   left: 140%;
@@ -208,9 +219,18 @@
   transform: translateY(-2px);
 }
 
+.style3d .combo:hover {
+  transform: none;
+}
+
 .style3d .combo:hover,
 .style3d .full:hover {
   box-shadow: 0 7px 20px rgba(0, 0, 0, 0.45);
+}
+
+.style3d .combo,
+.style3d .combo:hover {
+  box-shadow: none;
 }
 
 .style3d .press:hover {
@@ -227,6 +247,18 @@
     0 3px 8px rgba(0, 0, 0, 0.4),
     inset 0 1px 1px rgba(255, 255, 255, 0.3),
     inset 0 -2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.combo:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: #2a2a2a;
+}
+
+.style3d .combo:hover .icon,
+.styleSubtle .combo:hover .icon {
+  transform: none;
+  box-shadow: none;
+  filter: none;
 }
 
 .style3d .iconOnly:active {
@@ -288,6 +320,19 @@
 .full:hover .cartIcon {
   transform: translateX(3px);
   opacity: 1;
+}
+
+.style3d .combo:active,
+.styleSubtle .combo:hover,
+.styleSubtle .combo:active {
+  transform: none;
+  box-shadow: none;
+}
+
+.style3d .combo:active .icon,
+.styleSubtle .combo:active .icon,
+.styleSubtle .combo:hover .icon {
+  box-shadow: none;
 }
 
 .added {

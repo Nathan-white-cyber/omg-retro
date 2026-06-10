@@ -9,7 +9,7 @@ export default function StoreLoading() {
       <TrustBar />
       <PlatformGridSkeleton />
       <ProductRailSkeleton count={4} />
-      <ProductRailSkeleton count={6} dark />
+      <ProductRailSkeleton count={6} />
       <ProductRailSkeleton count={4} />
     </>
   );

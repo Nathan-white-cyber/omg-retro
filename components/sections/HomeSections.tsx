@@ -4,11 +4,13 @@ import { getBestSellers, getFeaturedDeals, getPlatformCounts, getRecentlyAdded }
 import type { Game, ProductVendor } from "@/types";
 
 function SectionHeader({
+  eyebrow,
   title,
   href,
   linkLabel,
   dark = false,
 }: {
+  eyebrow: string;
   title: string;
   href: string;
   linkLabel: string;
@@ -16,17 +18,21 @@ function SectionHeader({
 }) {
   return (
     <div className="mb-6 flex items-end justify-between gap-5">
-      <h2
-        className={`font-display text-display-sm uppercase ${
-          dark ? "text-text-primary" : "text-text-dark"
-        }`}
-      >
-        <span className="mb-3 block h-1 w-12 rounded bg-brand-red" />
-        {title}
-      </h2>
+      <div>
+        <p className="mb-[3px] font-body text-[9px] font-bold uppercase tracking-[0.15em] text-brand-red">
+          {eyebrow}
+        </p>
+        <h2
+          className={`font-display text-display-sm uppercase ${
+            dark ? "text-[#F5F0EB]" : "text-[#1a1a1a]"
+          }`}
+        >
+          {title}
+        </h2>
+      </div>
       <Link
         href={href}
-        className="shrink-0 font-body text-label-lg uppercase text-brand-red transition hover:text-brand-red-dark"
+        className="shrink-0 rounded-[3px] border border-brand-red/20 bg-brand-red/10 px-2.5 py-1 font-body text-[9px] font-bold uppercase tracking-[0.06em] text-brand-red transition hover:border-brand-red/40 hover:bg-brand-red/15"
       >
         {linkLabel} -&gt;
       </Link>
@@ -56,7 +62,7 @@ function PlaceholderConsoleStack() {
 
 export function HeroBanner() {
   return (
-    <section className="bg-bg-dark px-7 py-12 md:py-16">
+    <section className="bg-[radial-gradient(ellipse_at_15%_70%,rgba(120,10,10,0.95)_0%,transparent_50%),radial-gradient(ellipse_at_85%_30%,rgba(10,10,100,0.8)_0%,transparent_50%),#111111] px-7 py-12 md:py-16">
       <div className="mx-auto grid max-w-[1240px] items-center gap-10 lg:grid-cols-[1fr_0.95fr]">
         <div>
           <p className="mb-4 font-body text-label-lg uppercase tracking-[0.14em] text-brand-red">
@@ -101,9 +107,9 @@ export async function ShopByPlatformSection() {
   const counts = await getPlatformCounts();
 
   return (
-    <section className="bg-bg-cream px-7 py-section-y-sm md:py-section-y">
+    <section className="bg-[radial-gradient(ellipse_at_0%_0%,#e8d5b0_0%,#F5F0EB_40%,#ede0cc_100%)] px-7 py-section-y-sm md:py-section-y">
       <div className="mx-auto max-w-[1240px]">
-        <SectionHeader title="Shop By Platform" href="/products" linkLabel="View All Systems" />
+        <SectionHeader eyebrow="Browse" title="Shop By Platform" href="/products" linkLabel="View All Systems" />
         <div className="grid gap-5 md:grid-cols-4">
           {platformTiles.map((platform) => (
             <Link
@@ -138,22 +144,17 @@ export async function ShopByPlatformSection() {
 
 function ProductRail({
   products,
-  columns,
   ranked = false,
 }: {
   products: Game[];
-  columns: "four" | "six";
   ranked?: boolean;
 }) {
-  const desktopColumns =
-    columns === "six" ? "md:grid-cols-3 xl:grid-cols-6" : "md:grid-cols-2 lg:grid-cols-4";
-
   return (
     <div
-      className={`flex gap-4 overflow-x-auto pb-3 md:grid md:overflow-visible md:pb-0 ${desktopColumns}`}
+      className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
     >
       {products.map((product, index) => (
-        <div key={product.id} className="relative w-[260px] shrink-0 md:w-auto">
+        <div key={product.id} className="relative">
           {ranked ? (
             <span className="absolute -left-2 -top-2 z-20 grid h-8 w-8 place-items-center rounded-full bg-brand-red font-body text-sm font-extrabold text-white shadow-card">
               {index + 1}
@@ -170,10 +171,10 @@ export async function FeaturedDealsSection() {
   const products = await getFeaturedDeals(4);
 
   return (
-    <section className="bg-bg-cream px-7 py-section-y-sm md:py-section-y">
+    <section className="bg-[radial-gradient(ellipse_at_100%_100%,#e8d5b0_0%,#EDE5D8_40%,#e0d4be_100%)] px-7 py-section-y-sm md:py-section-y">
       <div className="mx-auto max-w-[1240px]">
-        <SectionHeader title="Featured Deals" href="/deals" linkLabel="View All Deals" />
-        <ProductRail products={products} columns="four" />
+        <SectionHeader eyebrow="Hot Right Now" title="Featured Deals" href="/deals" linkLabel="View All Deals" />
+        <ProductRail products={products} />
       </div>
     </section>
   );
@@ -183,10 +184,10 @@ export async function BestSellersSection() {
   const products = await getBestSellers(6);
 
   return (
-    <section className="bg-bg-dark px-7 py-section-y-sm md:py-section-y">
+    <section className="bg-[radial-gradient(ellipse_at_0%_100%,#e8d5b0_0%,#F0E8DC_40%,#ede0cc_100%)] px-7 py-section-y-sm md:py-section-y">
       <div className="mx-auto max-w-[1240px]">
-        <SectionHeader title="Best Sellers" href="/best-sellers" linkLabel="View All Best Sellers" dark />
-        <ProductRail products={products} columns="six" ranked />
+        <SectionHeader eyebrow="Player Favorites" title="Best Sellers" href="/best-sellers" linkLabel="View All Best Sellers" />
+        <ProductRail products={products} ranked />
       </div>
     </section>
   );
@@ -229,7 +230,7 @@ export function WhyShopSection() {
   ];
 
   return (
-    <section className="bg-bg-surface px-7 py-10">
+    <section className="bg-[#1a1a1a] px-7 py-10">
       <div className="mx-auto grid max-w-[1240px] gap-5 md:grid-cols-4">
         {items.map((item) => (
           <div key={item.title} className="flex items-start gap-3">
@@ -262,10 +263,10 @@ export async function RecentlyAddedSection() {
   const products = await getRecentlyAdded(4);
 
   return (
-    <section className="bg-bg-cream px-7 py-section-y-sm md:py-section-y">
+    <section className="bg-[radial-gradient(ellipse_at_100%_0%,#e8d5b0_0%,#EDE5D8_40%,#e0d4be_100%)] px-7 py-section-y-sm md:py-section-y">
       <div className="mx-auto max-w-[1240px]">
-        <SectionHeader title="Recently Added" href="/new-arrivals" linkLabel="View All Recently Added" />
-        <ProductRail products={products} columns="four" />
+        <SectionHeader eyebrow="Fresh Drops" title="Recently Added" href="/new-arrivals" linkLabel="View All Recently Added" />
+        <ProductRail products={products} />
       </div>
     </section>
   );
@@ -273,24 +274,22 @@ export async function RecentlyAddedSection() {
 
 export function SearchCtaSection() {
   return (
-    <section className="bg-bg-dark px-7 py-12">
-      <div className="mx-auto grid max-w-[1240px] items-center gap-8 md:grid-cols-[1fr_1.4fr_1fr]">
-        <div className="hidden aspect-video rounded-card border border-border bg-bg-surface md:block" />
-        <div className="text-center">
-          <h2 className="font-display text-display-md uppercase text-text-primary">
+    <section className="border-t border-white/[0.05] bg-[#111111] px-7 py-12">
+      <div className="mx-auto flex max-w-[1240px] flex-col gap-6 bg-[#111111] px-0 py-7 md:flex-row md:items-center md:justify-between md:gap-6 md:px-8">
+        <div className="flex-1">
+          <h2 className="font-display text-[clamp(18px,3vw,24px)] uppercase leading-[1.1] text-white">
             Looking For A Specific Game?
           </h2>
-          <p className="mx-auto mt-3 max-w-lg text-body-lg text-text-secondary">
+          <p className="mt-1.5 font-body text-[11px] text-white/50">
             Search our entire catalog of thousands of retro games.
           </p>
-          <Link
-            href="/search"
-            className="mt-7 inline-flex h-[52px] items-center justify-center rounded-btn bg-brand-red px-8 font-body text-label-lg uppercase text-white transition hover:bg-brand-red-dark"
-          >
-            Search Games
-          </Link>
         </div>
-        <div className="hidden aspect-video rounded-card border border-border bg-bg-surface md:block" />
+        <Link
+          href="/search"
+          className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-[3px] border-0 bg-brand-red px-7 py-3 font-body text-[11px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-brand-red-dark"
+        >
+          Search Games -&gt;
+        </Link>
       </div>
     </section>
   );

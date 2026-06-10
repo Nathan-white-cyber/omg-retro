@@ -35,7 +35,7 @@ export default function HomePage() {
       <Suspense fallback={<ProductRailSkeleton count={4} />}>
         <FeaturedDealsSection />
       </Suspense>
-      <Suspense fallback={<ProductRailSkeleton count={6} dark />}>
+      <Suspense fallback={<ProductRailSkeleton count={6} />}>
         <BestSellersSection />
       </Suspense>
       <WhyShopSection />

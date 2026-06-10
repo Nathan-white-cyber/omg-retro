@@ -5,7 +5,7 @@ export function ProductRailSkeleton({ count = 4, dark = false }: { count?: numbe
     <div className={dark ? "bg-bg-dark px-7 py-section-y-sm md:py-section-y" : "bg-bg-cream px-7 py-section-y-sm md:py-section-y"}>
       <div className="mx-auto max-w-[1240px]">
         <div className="mb-6 h-8 w-64 animate-pulse rounded bg-bg-surface2/50" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: count }, (_, index) => (
             <SkeletonCard key={index} />
           ))}
