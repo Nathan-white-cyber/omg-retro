@@ -4,7 +4,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'omg-retro-backend-production.up.railway.app',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.railway.app',
+        pathname: '/**',
       },
     ],
   },

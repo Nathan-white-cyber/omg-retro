@@ -51,11 +51,35 @@ export function getPlatformVisual(platform: string): PlatformVisual {
   const key = normalizePlatform(platform).replace(/\s+/g, " ");
   const compact = key.replace(/\s+/g, "");
 
+  if (key.includes("nintendo") || key === "n64" || key === "nes" || key === "snes") {
+    return { key: "nintendo", color: "#E4000F", letter: "N", textColor: "#FFFFFF" };
+  }
+
+  if (key.includes("playstation") || /^ps[12345p]/.test(compact)) {
+    return { key: "playstation", color: "#003087", letter: "P", textColor: "#FFFFFF" };
+  }
+
+  if (key.includes("xbox")) {
+    return { key: "xbox", color: "#107C10", letter: "X", textColor: "#FFFFFF" };
+  }
+
+  if (key.includes("sega") || key.includes("dreamcast") || key.includes("genesis")) {
+    return { key: "sega", color: "#1a4fa0", letter: "S", textColor: "#FFFFFF" };
+  }
+
+  if (key.includes("game boy") || compact.includes("gameboy") || key === "gba") {
+    return { key: "game-boy", color: "#8B1A1A", letter: "G", textColor: "#FFFFFF" };
+  }
+
+  if (key.includes("atari")) {
+    return { key: "atari", color: "#D4691E", letter: "A", textColor: "#FFFFFF" };
+  }
+
   return (
     platformVisuals[key] ??
     platformVisuals[compact] ??
     platformVisuals[platform.toLowerCase()] ??
-    platformVisuals.nes
+    { key: "default", color: "#CC1E1E", letter: "●", textColor: "#FFFFFF" }
   );
 }
 

@@ -2,8 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { ProductCard } from "@/components/product";
-import { formatPrice } from "@/lib/utils/format";
-import { getPlatformColor } from "@/lib/utils/platform";
 import { getBestSellers, getFeaturedDeals, getPlatformCounts, getRecentlyAdded } from "@/lib/medusa/products";
 import type { Game, ProductVendor } from "@/types";
 
@@ -72,7 +70,7 @@ export function HeroBanner() {
   ];
 
   return (
-    <section className="omg-hero" data-screen-label="Hero">
+    <section className="omg-hero omg-section-hero" data-screen-label="Hero">
       <div className="omg-hero-bg-layer" />
       <div className="omg-container omg-hero-grid">
         <div className="omg-hero-copy">
@@ -122,7 +120,7 @@ export async function ShopByPlatformSection() {
   const counts = await getPlatformCounts();
 
   return (
-    <section className="omg-section" data-screen-label="Platforms">
+    <section className="omg-section omg-section-platforms" data-screen-label="Platforms">
       <div className="omg-container">
         <SectionHeader title="Shop by Platform" href="/products" linkLabel="All Systems" />
         <div className="omg-platform-grid">
@@ -146,80 +144,28 @@ export async function ShopByPlatformSection() {
   );
 }
 
-function DealCard({ product, priority = false }: { product: Game; priority?: boolean }) {
-  const href = `/products/${product.slug}`;
-  const hasDiscount = Boolean(product.originalPrice && product.originalPrice > product.price);
-
-  return (
-    <article className="omg-deal-card">
-      <Link href={href} className="omg-deal-cover-link" aria-label={`View ${product.title}`}>
-        <CoverTile
-          platform={product.systemCode}
-          title={product.title}
-          color={product.coverColor ?? getPlatformColor(product.platform)}
-          imageUrl={product.images[0]}
-          priority={priority}
-        />
-      </Link>
-      <div className="omg-deal-info">
-        <span className="omg-deal-platform">
-          {product.system} | {product.condition}
-        </span>
-        <Link href={href} className="omg-deal-title">
-          {product.title}
-        </Link>
-        <div className="omg-deal-prices">
-          <span className="omg-price-now">{formatPrice(product.price)}</span>
-          {hasDiscount && product.originalPrice ? (
-            <span className="omg-price-was">{formatPrice(product.originalPrice)}</span>
-          ) : null}
-          {product.discountPercent ? (
-            <span className="omg-badge-off">{product.discountPercent}% Off</span>
-          ) : null}
-        </div>
-        <Link href={href} className="omg-btn omg-btn-sm omg-deal-cta">
-          Shop Deal
-          <ArrowIcon />
-        </Link>
-      </div>
-    </article>
-  );
-}
-
 export async function FeaturedDealsSection() {
   const products = await getFeaturedDeals(4);
+  if (!products.length) return null;
 
   return (
-    <section className="omg-section omg-section-alt" id="deals" data-screen-label="Deals">
+    <section className="omg-section omg-section-deals" id="deals" data-screen-label="Deals">
       <div className="omg-container">
         <SectionHeader title="This Week's Deals" href="/deals" linkLabel="All Deals" />
-        <div className="omg-deal-grid">
-          {products.map((product, index) => (
-            <DealCard key={product.id} product={product} priority={index === 0} />
-          ))}
-        </div>
+        <ProductRail products={products} />
       </div>
     </section>
   );
 }
 
-function ProductRail({
-  products,
-  columns,
-  ranked = false,
-}: {
-  products: Game[];
-  columns: "six" | "four";
-  ranked?: boolean;
-}) {
+function ProductRail({ products }: { products: Game[] }) {
   return (
-    <div className={`omg-product-grid ${columns === "six" ? "omg-cols-6" : "omg-cols-4"}`}>
-      {products.map((product, index) => (
+    <div className="omg-product-grid omg-cols-4">
+      {products.map((product) => (
         <ProductCard
           key={product.id}
           game={product}
           ctaVariant={2}
-          rank={ranked ? index + 1 : undefined}
         />
       ))}
     </div>
@@ -227,13 +173,14 @@ function ProductRail({
 }
 
 export async function BestSellersSection() {
-  const products = await getBestSellers(6);
+  const products = await getBestSellers(4);
+  if (!products.length) return null;
 
   return (
-    <section className="omg-section" id="best-sellers" data-screen-label="Best Sellers">
+    <section className="omg-section omg-section-best" id="best-sellers" data-screen-label="Best Sellers">
       <div className="omg-container">
         <SectionHeader title="Best Sellers" href="/best-sellers" linkLabel="View All" />
-        <ProductRail products={products} columns="six" ranked />
+        <ProductRail products={products} />
       </div>
     </section>
   );
@@ -288,7 +235,7 @@ export function WhyShopSection() {
   ];
 
   return (
-    <section className="omg-section" data-screen-label="Why">
+    <section className="omg-section omg-section-why" data-screen-label="Why">
       <div className="omg-container">
         <div className="omg-why-band">
           <div className="omg-why-inner">
@@ -313,12 +260,13 @@ export function WhyShopSection() {
 
 export async function RecentlyAddedSection() {
   const products = await getRecentlyAdded(4);
+  if (!products.length) return null;
 
   return (
-    <section className="omg-section" data-screen-label="Recently Added">
+    <section className="omg-section omg-section-recent" data-screen-label="Recently Added">
       <div className="omg-container">
         <SectionHeader title="Recently Added" href="/new-arrivals" linkLabel="View All" />
-        <ProductRail products={products} columns="four" />
+        <ProductRail products={products} />
       </div>
     </section>
   );
@@ -328,16 +276,14 @@ export function SearchCtaSection() {
   return (
     <div className="omg-search-cta">
       <div className="omg-container">
-        <span className="omg-cta-glyph" aria-hidden="true">
-          *
-        </span>
         <div className="omg-cta-text">
           <h2>Looking for a Specific Game?</h2>
           <p>Search our entire catalog of thousands of retro games.</p>
         </div>
-        <Link href="/search" className="omg-btn omg-btn-lg">
-          Search Games
-        </Link>
+        <form action="/search" className="omg-search-form">
+          <input name="q" type="search" placeholder="Search games" aria-label="Search games" />
+          <button type="submit">Search Games</button>
+        </form>
       </div>
     </div>
   );

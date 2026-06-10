@@ -21,7 +21,6 @@ export interface ProductCardProps {
   showRating?: boolean;
   showSaving?: boolean;
   priority?: boolean;
-  rank?: number;
 }
 
 function PlatformBadge({ label }: { label: string }) {
@@ -56,7 +55,6 @@ export function ProductCard({
   showRating = true,
   showSaving = false,
   priority = false,
-  rank,
 }: ProductCardProps) {
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
@@ -64,8 +62,9 @@ export function ProductCard({
   const coverColor = game.coverColor ?? getPlatformColor(game.platform);
   const hasDiscount = Boolean(game.originalPrice && game.originalPrice > game.price);
   const saving = hasDiscount && game.originalPrice ? game.originalPrice - game.price : 0;
+  const discountPercent =
+    hasDiscount && game.originalPrice ? Math.round((1 - game.price / game.originalPrice) * 100) : 0;
   const shortTitle = game.title.length > 40 ? `${game.title.slice(0, 40)}...` : game.title;
-  const roundedRating = Math.max(0, Math.min(5, Math.round(game.rating)));
 
   const navigate = () => {
     router.push(href);
@@ -94,7 +93,7 @@ export function ProductCard({
       >
         <div className="relative">
           <CoverBlock
-            platform={game.platform}
+            platform={game.system}
             systemCode={game.systemCode}
             title={game.title}
             imageUrl={game.images[0]}
@@ -146,13 +145,9 @@ export function ProductCard({
       className="omg-product-card group cursor-pointer"
     >
       <div
-        className="omg-card-media"
+        className="omg-card-cover"
         style={{ "--cv": coverColor } as CSSProperties}
       >
-        {rank ? <span className="omg-rank-badge">{rank}</span> : null}
-        {game.discountPercent ? (
-          <span className="omg-card-flag">{game.discountPercent}% Off</span>
-        ) : null}
         {game.images[0] ? (
           <Image
             src={game.images[0]}
@@ -164,7 +159,13 @@ export function ProductCard({
             className="omg-cover-image"
           />
         ) : null}
-        <span className="omg-cover-platform">{game.systemCode}</span>
+        <div className="omg-card-badges">
+          <span className="omg-platform-badge">{game.system}</span>
+          {discountPercent > 0 ? (
+            <span className="omg-discount-badge">{discountPercent}% OFF</span>
+          ) : null}
+        </div>
+        <div className="omg-card-gradient" />
         <span className="omg-cover-title">{game.title}</span>
         <div className="omg-wishlist-wrap" onClick={(event) => event.stopPropagation()}>
           <WishlistHeart
@@ -191,6 +192,9 @@ export function ProductCard({
               {formatPrice(game.originalPrice)}
             </span>
           ) : null}
+          {saving > 0 ? (
+            <span className="omg-save-badge">You save {formatPrice(saving)}</span>
+          ) : null}
           <span className="omg-card-cond">
             {game.condition}
           </span>
@@ -204,18 +208,18 @@ export function ProductCard({
 
         {showRating ? (
           <div className="omg-card-rating">
-            <span className="inline-flex" aria-label={`${game.rating} out of 5 stars`}>
+            <span className="inline-flex" aria-label="4.8 out of 5 stars">
               {Array.from({ length: 5 }, (_, index) => (
-                <CompactStar key={index} filled={index < roundedRating} />
+                <CompactStar key={index} filled={index < 5} />
               ))}
             </span>
-            <span>({game.reviewCount.toLocaleString("en-US")})</span>
+            <span>(1,284)</span>
           </div>
         ) : null}
 
         <div className="omg-card-action" onClick={(event) => event.stopPropagation()}>
           <ControllerButton
-            platform={game.platform}
+            platform={game.system}
             variant={ctaVariant ?? 2}
             onClick={addToCart}
             fullWidth

@@ -452,14 +452,18 @@ export async function getSystemCounts(vendor?: ProductVendor) {
 
 export async function getFeaturedDeals(limit = 4) {
   const products = await getProducts();
+  const discounted = products
+    .filter((product) => product.originalPrice && product.originalPrice > product.price)
+    .sort((a, b) => {
+      const aDiscount = a.originalPrice ? (a.originalPrice - a.price) / a.originalPrice : 0;
+      const bDiscount = b.originalPrice ? (b.originalPrice - b.price) / b.originalPrice : 0;
+      return bDiscount - aDiscount;
+    });
 
-  return products
-    .filter((product) => product.originalPrice && product.discountPercent)
-    .sort((a, b) => (b.discountPercent ?? 0) - (a.discountPercent ?? 0))
-    .slice(0, limit);
+  return (discounted.length ? discounted : products.slice(4, 8)).slice(0, limit);
 }
 
-export async function getBestSellers(limit = 6) {
+export async function getBestSellers(limit = 4) {
   const products = await getProducts();
 
   return [...products]
@@ -470,13 +474,14 @@ export async function getBestSellers(limit = 6) {
 export async function getRecentlyAdded(limit = 4) {
   const products = await getProducts();
 
-  return [...products]
+  const sorted = [...products]
     .sort((a, b) => {
       const aTime = a.createdAt ? Date.parse(a.createdAt) : 0;
       const bTime = b.createdAt ? Date.parse(b.createdAt) : 0;
       return bTime - aTime;
-    })
-    .slice(0, limit);
+    });
+
+  return (sorted.some((product) => product.createdAt) ? sorted : products.slice(-limit)).slice(0, limit);
 }
 
 export async function getPlatformCounts() {

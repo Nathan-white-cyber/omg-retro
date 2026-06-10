@@ -85,30 +85,28 @@
 }
 
 .combo {
-  gap: 9px;
+  gap: 10px;
   overflow: hidden;
-  justify-content: center;
-  border: 1.5px solid color-mix(in srgb, var(--ctrl-color) 32%, #e7e1d3);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--ctrl-color) 10%, #ffffff);
-  padding: 6px 16px 6px 6px;
-  color: #17161d;
-  font-family: var(--font-display-alt), "Barlow Condensed", var(--font-body), sans-serif;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
+  justify-content: flex-start;
+  border: 1px solid #3a3a3a;
+  border-radius: 50px;
+  background: #2a2a2a;
+  padding: 9px 14px;
+  color: #ffffff;
+  font-family: var(--font-body), "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .combo .icon {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   border: 0;
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.4),
-    inset 0 -3px 4px rgba(0, 0, 0, 0.28),
-    0 2px 5px rgba(0, 0, 0, 0.3);
-  font-size: 18px;
+  box-shadow: none;
+  color: #ffffff;
+  font-size: 12px;
   font-weight: 900;
 }
 
@@ -176,8 +174,7 @@
 }
 
 .combo::before {
-  display: block;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  display: none;
 }
 
 .combo:hover::before,
@@ -224,7 +221,7 @@
 }
 
 .style3d .combo:hover {
-  transform: translateY(-2px);
+  transform: none;
 }
 
 .style3d .combo:hover,
@@ -234,7 +231,7 @@
 
 .style3d .combo,
 .style3d .combo:hover {
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--ctrl-color) 32%, transparent);
+  box-shadow: none;
 }
 
 .style3d .press:hover {
@@ -254,8 +251,8 @@
 }
 
 .combo:hover {
-  border-color: color-mix(in srgb, var(--ctrl-color) 60%, #e7e1d3);
-  background: color-mix(in srgb, var(--ctrl-color) 17%, #ffffff);
+  border-color: #444444;
+  background: #333333;
 }
 
 .style3d .combo:hover .icon,
@@ -328,14 +325,14 @@
 .style3d .combo:active,
 .styleSubtle .combo:hover,
 .styleSubtle .combo:active {
-  transform: translateY(0) scale(0.98);
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--ctrl-color) 24%, transparent);
+  transform: none;
+  box-shadow: none;
 }
 
 .style3d .combo:active .icon,
 .styleSubtle .combo:active .icon,
 .styleSubtle .combo:hover .icon {
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 .added {

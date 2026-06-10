@@ -4,6 +4,7 @@ import {
   BestSellersSection,
   FeaturedDealsSection,
   HeroBanner,
+  RecentlyAddedSection,
   SearchCtaSection,
   ShopByPlatformSection,
   WhyShopSection,
@@ -36,6 +37,9 @@ export default function HomePage() {
       </Suspense>
       <Suspense fallback={<ProductRailSkeleton count={6} />}>
         <BestSellersSection />
+      </Suspense>
+      <Suspense fallback={<ProductRailSkeleton count={4} />}>
+        <RecentlyAddedSection />
       </Suspense>
       <WhyShopSection />
       <SearchCtaSection />
