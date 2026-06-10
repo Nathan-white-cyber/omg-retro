@@ -10,7 +10,6 @@ export default function StoreLoading() {
       <PlatformGridSkeleton />
       <ProductRailSkeleton count={4} />
       <ProductRailSkeleton count={6} />
-      <ProductRailSkeleton count={4} />
     </>
   );
 }

@@ -21,6 +21,7 @@ export interface ProductCardProps {
   showRating?: boolean;
   showSaving?: boolean;
   priority?: boolean;
+  rank?: number;
 }
 
 function PlatformBadge({ label }: { label: string }) {
@@ -55,6 +56,7 @@ export function ProductCard({
   showRating = true,
   showSaving = false,
   priority = false,
+  rank,
 }: ProductCardProps) {
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
@@ -141,12 +143,16 @@ export function ProductCard({
       aria-label={`View ${game.title}`}
       onClick={navigate}
       onKeyDown={handleKeyDown}
-      className="group flex cursor-pointer flex-col overflow-hidden rounded-[10px] bg-[#1a1a1a] transition duration-normal hover:-translate-y-1"
+      className="omg-product-card group cursor-pointer"
     >
       <div
-        className="relative h-[160px] overflow-hidden"
-        style={{ backgroundColor: coverColor } as CSSProperties}
+        className="omg-card-media"
+        style={{ "--cv": coverColor } as CSSProperties}
       >
+        {rank ? <span className="omg-rank-badge">{rank}</span> : null}
+        {game.discountPercent ? (
+          <span className="omg-card-flag">{game.discountPercent}% Off</span>
+        ) : null}
         {game.images[0] ? (
           <Image
             src={game.images[0]}
@@ -155,58 +161,49 @@ export function ProductCard({
             sizes="(max-width: 768px) 100vw, 25vw"
             priority={priority}
             loading={priority ? undefined : "lazy"}
-            className="object-cover"
+            className="omg-cover-image"
           />
         ) : null}
-        <div className="absolute left-2 top-2 z-10 flex flex-col items-start gap-1.5">
-          <PlatformBadge label={game.systemCode} />
-          {game.discountPercent ? (
-            <span className="rounded-[3px] bg-brand-red px-1.5 py-[3px] font-body text-[9px] font-bold uppercase text-white">
-              {game.discountPercent}% OFF
-            </span>
-          ) : null}
-        </div>
-        <div className="absolute right-2 top-2 z-10" onClick={(event) => event.stopPropagation()}>
+        <span className="omg-cover-platform">{game.systemCode}</span>
+        <span className="omg-cover-title">{game.title}</span>
+        <div className="omg-wishlist-wrap" onClick={(event) => event.stopPropagation()}>
           <WishlistHeart
             productId={game.id}
-            className="h-[30px] w-[30px] border-0 bg-black/40 text-white shadow-none hover:bg-black/55"
+            className="omg-wishlist"
           />
         </div>
-        <h3 className="absolute inset-x-0 bottom-0 z-10 line-clamp-2 bg-[linear-gradient(transparent,rgba(0,0,0,0.7))] px-2.5 py-2 font-display text-[clamp(14px,3vw,18px)] uppercase leading-[1.1] text-white">
-          {game.title}
-        </h3>
       </div>
 
-      <div className="flex flex-1 flex-col bg-[#1a1a1a] p-2.5">
-        <span className="mb-0.5 font-body text-[9px] uppercase tracking-[0.08em] text-white/45">
+      <div className="omg-card-body">
+        <span className="omg-card-platform">
           {game.system}
         </span>
-        <h3 className="mb-1.5 truncate font-body text-[11px] font-semibold text-white">
+        <h3 className="omg-card-title">
           {shortTitle}
         </h3>
 
-        <div className="flex items-center gap-1.5">
-          <span className="font-body text-base font-bold leading-none text-brand-red">
+        <div className="omg-card-pricerow">
+          <span className="omg-card-price">
             {formatPrice(game.price)}
           </span>
           {hasDiscount && game.originalPrice ? (
-            <span className="text-[10px] text-white/35 line-through">
+            <span className="omg-price-was">
               {formatPrice(game.originalPrice)}
             </span>
           ) : null}
-          <span className="ml-auto rounded-[3px] bg-white/10 px-1.5 py-0.5 font-body text-[9px] uppercase text-white/70">
+          <span className="omg-card-cond">
             {game.condition}
           </span>
         </div>
 
-        {saving > 0 ? (
-          <p className="mb-1 mt-1 font-body text-[9px] uppercase text-[#4CAF50]">
+        {showSaving && saving > 0 ? (
+          <p className="omg-card-saving">
             You save {formatPrice(saving)}
           </p>
         ) : null}
 
         {showRating ? (
-          <div className="mb-2 flex items-center gap-1 text-[10px] text-white/40">
+          <div className="omg-card-rating">
             <span className="inline-flex" aria-label={`${game.rating} out of 5 stars`}>
               {Array.from({ length: 5 }, (_, index) => (
                 <CompactStar key={index} filled={index < roundedRating} />
@@ -216,7 +213,7 @@ export function ProductCard({
           </div>
         ) : null}
 
-        <div className="mt-auto" onClick={(event) => event.stopPropagation()}>
+        <div className="omg-card-action" onClick={(event) => event.stopPropagation()}>
           <ControllerButton
             platform={game.platform}
             variant={ctaVariant ?? 2}

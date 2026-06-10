@@ -1,24 +1,28 @@
 const trustItems = [
   {
-    title: "Authentic Games",
-    body: "Original games. No reproductions.",
+    title: "100% Authentic",
+    body: "Originals only - never reproductions.",
     icon: (
-      <path d="M12 2 4 5v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V5l-8-3Z" />
+      <>
+        <path d="M12 2 4 5v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V5l-8-3Z" />
+        <path d="m9 12 2 2 4-4" />
+      </>
     ),
   },
   {
-    title: "Tested Before Shipping",
-    body: "Every game is tested and cleaned.",
+    title: "Tested & Cleaned",
+    body: "Verified on real hardware before shipping.",
     icon: (
       <>
-        <rect x="3" y="8" width="18" height="10" rx="4" />
-        <path d="M8 13h.01M16 13h.01M10 11v4M8 13h4" />
+        <rect x="2" y="7" width="20" height="11" rx="3" />
+        <circle cx="8" cy="12.5" r="1.3" />
+        <path d="M16 11h.01M19 13h.01" />
       </>
     ),
   },
   {
     title: "1-Year Warranty",
-    body: "Shop with confidence.",
+    body: "We stand behind every purchase.",
     icon: (
       <>
         <circle cx="12" cy="12" r="10" />
@@ -27,8 +31,8 @@ const trustItems = [
     ),
   },
   {
-    title: "Fast U.S. Shipping",
-    body: "Orders $75+ ship free.",
+    title: "Free U.S. Shipping",
+    body: "On orders over $75. Ships in 1-2 days.",
     icon: (
       <>
         <path d="M1 5h13v11H1zM14 8h4l4 4v4h-8" />
@@ -46,48 +50,34 @@ interface TrustBarProps {
 export function TrustBar({ variant = "default" }: TrustBarProps) {
   if (variant === "compact") {
     return (
-      <section className="border-y-2 border-b-brand-red/30 border-t-brand-red bg-[#1a1a1a]">
-        <div className="mx-auto max-w-[1240px] px-7 py-3">
-          <p className="text-center font-body text-[12px] font-extrabold uppercase tracking-[0.08em] text-text-primary">
-            Authentic Games <span className="mx-2 text-brand-red">·</span>
-            Tested Before Shipping <span className="mx-2 text-brand-red">·</span>
-            1-Year Warranty <span className="mx-2 text-brand-red">·</span>
+      <div className="omg-trust-bar">
+        <div className="omg-container py-3">
+          <p className="text-center font-body text-[12px] font-extrabold uppercase tracking-[0.08em] text-[#17161d]">
+            100% Authentic <span className="mx-2 text-brand-red">|</span>
+            Tested & Cleaned <span className="mx-2 text-brand-red">|</span>
+            1-Year Warranty <span className="mx-2 text-brand-red">|</span>
             Free Shipping $75+
           </p>
         </div>
-      </section>
+      </div>
     );
   }
 
   return (
-    <section className="border-y-2 border-b-brand-red/30 border-t-brand-red bg-[#1a1a1a]">
-      <div className="mx-auto grid max-w-[1240px] gap-4 px-7 py-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="omg-trust-bar">
+      <div className="omg-container">
         {trustItems.map((item) => (
-          <div
-            key={item.title}
-            className="flex items-center gap-3.5 rounded-card border border-border bg-bg-dark/40 p-4"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="h-10 w-10 shrink-0 rounded-full bg-brand-red/10 p-2 text-brand-red"
-              aria-hidden="true"
-            >
+          <div key={item.title} className="omg-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               {item.icon}
             </svg>
             <div>
-              <h3 className="font-body text-[13.5px] font-extrabold uppercase tracking-[0.04em] text-text-primary">
-                {item.title}
-              </h3>
-              <p className="mt-0.5 text-[12.5px] leading-snug text-text-secondary">
-                {item.body}
-              </p>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
             </div>
           </div>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

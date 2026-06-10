@@ -4,70 +4,70 @@ import { Logo } from "./Logo";
 
 export function Footer() {
   return (
-    <footer className="bg-[#0a0a0a] text-[#c7cad2]">
-      <div className="mx-auto max-w-[1240px] px-7">
-        <div className="grid gap-8 py-10 md:grid-cols-[1.6fr_1fr_1fr_1fr_1.4fr] md:py-12">
-          <div>
+    <footer className="omg-site-footer">
+      <div className="omg-container">
+        <div className="omg-footer-main">
+          <div className="omg-footer-brand">
             <Logo />
-            <p className="mt-4 max-w-[280px] text-[13px] leading-relaxed text-white/50">
+            <p>
               Your destination for authentic retro games, consoles and accessories. Relive the classics.
             </p>
-            <p className="mt-4 font-body text-[11px] font-extrabold uppercase tracking-[0.08em] text-white/40">
-              Follow us soon
-            </p>
+            <div className="omg-footer-social">
+              <a href="https://www.facebook.com/" aria-label="Facebook">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M14 9h3V6h-3c-2 0-3 1.3-3 3v2H9v3h2v6h3v-6h2.5l.5-3H14V9.5c0-.3.2-.5.5-.5Z" />
+                </svg>
+              </a>
+              <a href="https://www.instagram.com/" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+                </svg>
+              </a>
+              <a href="https://www.youtube.com/" aria-label="YouTube">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M22 12c0-2-.2-3.3-.4-4-.3-.9-1-1.5-1.9-1.7C18 6 12 6 12 6s-6 0-7.7.3c-.9.2-1.6.8-1.9 1.7C2.2 8.7 2 10 2 12s.2 3.3.4 4c.3.9 1 1.5 1.9 1.7C6 18 12 18 12 18s6 0 7.7-.3c.9-.2 1.6-.8 1.9-1.7.2-.7.4-2 .4-4ZM10 15V9l5 3-5 3Z" />
+                </svg>
+              </a>
+            </div>
           </div>
 
           {footerColumns.map((column) => (
-            <div key={column.title}>
-              <h4 className="mb-4 font-body text-label-lg uppercase text-white">
-                {column.title}
-              </h4>
-              <ul className="flex flex-col gap-2.5">
+            <div key={column.title} className="omg-footer-col">
+              <h4>{column.title}</h4>
+              <ul>
                 {column.links.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="text-[13px] text-white/60 transition hover:text-brand-red">
-                      {link.label}
-                    </Link>
+                    <Link href={link.href}>{link.label}</Link>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
 
-          <div>
-            <h4 className="mb-4 font-body text-label-lg uppercase text-white">
-              Stay in the Loop
-            </h4>
-            <p className="mb-3.5 text-[13px] leading-relaxed text-white/55">
+          <div className="omg-footer-news">
+            <h4>Stay in the Loop</h4>
+            <p>
               Get updates on new arrivals, deals and more retro goodness.
             </p>
-            <form className="flex" action="/newsletter">
+            <form action="/newsletter">
               <input
                 aria-label="Email address for newsletter"
                 type="email"
                 name="email"
                 placeholder="Email address"
-                className="h-[42px] min-w-0 flex-1 rounded-l-btn border border-white/20 bg-white/5 px-3.5 text-[13px] text-white outline-none placeholder:text-white/40 focus:border-brand-red"
               />
-              <button
-                type="submit"
-                className="h-[42px] rounded-r-btn bg-brand-red px-4 font-body text-xs font-extrabold uppercase tracking-[0.04em] text-white transition hover:bg-brand-red-dark"
-              >
-                Subscribe
-              </button>
+              <button type="submit">Subscribe</button>
             </form>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-white/10 py-4 text-[12.5px] text-white/50 md:flex-row md:items-center md:justify-between">
-          <span>(c) 2026 OMG Retro. All rights reserved.</span>
-          <span className="flex gap-5">
-            <Link href="/info/privacy" className="transition hover:text-brand-red">
-              Privacy Policy
-            </Link>
-            <Link href="/info/terms" className="transition hover:text-brand-red">
-              Terms of Service
-            </Link>
+        <div className="omg-footer-bottom">
+          <span>(c) 2024 OMG Retro. All rights reserved.</span>
+          <span className="links">
+            <Link href="/info/privacy">Privacy Policy</Link>
+            <Link href="/info/terms">Terms of Service</Link>
           </span>
         </div>
       </div>

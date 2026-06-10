@@ -85,27 +85,30 @@
 }
 
 .combo {
-  gap: 8px;
+  gap: 9px;
   overflow: hidden;
-  justify-content: flex-start;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 50px;
-  background: #222222;
-  padding: 8px 12px;
-  color: #ffffff;
-  font-family: var(--font-body), "Space Grotesk", sans-serif;
-  font-size: 11px;
-  font-weight: 700;
+  justify-content: center;
+  border: 1.5px solid color-mix(in srgb, var(--ctrl-color) 32%, #e7e1d3);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ctrl-color) 10%, #ffffff);
+  padding: 6px 16px 6px 6px;
+  color: #17161d;
+  font-family: var(--font-display-alt), "Barlow Condensed", var(--font-body), sans-serif;
+  font-size: 13px;
+  font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .combo .icon {
-  width: 26px;
-  height: 26px;
+  width: 34px;
+  height: 34px;
   border: 0;
-  box-shadow: none;
-  font-size: 11px;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.4),
+    inset 0 -3px 4px rgba(0, 0, 0, 0.28),
+    0 2px 5px rgba(0, 0, 0, 0.3);
+  font-size: 18px;
   font-weight: 900;
 }
 
@@ -173,7 +176,8 @@
 }
 
 .combo::before {
-  display: none;
+  display: block;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
 }
 
 .combo:hover::before,
@@ -220,7 +224,7 @@
 }
 
 .style3d .combo:hover {
-  transform: none;
+  transform: translateY(-2px);
 }
 
 .style3d .combo:hover,
@@ -230,7 +234,7 @@
 
 .style3d .combo,
 .style3d .combo:hover {
-  box-shadow: none;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--ctrl-color) 32%, transparent);
 }
 
 .style3d .press:hover {
@@ -250,14 +254,13 @@
 }
 
 .combo:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: #2a2a2a;
+  border-color: color-mix(in srgb, var(--ctrl-color) 60%, #e7e1d3);
+  background: color-mix(in srgb, var(--ctrl-color) 17%, #ffffff);
 }
 
 .style3d .combo:hover .icon,
 .styleSubtle .combo:hover .icon {
   transform: none;
-  box-shadow: none;
   filter: none;
 }
 
@@ -325,14 +328,14 @@
 .style3d .combo:active,
 .styleSubtle .combo:hover,
 .styleSubtle .combo:active {
-  transform: none;
-  box-shadow: none;
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--ctrl-color) 24%, transparent);
 }
 
 .style3d .combo:active .icon,
 .styleSubtle .combo:active .icon,
 .styleSubtle .combo:hover .icon {
-  box-shadow: none;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .added {
