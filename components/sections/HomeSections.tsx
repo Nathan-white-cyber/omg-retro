@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { ProductCard } from "@/components/product";
 import { getBestSellers, getFeaturedDeals, getPlatformCounts, getRecentlyAdded } from "@/lib/medusa/products";
 import { getPlatformConfig } from "@/lib/utils/platform";
@@ -26,58 +25,15 @@ function SectionHeader({ title, href, linkLabel }: { title: string; href: string
   );
 }
 
-function CoverTile({
-  platform,
-  title,
-  color,
-  imageUrl,
-  priority = false,
-  className = "",
-}: {
-  platform: string;
-  title: string;
-  color: string;
-  imageUrl?: string;
-  priority?: boolean;
-  className?: string;
-}) {
-  return (
-    <div className={`omg-cover ${className}`} style={{ "--cv": color } as CSSProperties}>
-      {imageUrl ? (
-        <Image
-          src={imageUrl}
-          alt={`${title} cover`}
-          fill
-          sizes="(max-width: 680px) 50vw, 180px"
-          priority={priority}
-          loading={priority ? undefined : "lazy"}
-          className="omg-cover-image"
-        />
-      ) : null}
-      <span className="omg-cover-platform">{platform}</span>
-      <span className="omg-cover-title">{title}</span>
-    </div>
-  );
-}
-
 export function HeroBanner() {
-  const tiles = [
-    { platform: "N64", title: "Zelda OoT", color: "#b8902f" },
-    { platform: "GBA", title: "Pokemon Emerald", color: "#1f9d57" },
-    { platform: "PS1", title: "Final Fantasy VII", color: "#1c2733" },
-    { platform: "DC", title: "Sonic Adv 2", color: "#3a7bd5" },
-    { platform: "Xbox", title: "Halo: CE", color: "#2f6b3a" },
-    { platform: "GEN", title: "Streets of Rage 2", color: "#6b3aa0" },
-  ];
-
   return (
     <section className="omg-hero omg-section-hero" data-screen-label="Hero">
       <div className="omg-hero-bg-layer" />
       <div className="omg-container omg-hero-grid">
         <div className="omg-hero-copy">
-          <span className="omg-hero-eyebrow">Tested | Cleaned | Guaranteed</span>
+          <span className="omg-hero-eyebrow">TESTED | CLEANED | GUARANTEED</span>
           <h1>
-            Play the <span>Classics</span> Again
+            PLAY THE <span>CLASSICS</span> AGAIN
           </h1>
           <p>
             Authentic retro games, consoles & accessories - every one cleaned, tested on real
@@ -85,18 +41,11 @@ export function HeroBanner() {
           </p>
           <div className="omg-hero-actions">
             <Link href="#best-sellers" className="omg-btn omg-btn-lg">
-              Shop Best Sellers
+              SHOP BEST SELLERS
             </Link>
             <Link href="#deals" className="omg-btn omg-btn-lg omg-btn-ghost">
-              Browse Deals
+              BROWSE DEALS
             </Link>
-          </div>
-        </div>
-        <div className="omg-hero-art">
-          <div className="omg-hero-tiles">
-            {tiles.map((tile) => (
-              <CoverTile key={tile.title} {...tile} />
-            ))}
           </div>
         </div>
       </div>
