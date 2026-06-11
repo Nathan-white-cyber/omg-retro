@@ -363,6 +363,13 @@ body {
   padding: 9px;
 }
 
+.omg-product-card .omg-card-media,
+.omg-product-card .omg-cover {
+  height: 188px;
+  aspect-ratio: unset;
+  flex-shrink: 0;
+}
+
 .omg-cover::after,
 .omg-card-media::after {
   content: "";
@@ -1074,7 +1081,6 @@ body {
 }
 
 .omg-section-hero {
-  min-height: min(80vh, 680px);
   background:
     radial-gradient(ellipse at bottom left, rgba(180, 20, 20, 0.45) 0%, transparent 55%),
     radial-gradient(ellipse at top right, rgba(20, 30, 100, 0.4) 0%, transparent 55%),
