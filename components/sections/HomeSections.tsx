@@ -1,7 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { ProductCard } from "@/components/product";
 import { getBestSellers, getFeaturedDeals, getPlatformCounts, getRecentlyAdded } from "@/lib/medusa/products";
+import { formatPrice } from "@/lib/utils/format";
 import { getPlatformConfig } from "@/lib/utils/platform";
 import type { Game, ProductVendor } from "@/types";
 
@@ -106,9 +108,56 @@ export async function FeaturedDealsSection() {
     <section className="omg-section omg-section-deals" id="deals" data-screen-label="Deals">
       <div className="omg-container">
         <SectionHeader title="This Week's Deals" href="/deals" linkLabel="All Deals" />
-        <ProductRail products={products} />
+        <div className="omg-deal-grid">
+          {products.map((product) => (
+            <DealCard key={product.id} product={product} />
+          ))}
+        </div>
       </div>
     </section>
+  );
+}
+
+function DealCard({ product }: { product: Game }) {
+  const href = `/products/${product.slug}`;
+  const hasDiscount = Boolean(product.originalPrice && product.originalPrice > product.price);
+  const discountPercent =
+    hasDiscount && product.originalPrice ? Math.round((1 - product.price / product.originalPrice) * 100) : 0;
+
+  return (
+    <article className="omg-deal-card">
+      <Link href={href} className="omg-deal-cover-link" aria-label={`View ${product.title}`}>
+        <div className="omg-cover" style={{ "--cv": product.coverColor || "#444444" } as CSSProperties}>
+          {product.images[0] ? (
+            <Image
+              src={product.images[0]}
+              alt={`${product.title} cover`}
+              fill
+              sizes="118px"
+              className="omg-cover-image"
+            />
+          ) : null}
+          <span className="omg-cover-platform">{product.system}</span>
+          <span className="omg-cover-title">{product.title}</span>
+        </div>
+      </Link>
+      <div className="omg-deal-info">
+        <span className="omg-deal-platform">{product.system}</span>
+        <Link href={href} className="omg-deal-title">
+          {product.title}
+        </Link>
+        <div className="omg-deal-prices">
+          <span className="omg-price-now">{formatPrice(product.price)}</span>
+          {hasDiscount && product.originalPrice ? (
+            <span className="omg-price-was">{formatPrice(product.originalPrice)}</span>
+          ) : null}
+        </div>
+        {discountPercent > 0 ? <span className="omg-badge-off">{discountPercent}% OFF</span> : null}
+        <a href={href} className="omg-btn omg-btn-sm omg-deal-cta">
+          Shop Deal &#8594;
+        </a>
+      </div>
+    </article>
   );
 }
 

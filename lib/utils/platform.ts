@@ -132,6 +132,61 @@ function normalizePlatformKey(collectionTitle: string) {
     .trim();
 }
 
+export function getPlatformCssClass(title: string): string {
+  const lower = normalizePlatformKey(title);
+  const matches: Array<[string[], string]> = [
+    [["nintendo 64", "n64"], "c-n64"],
+    [["super nintendo", "snes"], "c-snes"],
+    [["nintendo ds", "nds", "ds"], "c-ds"],
+    [["game boy advance", "gba"], "c-gba"],
+    [["game boy"], "c-gb"],
+    [["gamecube", "gcn"], "c-gcn"],
+    [["switch"], "c-switch"],
+    [["wii"], "c-wii"],
+    [["nes"], "c-nes"],
+    [["playstation 2", "ps2"], "c-ps2"],
+    [["playstation 3", "ps3"], "c-ps3"],
+    [["psp"], "c-psp"],
+    [["playstation", "ps1"], "c-ps1"],
+    [["xbox 360", "360"], "c-360"],
+    [["xbox"], "c-xbox"],
+    [["dreamcast"], "c-dc"],
+    [["genesis", "mega drive"], "c-gen"],
+    [["saturn"], "c-sat"],
+    [["game gear"], "c-gg"],
+  ];
+
+  for (const [needles, className] of matches) {
+    if (needles.some((needle) => lower.includes(needle))) return className;
+  }
+
+  return "";
+}
+
+export function getPlatformGlyph(title: string): { text: string; isPs: boolean } {
+  const lower = normalizePlatformKey(title);
+
+  if (
+    lower.includes("playstation") ||
+    lower.includes("ps1") ||
+    lower.includes("ps2") ||
+    lower.includes("ps3") ||
+    lower.includes("psp")
+  ) {
+    return { text: "\u2715", isPs: true };
+  }
+
+  if (lower.includes("genesis") || lower.includes("mega drive") || lower.includes("saturn")) {
+    return { text: "C", isPs: false };
+  }
+
+  if (lower.includes("game gear")) {
+    return { text: "1", isPs: false };
+  }
+
+  return { text: "A", isPs: false };
+}
+
 /**
  * Resolve platform config from a collection title string.
  * Matches by substring so "Nintendo 64" matches "nintendo 64",

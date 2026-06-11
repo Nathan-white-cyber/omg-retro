@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import type { CSSProperties, KeyboardEvent } from "react";
+import type { CSSProperties, KeyboardEvent, MouseEvent } from "react";
+import { useState } from "react";
 import { useCartStore } from "@/lib/store/cart-store";
 import { formatPrice } from "@/lib/utils/format";
-import { getPlatformConfig } from "@/lib/utils/platform";
+import { getPlatformConfig, getPlatformCssClass, getPlatformGlyph } from "@/lib/utils/platform";
 import type { Game } from "@/types";
 import { ConditionBadge } from "./ConditionBadge";
-import { ControllerButton } from "./ControllerButton";
 import { CoverBlock } from "./CoverBlock";
 import { DiscountBadge } from "./DiscountBadge";
 import { PriceDisplay } from "./PriceDisplay";
@@ -51,15 +51,18 @@ function CompactStar({ filled }: { filled: boolean }) {
 export function ProductCard({
   game,
   variant = "grid",
-  ctaVariant,
   showRating = true,
   showSaving = false,
   priority = false,
 }: ProductCardProps) {
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
+  const [added, setAdded] = useState(false);
   const href = `/products/${game.slug}`;
-  const platformConfig = getPlatformConfig(game.system || game.platform);
+  const platformTitle = game.system || game.platform;
+  const platformConfig = getPlatformConfig(platformTitle);
+  const platformClass = getPlatformCssClass(platformTitle);
+  const { text: glyphText, isPs } = getPlatformGlyph(platformTitle);
   const coverColor = game.coverColor ?? platformConfig.shopBtnBg;
   const hasDiscount = Boolean(game.originalPrice && game.originalPrice > game.price);
   const saving = hasDiscount && game.originalPrice ? game.originalPrice - game.price : 0;
@@ -78,9 +81,27 @@ export function ProductCard({
     }
   };
 
-  const addToCart = () => {
+  const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     addItem(game, game.condition);
+    setAdded(true);
+    window.setTimeout(() => setAdded(false), 850);
   };
+
+  const ctaButton = (
+    <div className={`card-action${platformClass ? ` ${platformClass}` : ""}`}>
+      <button
+        className={`ctrl-combo ripple${added ? " added" : ""}`}
+        type="button"
+        onClick={handleAddToCart}
+      >
+        <span className="ctrl-icon">
+          {isPs ? <span className="ps-cross">{"\u2715"}</span> : glyphText}
+        </span>
+        {added ? " Added! \u2713" : " Add to Cart"}
+      </button>
+    </div>
+  );
 
   if (variant === "list") {
     return (
@@ -123,13 +144,7 @@ export function ProductCard({
               originalPrice={game.originalPrice}
               showSaving={showSaving}
             />
-            <div onClick={(event) => event.stopPropagation()}>
-              <ControllerButton
-                platform={game.platform}
-                variant={ctaVariant ?? 2}
-                onClick={addToCart}
-              />
-            </div>
+            {ctaButton}
           </div>
         </div>
       </article>
@@ -143,7 +158,7 @@ export function ProductCard({
       aria-label={`View ${game.title}`}
       onClick={navigate}
       onKeyDown={handleKeyDown}
-      className="omg-product-card group cursor-pointer transition-all duration-200 hover:-translate-y-[3px] hover:shadow-[0_0_0_1px_#CC1E1E,0_12px_28px_rgba(204,30,30,0.2)]"
+      className="omg-product-card cursor-pointer"
     >
       <div
         className="omg-card-cover"
@@ -223,15 +238,7 @@ export function ProductCard({
           </div>
         ) : null}
 
-        <div className="omg-card-action" onClick={(event) => event.stopPropagation()}>
-          <ControllerButton
-            platform={game.system}
-            variant={ctaVariant ?? 2}
-            onClick={addToCart}
-            fullWidth
-            groupHover
-          />
-        </div>
+        {ctaButton}
       </div>
     </article>
   );
