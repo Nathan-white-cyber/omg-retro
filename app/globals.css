@@ -363,8 +363,7 @@ body {
   padding: 9px;
 }
 
-.omg-product-card .omg-card-media,
-.omg-product-card .omg-cover {
+.omg-product-card .omg-card-cover {
   height: 188px;
   aspect-ratio: unset;
   flex-shrink: 0;
