@@ -187,6 +187,48 @@ export function getPlatformGlyph(title: string): { text: string; isPs: boolean }
   return { text: "A", isPs: false };
 }
 
+export function getProductType(product: {
+  type?: { value?: string } | null;
+  collection?: { title?: string } | null;
+}): "game" | "console" | "accessory" {
+  const t = product.type?.value?.toLowerCase() ?? "";
+  if (t === "console") return "console";
+  if (t === "accessory") return "accessory";
+
+  const col = product.collection?.title?.toLowerCase() ?? "";
+  if (col.includes("console")) return "console";
+  if (col.includes("accessor")) return "accessory";
+
+  return "game";
+}
+
+export function getPlatformColor(collectionTitle: string) {
+  const className = getPlatformCssClass(collectionTitle);
+  const colors: Record<string, string> = {
+    "c-nes": "#8b8b8b",
+    "c-snes": "#9b2fae",
+    "c-n64": "#1fa34a",
+    "c-gcn": "#1fa34a",
+    "c-wii": "#ababab",
+    "c-switch": "#e60012",
+    "c-gb": "#6b6b6b",
+    "c-gba": "#5e3f8e",
+    "c-ds": "#c42d2d",
+    "c-ps1": "#003087",
+    "c-ps2": "#003087",
+    "c-ps3": "#003087",
+    "c-psp": "#003087",
+    "c-xbox": "#107c10",
+    "c-360": "#107c10",
+    "c-gen": "#555555",
+    "c-sat": "#555555",
+    "c-dc": "#e67e22",
+    "c-gg": "#444444",
+  };
+
+  return colors[className] ?? getPlatformConfig(collectionTitle).shopBtnBg;
+}
+
 /**
  * Resolve platform config from a collection title string.
  * Matches by substring so "Nintendo 64" matches "nintendo 64",

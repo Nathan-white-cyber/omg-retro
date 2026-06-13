@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "seed:pdp": "ts-node scripts/seed-pdp-products.ts",
     "lint": "eslint"
   },
   "dependencies": {

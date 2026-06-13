@@ -7,8 +7,11 @@ interface MedusaProductResponse {
     id: string;
     title: string;
     handle?: string;
+    description?: string | null;
     thumbnail?: string | null;
     images?: { url: string }[];
+    collection?: { id?: string; title?: string; handle?: string } | null;
+    type?: { value?: string } | null;
     metadata?: Record<string, unknown> | null;
     categories?: { name?: string; handle?: string }[] | null;
     tags?: { value?: string }[] | null;
@@ -32,6 +35,31 @@ interface MedusaProductResponse {
 
 type MedusaProduct = NonNullable<MedusaProductResponse["products"]>[number];
 type MedusaVariant = NonNullable<MedusaProduct["variants"]>[number];
+
+export interface PdpProductVariant {
+  id: string;
+  title: string;
+  inventory_quantity?: number;
+  sku?: string | null;
+  calculated_price?: {
+    calculated_amount?: number;
+    original_amount?: number;
+  };
+  prices: Array<{ amount: number }>;
+}
+
+export interface PdpProduct {
+  id: string;
+  title: string;
+  handle: string;
+  description?: string | null;
+  thumbnail?: string | null;
+  images: { url: string }[];
+  collection?: { id?: string; title?: string; handle?: string } | null;
+  type?: { value?: string } | null;
+  metadata?: Record<string, unknown> | null;
+  variants: PdpProductVariant[];
+}
 
 export interface PlpFacets {
   platforms: Record<ProductVendor, number>;
@@ -248,6 +276,77 @@ function mapProduct(product: MedusaProduct): Game {
   };
 }
 
+function mapPdpProduct(product: MedusaProduct): PdpProduct {
+  return {
+    id: product.id,
+    title: product.title,
+    handle: product.handle ?? product.id,
+    description: product.description,
+    thumbnail: product.thumbnail,
+    images: product.images ?? (product.thumbnail ? [{ url: product.thumbnail }] : []),
+    collection: product.collection,
+    type: product.type,
+    metadata: product.metadata,
+    variants:
+      product.variants?.map((variant, index) => {
+        const calculatedAmount = variant.calculated_price?.calculated_amount ?? variant.prices?.[0]?.amount ?? 0;
+
+        return {
+          id: variant.sku ?? `${product.id}:variant:${index}`,
+          title: variant.title ?? `Variant ${index + 1}`,
+          inventory_quantity: variant.inventory_quantity,
+          sku: variant.sku,
+          calculated_price: variant.calculated_price,
+          prices: variant.prices?.length ? variant.prices.filter((price): price is { amount: number } => typeof price.amount === "number") : [{ amount: calculatedAmount }],
+        };
+      }) ?? [],
+  };
+}
+
+function pdpProductFromGame(game: Game): PdpProduct {
+  const collectionTitle = game.system;
+
+  return {
+    id: game.id,
+    title: game.title,
+    handle: game.slug,
+    description: `${game.title} for ${game.system}. Cleaned, tested, and backed by our 1-year warranty.`,
+    thumbnail: game.images[0] ?? null,
+    images: game.images.map((url) => ({ url })),
+    collection: { id: game.vendor, title: collectionTitle, handle: game.vendor },
+    type: { value: "game" },
+    metadata: {
+      platform: game.system,
+      sku: game.systemCode,
+      condition: game.condition,
+      coverColor: game.coverColor,
+      vendor: game.vendor,
+    },
+    variants:
+      game.conditionVariants?.map((variant, index) => ({
+        id: `${game.id}:${variant.type}:${index}`,
+        title: String(variant.type),
+        inventory_quantity: variant.stock,
+        prices: [{ amount: variant.price }],
+        calculated_price: {
+          calculated_amount: variant.price,
+          original_amount: game.originalPrice,
+        },
+      })) ?? [
+        {
+          id: `${game.id}:${game.condition}`,
+          title: game.condition,
+          inventory_quantity: game.stock,
+          prices: [{ amount: game.price }],
+          calculated_price: {
+            calculated_amount: game.price,
+            original_amount: game.originalPrice,
+          },
+        },
+      ],
+  };
+}
+
 async function fetchProductsFromMedusa(query = "") {
   const url = medusaUrl(`/store/products${query}`);
 
@@ -314,6 +413,40 @@ export async function getAllProducts() {
 export async function getProductBySlug(slug: string) {
   const products = await getProducts();
   return products.find((product) => product.slug === slug) ?? null;
+}
+
+export async function getProductByHandle(handle: string) {
+  const url = medusaUrl(`/store/products?handle=${encodeURIComponent(handle)}&limit=1`);
+
+  if (url) {
+    try {
+      const response = await fetch(url, {
+        headers: medusaHeaders,
+        next: { revalidate: 300 },
+      });
+
+      if (response.ok) {
+        const data = (await response.json()) as MedusaProductResponse;
+        const product = data.products?.[0];
+
+        if (product) return mapPdpProduct(product);
+      }
+    } catch {
+      // Fall back to local mock data below.
+    }
+  }
+
+  const fallback = await getProductBySlug(handle);
+  return fallback ? pdpProductFromGame(fallback) : null;
+}
+
+export async function listProducts(query: { collection?: string | null; limit?: number } = {}) {
+  const products = await getProducts();
+  const limit = query.limit ?? 24;
+
+  return {
+    products: products.slice(0, limit),
+  };
 }
 
 function matchesGenre(product: Game, genre: string) {
