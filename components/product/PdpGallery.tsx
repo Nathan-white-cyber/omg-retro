@@ -53,7 +53,7 @@ export default function PdpGallery({
     <div className="pdp-gallery">
       <div className="gallery-main">
         {showFlag ? <span className="gallery-flag">{discountPercent}% Off</span> : null}
-        <div className="omg-cover" style={{ "--cv": colors[activeIndex] } as CSSProperties}>
+        <div className="cover omg-cover" style={{ "--cv": colors[activeIndex] } as CSSProperties}>
           <span className="omg-cover-platform">{platformTitle}</span>
           <span className="omg-cover-title">{productTitle}</span>
         </div>
@@ -67,7 +67,7 @@ export default function PdpGallery({
             onClick={() => setActiveIndex(index)}
             aria-label={`Show ${label} view`}
           >
-            <div className="omg-cover" style={{ "--cv": colors[index] } as CSSProperties}>
+            <div className="cover omg-cover" style={{ "--cv": colors[index] } as CSSProperties}>
               <span className="omg-cover-title">{label}</span>
             </div>
             <span className="thumb-label">{label}</span>

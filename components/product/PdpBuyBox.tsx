@@ -59,6 +59,10 @@ function metadataString(metadata: Record<string, unknown> | null | undefined, ke
   return typeof value === "string" ? value : undefined;
 }
 
+function platformTitle(product: PdpProduct) {
+  return metadataString(product.metadata, "platform") ?? product.collection?.title ?? "";
+}
+
 function vendorFromPlatform(platform: string): ProductVendor {
   const lower = platform.toLowerCase();
   if (lower.includes("playstation") || lower.includes("ps")) return "playstation";
@@ -82,7 +86,7 @@ export default function PdpBuyBox({ product, productType }: PdpBuyBoxProps) {
   const [added, setAdded] = useState(false);
   const selectedVariant = variants.find((variant) => variant.id === selectedVariantId) ?? variants[0];
   const originalPrice = originalForVariant(selectedVariant);
-  const collectionTitle = product.collection?.title ?? metadataString(product.metadata, "platform") ?? "";
+  const collectionTitle = platformTitle(product);
   const platformClass = getPlatformCssClass(collectionTitle);
   const { text: glyphText, isPs } = getPlatformGlyph(collectionTitle);
   const sku = metadataString(product.metadata, "sku") ?? product.handle;
@@ -130,7 +134,9 @@ export default function PdpBuyBox({ product, productType }: PdpBuyBoxProps) {
       <span className="buy-platform">{collectionTitle}</span>
       <h1 className="buy-title">{product.title}</h1>
       <div className="buy-meta">
-        <span className="stars" aria-label="5 out of 5 stars">★★★★★</span>
+        <span className="card-rating" aria-label="5 out of 5 stars">
+          <span className="stars">★★★★★</span>
+        </span>
         <span>4.9</span>
         <span className="meta-sep" />
         <a href="#reviews" className="review-link">1,284 reviews</a>
@@ -168,7 +174,7 @@ export default function PdpBuyBox({ product, productType }: PdpBuyBoxProps) {
       <div className="buy-field">
         <span className="field-label">Quantity</span>
         <div className="buy-controls">
-          <div className="qty-stepper">
+          <div className="qty">
             <button type="button" onClick={() => setQty(Math.max(1, qty - 1))} aria-label="Decrease quantity">-</button>
             <input value={qty} readOnly aria-label="Quantity" />
             <button type="button" onClick={() => setQty(Math.min(99, qty + 1))} aria-label="Increase quantity">+</button>
@@ -176,14 +182,14 @@ export default function PdpBuyBox({ product, productType }: PdpBuyBoxProps) {
           <span className={platformClass}>
             <button
               type="button"
-              className={`btn-atc ctrl-combo ripple${added ? " added" : ""}`}
+              className={`btn-add ctrl-combo ripple${added ? " added" : ""}`}
               onClick={addToCart}
             >
               <span className="ctrl-icon">{isPs ? <span className="ps-cross">{"\u2715"}</span> : glyphText}</span>
               {added ? " Added! \u2713" : " Add to Cart"}
             </button>
           </span>
-          <button type="button" className="omg-wishlist" aria-label="Add to wishlist">♡</button>
+          <button type="button" className="btn-icon" aria-label="Add to wishlist">♡</button>
         </div>
       </div>
 

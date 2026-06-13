@@ -45,6 +45,11 @@ function parentCategory(collectionTitle: string) {
   return "Shop";
 }
 
+function metadataString(metadata: Record<string, unknown> | null | undefined, key: string) {
+  const value = metadata?.[key];
+  return typeof value === "string" ? value : undefined;
+}
+
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { handle } = await params;
   const product = await getProductByHandle(handle);
@@ -75,8 +80,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   if (!product) notFound();
 
   const productType = getProductType(product);
-  const collectionTitle = product.collection?.title ?? "";
-  const platformColor = getPlatformColor(collectionTitle);
+  const platformTitle = metadataString(product.metadata, "platform") ?? product.collection?.title ?? "";
+  const collectionTitle = product.collection?.title ?? platformTitle;
+  const platformColor = getPlatformColor(platformTitle);
   const discountPercent = computeDiscountPercent(product);
   const related = await listProducts({ collection: product.collection?.id, limit: 5 }).then((result) =>
     result.products.filter((relatedProduct) => relatedProduct.id !== product.id).slice(0, 4),
@@ -87,16 +93,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <>
       <div className="pdp-subnav">
         <div className="pdp-wrap">
-          <nav className="pdp-breadcrumb" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span className="bc-sep" aria-hidden="true">›</span>
-            <Link href="/products">{parent}</Link>
-            <span className="bc-sep" aria-hidden="true">›</span>
-            <Link href={product.collection?.handle ? `/${product.collection.handle}` : "/products"}>
-              {collectionTitle || "Products"}
-            </Link>
-            <span className="bc-sep" aria-hidden="true">›</span>
-            <span className="current" aria-current="page">{product.title}</span>
+          <nav aria-label="Breadcrumb">
+            <ol className="breadcrumb">
+              <li><Link href="/">Home</Link></li>
+              <li><span className="bc-sep" aria-hidden="true">›</span></li>
+              <li><Link href="/products">{parent}</Link></li>
+              <li><span className="bc-sep" aria-hidden="true">›</span></li>
+              <li>
+                <Link href={product.collection?.handle ? `/${product.collection.handle}` : "/products"}>
+                  {collectionTitle || "Products"}
+                </Link>
+              </li>
+              <li><span className="bc-sep" aria-hidden="true">›</span></li>
+              <li><span className="current" aria-current="page">{product.title}</span></li>
+            </ol>
           </nav>
         </div>
       </div>
@@ -107,7 +117,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="pdp-main">
               <PdpGallery
                 platformColor={platformColor}
-                platformTitle={collectionTitle}
+                platformTitle={platformTitle}
                 productTitle={product.title}
                 discountPercent={discountPercent}
                 productType={productType}
@@ -117,7 +127,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </section>
 
-        <PdpTabs description={product.description ?? ""} productType={productType} platform={collectionTitle} />
+        <PdpTabs
+          description={product.description ?? ""}
+          productType={productType}
+          platform={platformTitle}
+          metadata={product.metadata}
+          productTitle={product.title}
+        />
         <PdpReviews productTitle={product.title} score={4.9} reviewCount={1284} />
         <RelatedProducts
           products={related}
