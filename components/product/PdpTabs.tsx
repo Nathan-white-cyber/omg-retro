@@ -16,6 +16,7 @@ export interface PdpTabsProps {
 }
 
 interface ShipDetail {
+  prefix?: string;
   text: string;
   excluded?: boolean;
 }
@@ -94,8 +95,8 @@ const shipCards: ShipCard[] = [
     ),
     text: "Orders over $75 ship free. Most orders ship within 1-2 business days via tracked mail.",
     details: [
-      { text: "Standard delivery: 3-7 business days (free over $75, $4.99 under)" },
-      { text: "Expedited delivery: 1-3 business days ($9.99)" },
+      { prefix: "Standard delivery:", text: "3–7 business days (free over $75, $4.99 under)" },
+      { prefix: "Expedited delivery:", text: "1–3 business days ($9.99)" },
       { text: "All orders include tracking via USPS or UPS" },
       { text: "Orders placed before 2 PM EST ship same day" },
       { text: "Cartridges ship in anti-static bags with bubble wrap" },
@@ -146,12 +147,12 @@ const shipCards: ShipCard[] = [
     ),
     text: "Not what you expected? Return any item within 30 days for a full refund.",
     details: [
-      { text: "30-day return window from delivery date" },
-      { text: "Condition mismatch: full refund + free return shipping" },
-      { text: "Defective / not working: full refund or replacement + free return shipping" },
-      { text: "Changed your mind: return accepted in same condition - buyer pays return shipping ($4.99 label provided)" },
-      { text: "Refunds processed within 3-5 business days after item received" },
-      { text: "Not eligible: sealed items opened after delivery, modified items, items damaged after delivery", excluded: true },
+      { prefix: "30-day return window", text: "from delivery date" },
+      { prefix: "Condition mismatch:", text: "full refund + free return shipping" },
+      { prefix: "Defective / not working:", text: "full refund or replacement + free return shipping" },
+      { prefix: "Changed your mind:", text: "return accepted in same condition — buyer pays return shipping ($4.99 label provided)" },
+      { text: "Refunds processed within 3–5 business days after item received" },
+      { prefix: "Not eligible:", text: "sealed items opened after delivery, modified items, items damaged after delivery", excluded: true },
     ],
   },
 ];
@@ -263,11 +264,6 @@ export default function PdpTabs({ description, productType, platform, metadata, 
                       <span className="lbl-close">Hide Details</span>
                       <Icon><path d="m6 9 6 6 6-6" /></Icon>
                     </span>
-                    <ul className="ship-more" hidden>
-                      {card.details.map((detail) => (
-                        <li key={detail.text} className={detail.excluded ? "is-excl" : undefined}>{detail.text}</li>
-                      ))}
-                    </ul>
                   </div>
                 );
               })}
@@ -286,22 +282,27 @@ export default function PdpTabs({ description, productType, platform, metadata, 
                       </div>
                       <button type="button" className="ship-panel-close" data-ship-close onClick={() => setExpandedShip(null)} aria-label="Close details">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
-                          <path d="M6 6l12 12M18 6 6 18" />
+                          <path d="M5 5l14 14M19 5 5 19" />
                         </svg>
                       </button>
                     </div>
                     <ul className="ship-detail-list" data-ship-list>
                       {openCard?.details.map((detail) => (
-                        <li key={detail.text} className={detail.excluded ? "is-excl" : undefined}>
-                          <Icon><path d="m5 12 4 4L19 6" /></Icon>
-                          <span>{detail.text}</span>
+                        <li
+                          key={(detail.prefix ?? "") + detail.text}
+                          className={detail.excluded ? "is-excl" : undefined}
+                        >
+                          <span>
+                            {detail.prefix ? <><strong>{detail.prefix}</strong>{" "}</> : null}
+                            {detail.text}
+                          </span>
                         </li>
                       ))}
                     </ul>
                     <div className="ship-contact">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                        <circle cx="12" cy="12" r="9" />
-                        <path d="M9.5 9a2.7 2.7 0 0 1 5 1.4c0 1.8-2.5 2-2.5 3.6" />
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M9.2 9.2a2.8 2.8 0 0 1 5.4 1c0 1.9-2.8 2.4-2.8 2.4" />
                         <path d="M12 17h.01" />
                       </svg>
                       Questions about this item? <a href="#contact">Contact our shop {"\u2192"}</a>
