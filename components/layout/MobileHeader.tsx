@@ -11,7 +11,7 @@ export function MobileHeader() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-nav flex items-center gap-2 border-b border-border bg-bg-surface px-3.5 py-2 md:hidden">
+    <header className="site-header sticky top-0 z-nav flex items-center gap-2 border-b border-border bg-white px-3.5 py-2 md:hidden">
       <button
         type="button"
         className="grid h-11 w-11 place-items-center rounded-[12px] text-text-primary transition hover:bg-white/10"

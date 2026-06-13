@@ -124,6 +124,28 @@ export const DEFAULT_PLATFORM_CONFIG: PlatformConfig = {
   shopBtnBg: "#444",
 };
 
+export const PLATFORM_COLORS: Record<string, string> = {
+  "nintendo-64": "#3a3f47",
+  n64: "#3a3f47",
+  nes: "#a59a86",
+  snes: "#9b99a4",
+  gamecube: "#5a3fa0",
+  wii: "#7f97ad",
+  switch: "#c4352c",
+  playstation: "#9a9ea3",
+  ps1: "#9a9ea3",
+  ps2: "#1c2733",
+  ps3: "#15151a",
+  psp: "#2f3a4a",
+  xbox: "#3a3f47",
+  "xbox-360": "#2f6b3a",
+  genesis: "#2f6bb0",
+  "sega-genesis": "#2f6bb0",
+  saturn: "#1c1c22",
+  dreamcast: "#3a7bd5",
+  "game-gear": "#4a5560",
+};
+
 function normalizePlatformKey(collectionTitle: string) {
   return (collectionTitle ?? "")
     .toLowerCase()
@@ -239,6 +261,8 @@ export function getPlatformFromProduct(product: {
 
 export function getPlatformColor(platform: string): string {
   const p = platform.toLowerCase();
+  const normalized = p.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  if (PLATFORM_COLORS[normalized]) return PLATFORM_COLORS[normalized];
   if (p.includes("nintendo 64") || p.includes("n64")) return "#b8902f";
   if (p.includes("snes") || p.includes("super nintendo")) return "#9b2fae";
   if (p === "nes" || p.includes("nintendo entertainment")) return "#c0392b";

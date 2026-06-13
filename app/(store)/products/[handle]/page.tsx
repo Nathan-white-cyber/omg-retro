@@ -7,6 +7,7 @@ import PdpTabs from "@/components/product/PdpTabs";
 import RelatedProducts from "@/components/sections/RelatedProducts";
 import SearchCtaBand from "@/components/sections/SearchCtaBand";
 import { getProductByHandle, listProducts } from "@/lib/medusa/products";
+import { applyPdpReferenceProduct, getPdpReference, pdpProductFromReference } from "@/lib/pdp/reference-products";
 import { createMetadata, ogImageUrl } from "@/lib/seo";
 import { getPlatformColor, getPlatformFromProduct, getProductType } from "@/lib/utils/platform";
 
@@ -40,7 +41,9 @@ function getParentBrand(platform: string): string {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { handle } = await params;
-  const product = await getProductByHandle(handle);
+  const reference = getPdpReference(handle);
+  const fetchedProduct = await getProductByHandle(handle);
+  const product = fetchedProduct ? applyPdpReferenceProduct(fetchedProduct, reference) : reference ? pdpProductFromReference(reference) : null;
 
   if (!product) {
     return createMetadata({
@@ -63,21 +66,24 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params;
-  const product = await getProductByHandle(handle);
+  const reference = getPdpReference(handle);
+  const fetchedProduct = await getProductByHandle(handle);
+  const product = fetchedProduct ? applyPdpReferenceProduct(fetchedProduct, reference) : reference ? pdpProductFromReference(reference) : null;
 
   if (!product) notFound();
 
-  const platform = getPlatformFromProduct(product);
-  const platformColor = getPlatformColor(platform);
-  const productType = getProductType(product);
+  const platform = reference?.platform ?? getPlatformFromProduct(product);
+  const platformColor = reference?.coverColor ?? getPlatformColor(platform);
+  const productType = reference?.productType ?? getProductType(product);
   const defaultVariant = product.variants?.find((variant) => variant.title === "CIB") ?? product.variants?.[0];
   const rawPrice = defaultVariant?.prices?.[0]?.amount ?? 0;
   const price = rawPrice / 100;
   const rawCompare = defaultVariant?.compare_at_price ?? defaultVariant?.prices?.[0]?.compare_at_price ?? 0;
   const comparePrice = typeof rawCompare === "number" && rawCompare > 0 ? rawCompare / 100 : 0;
   const discountPercent = comparePrice > price && price > 0 ? Math.round((1 - price / comparePrice) * 100) : 0;
-  const parentBrand = productType === "game" ? getParentBrand(platform) : "Shop";
-  const subcategory = productType === "console" ? "Consoles" : productType === "accessory" ? "Accessories" : platform;
+  const parentBrand = reference?.breadcrumb.parent ?? (productType === "game" ? getParentBrand(platform) : "Shop");
+  const subcategory = reference?.breadcrumb.subcategory ?? (productType === "console" ? "Consoles" : productType === "accessory" ? "Accessories" : platform);
+  const currentCrumb = reference?.breadcrumb.current ?? product.title;
   const related = await listProducts({ collection: product.collection?.id, limit: 5 }).then((result) =>
     result.products.filter((relatedProduct) => relatedProduct.id !== product.id).slice(0, 4),
   );
@@ -105,7 +111,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <svg className="bc-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="m9 6 6 6-6 6" />
             </svg>
-            <span className="current">{product.title}</span>
+            <span className="current">{currentCrumb}</span>
           </nav>
         </div>
       </div>
@@ -120,8 +126,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 productTitle={product.title}
                 discountPercent={discountPercent}
                 productType={productType}
+                photos={reference?.photos}
+                galleryFlag={reference?.galleryFlag}
               />
-              <PdpBuyBox product={product} productType={productType} platform={platform} />
+              <PdpBuyBox product={product} productType={productType} platform={platform} reference={reference} />
             </div>
           </div>
         </section>
@@ -131,13 +139,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
           productType={productType}
           platform={platform}
           metadata={(product.metadata as Record<string, string>) ?? {}}
+          descriptionParagraphs={reference?.description}
+          specRows={reference?.specs}
         />
-        <PdpReviews productTitle={product.title} score={4.9} reviewCount={1284} />
+        <PdpReviews score={reference?.rating ?? 4.9} reviewCount={reference?.reviewCount ?? 1284} />
         <RelatedProducts
           products={related}
           sectionTitle="You May Also Like"
           viewAllHref={`/${product.collection?.handle ?? "products"}`}
-          viewAllLabel={`View All ${subcategory || "Products"}`}
+          viewAllLabel={reference?.relatedViewAll ?? `View All ${subcategory || "Products"}`}
+          referenceItems={reference?.related}
         />
         <SearchCtaBand />
       </main>

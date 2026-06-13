@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 
 export interface PdpReviewsProps {
-  productTitle: string;
   score: number;
   reviewCount: number;
 }
@@ -13,39 +12,29 @@ const reviews = [
     name: "Marcus K.",
     age: "2 weeks ago",
     stars: "★★★★★",
-    title: "Exactly what I hoped for",
-    body: "The cartridge arrived cleaner than anything I have found locally. It booted first try and the label looked exactly like the photos.",
+    title: "Exactly as described - saves work perfectly",
+    body: "Ordered the CIB copy and it arrived in fantastic shape. Box has minor shelf wear but the manual is crisp and the cartridge saves without a hitch. You can tell it was actually tested. This is the standard every retro shop should hold itself to.",
     yes: 47,
   },
   {
-    initials: "EP",
-    avatar: "#1fa34a",
-    name: "Erin P.",
+    initials: "SD",
+    avatar: "#2f6bb0",
+    name: "Sarah D.",
     age: "1 month ago",
     stars: "★★★★★",
-    title: "Clean, tested, and packed right",
-    body: "Fast shipping, careful packaging, and the game played perfectly on original hardware. The testing notes made the purchase feel easy.",
+    title: "My childhood, restored",
+    body: "Bought this to replace the copy I lost years ago. Cleaned, tested, and shipped fast. Fired it up on my original N64 and it played flawlessly. The 1-year warranty made the purchase a no-brainer.",
     yes: 31,
   },
   {
-    initials: "DR",
-    avatar: "#003087",
-    name: "Daniel R.",
-    age: "2 months ago",
-    stars: "★★★★★",
-    title: "Great condition for retro hardware",
-    body: "Great condition for a retro item. I especially appreciated that the contacts were cleaned before shipping.",
-    yes: 24,
-  },
-  {
-    initials: "SK",
-    avatar: "#6a4fb0",
-    name: "Sam K.",
-    age: "3 months ago",
+    initials: "JL",
+    avatar: "#3a7a3f",
+    name: "Jordan L.",
+    age: "1 month ago",
     stars: "★★★★☆",
-    title: "Matched the listing",
-    body: "Very happy overall. The box had a little shelf wear, but it matched the listing and the game itself was flawless.",
-    yes: 18,
+    title: "Great game, packaging could be sturdier",
+    body: "No complaints about the game itself - works great and was clearly cleaned. Knocking one star because the box corner got slightly dinged in transit. Support sorted it out quickly though, so still a happy customer.",
+    yes: 12,
   },
 ];
 
@@ -65,13 +54,21 @@ function HeartIcon() {
   );
 }
 
-export default function PdpReviews({ productTitle, score, reviewCount }: PdpReviewsProps) {
+function ArrowIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  );
+}
+
+export default function PdpReviews({ score, reviewCount }: PdpReviewsProps) {
   const bars = [
-    ["5", 68],
-    ["4", 22],
-    ["3", 7],
-    ["2", 2],
-    ["1", 1],
+    ["5★", 88],
+    ["4★", 9],
+    ["3★", 2],
+    ["2★", 1],
+    ["1★", 0],
   ] as const;
 
   return (
@@ -79,13 +76,13 @@ export default function PdpReviews({ productTitle, score, reviewCount }: PdpRevi
       <div className="pdp-wrap">
         <div className="section-head">
           <h2>Customer Reviews</h2>
-          <a href="#reviews" className="see-all">See All →</a>
+          <a href="#" className="see-all">Write a Review <ArrowIcon /></a>
         </div>
         <div className="reviews-grid">
           <div className="review-summary">
-            <div className="rs-score"><span className="num">{score.toFixed(1)}</span><span className="out">/5</span></div>
+            <div className="rs-score"><span className="num">{score.toFixed(1)}</span><span className="out">/ 5</span></div>
             <div className="rs-stars">★★★★★</div>
-            <div className="rs-count">{reviewCount.toLocaleString()} reviews for {productTitle}</div>
+            <div className="rs-count">Based on {reviewCount.toLocaleString()} verified reviews</div>
             <div className="rs-bars">
               {bars.map(([label, value]) => (
                 <div key={label} className="rs-row">
@@ -95,7 +92,7 @@ export default function PdpReviews({ productTitle, score, reviewCount }: PdpRevi
                 </div>
               ))}
             </div>
-            <button type="button" className="btn-sm">Write a Review</button>
+            <a href="#" className="btn btn-sm">Write a Review</a>
           </div>
           <div className="review-list">
             {reviews.map((review) => (
@@ -105,9 +102,7 @@ export default function PdpReviews({ productTitle, score, reviewCount }: PdpRevi
                   <div className="review-who">
                     <span className="name">
                       {review.name}
-                      <span className="verified">
-                        <CheckIcon /> Verified Buyer
-                      </span>
+                      <span className="verified"><CheckIcon /> Verified Buyer</span>
                     </span>
                     <span className="review-meta"><span className="stars">{review.stars}</span> · {review.age}</span>
                   </div>

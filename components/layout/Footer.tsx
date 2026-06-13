@@ -4,15 +4,15 @@ import { Logo } from "./Logo";
 
 export function Footer() {
   return (
-    <footer className="omg-site-footer">
-      <div className="omg-container">
-        <div className="omg-footer-main">
-          <div className="omg-footer-brand">
+    <footer className="site-footer omg-site-footer">
+      <div className="container omg-container">
+        <div className="footer-main omg-footer-main">
+          <div className="footer-brand omg-footer-brand">
             <Logo />
             <p>
               Your destination for authentic retro games, consoles and accessories. Relive the classics.
             </p>
-            <div className="omg-footer-social">
+            <div className="footer-social omg-footer-social">
               <a href="https://www.facebook.com/" aria-label="Facebook">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M14 9h3V6h-3c-2 0-3 1.3-3 3v2H9v3h2v6h3v-6h2.5l.5-3H14V9.5c0-.3.2-.5.5-.5Z" />
@@ -34,7 +34,7 @@ export function Footer() {
           </div>
 
           {footerColumns.map((column) => (
-            <div key={column.title} className="omg-footer-col">
+            <div key={column.title} className="footer-col omg-footer-col">
               <h4>{column.title}</h4>
               <ul>
                 {column.links.map((link) => (
@@ -46,7 +46,7 @@ export function Footer() {
             </div>
           ))}
 
-          <div className="omg-footer-news">
+          <div className="footer-news omg-footer-news">
             <h4>Stay in the Loop</h4>
             <p>
               Get updates on new arrivals, deals and more retro goodness.
@@ -63,8 +63,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="omg-footer-bottom">
-          <span>(c) 2024 OMG Retro. All rights reserved.</span>
+        <div className="footer-bottom omg-footer-bottom">
+          <span>© 2024 OMG Retro. All rights reserved.</span>
           <span className="links">
             <Link href="/info/privacy">Privacy Policy</Link>
             <Link href="/info/terms">Terms of Service</Link>

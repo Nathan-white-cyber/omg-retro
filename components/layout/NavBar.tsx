@@ -14,7 +14,7 @@ interface NavBarProps {
 export function NavBar({ activePlatform }: NavBarProps) {
   return (
     <div className="hidden md:block">
-      <header className="relative z-nav border-b border-border bg-bg-surface">
+      <header className="site-header relative z-nav border-b border-border bg-white">
         <div className="mx-auto flex min-h-[84px] max-w-[1240px] items-center gap-8 px-7">
           <Logo />
 
@@ -24,7 +24,7 @@ export function NavBar({ activePlatform }: NavBarProps) {
               name="q"
               type="search"
               placeholder="Search games, consoles, accessories..."
-              className="h-[46px] min-w-0 flex-1 rounded-l-btn border-2 border-border bg-bg-dark px-4 text-sm text-text-primary outline-none placeholder:text-text-secondary focus:border-brand-red"
+              className="h-[46px] min-w-0 flex-1 rounded-l-btn border-2 border-border bg-white px-4 text-sm text-text-primary outline-none placeholder:text-text-secondary focus:border-brand-red"
             />
             <button
               type="submit"
@@ -38,7 +38,7 @@ export function NavBar({ activePlatform }: NavBarProps) {
           <div className="ml-auto flex shrink-0 items-center gap-4">
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 rounded-btn border border-border bg-white/5 px-4 py-2.5 text-[13.5px] font-bold transition hover:border-brand-red hover:bg-brand-red/10 hover:text-brand-red"
+              className="inline-flex items-center gap-2 rounded-btn border border-border bg-white px-4 py-2.5 text-[13.5px] font-bold text-text-primary transition hover:border-brand-red hover:bg-brand-red/10 hover:text-brand-red"
             >
               <CircleUserRound className="h-[22px] w-[22px]" aria-hidden="true" />
               Account
@@ -78,7 +78,7 @@ export function NavBar({ activePlatform }: NavBarProps) {
           <Link
             href="/deals"
             prefetch={true}
-            className="flex items-center border-b-[3px] border-brand-red px-4 font-body text-[14.5px] font-bold uppercase tracking-[0.03em] text-brand-red transition hover:bg-brand-red/10"
+            className="is-active flex items-center border-b-[3px] border-brand-red px-4 font-body text-[14.5px] font-bold uppercase tracking-[0.03em] text-brand-red transition hover:bg-brand-red/10"
           >
             Deals
           </Link>

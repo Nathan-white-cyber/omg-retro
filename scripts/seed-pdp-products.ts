@@ -40,7 +40,7 @@ interface VariantSpec {
 }
 
 const collections = [
-  { title: "Nintendo 64", handle: "nintendo-64" },
+  { title: "Nintendo 64", handle: "n64" },
   { title: "Consoles", handle: "consoles" },
   { title: "Accessories", handle: "accessories" },
 ] as const;
@@ -228,12 +228,15 @@ async function main() {
       title: "The Legend of Zelda: Ocarina of Time",
       handle: "the-legend-of-zelda-ocarina-of-time",
       type: { value: "game" },
-      collection_id: collectionIds.get("nintendo-64")!,
+      collection_id: collectionIds.get("n64")!,
       description:
         "The defining adventure of the Nintendo 64 - and for many, the greatest game ever made. Step into the boots of Link as he travels through time across the kingdom of Hyrule. This copy has been fully inspected, cleaned, and tested on original hardware. Every order is backed by our 1-year warranty.",
       metadata: {
         sku: "N64-ZLD-OOT",
         platform: "Nintendo 64",
+        coverColor: "#b8902f",
+        rating: 4.9,
+        reviewCount: 1284,
         year: "1998",
         genre: "Action-Adventure",
         players: "1 Player",
@@ -267,10 +270,13 @@ async function main() {
       type: { value: "console" },
       collection_id: collectionIds.get("consoles")!,
       description:
-        "The console that brought Nintendo into three dimensions - fully refurbished, tested, and ready to play. This Nintendo 64 system has been opened, cleaned, and bench-tested on a real display. Each console includes one tested 3rd-party controller, the matching power supply, and a standard A/V cable. Backed by our 1-year warranty.",
+        "The console that brought Nintendo into three dimensions - fully refurbished, tested, and ready to play. This Nintendo 64 system has been opened, cleaned, and bench-tested on a real display. The cartridge slot contacts are cleaned for reliable boots, every controller port is checked for stick drift, and the power and A/V outputs are verified before it ships. Each console includes one tested 3rd-party controller, the matching power supply, and a standard A/V cable - everything you need to play out of the box. Backed by our 1-year warranty.",
       metadata: {
         sku: "N64-CONSOLE",
         platform: "Nintendo 64",
+        coverColor: "#33373f",
+        rating: 4.8,
+        reviewCount: 643,
         year: "1996",
         includes_controller: true,
       },
@@ -294,6 +300,9 @@ async function main() {
       metadata: {
         sku: "N64-CTRL-PUR",
         platform: "Nintendo 64",
+        coverColor: "#6a4fb0",
+        rating: 4.7,
+        reviewCount: 418,
         compatible_with: "Nintendo 64",
       },
       status: "published",

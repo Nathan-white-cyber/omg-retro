@@ -1,13 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { Gamepad2, PackageCheck, Truck } from "lucide-react";
+import { PackageCheck, Truck } from "lucide-react";
 import { utilityLinks, utilityPromos } from "./layout-data";
+
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m5 12 4 4L19 6" />
+    </svg>
+  );
+}
 
 const promoIcons = {
   "package-check": PackageCheck,
   truck: Truck,
-  gamepad: Gamepad2,
+  gamepad: CheckIcon,
 };
 
 export function UtilityBar() {
@@ -28,14 +36,13 @@ export function UtilityBar() {
         </ul>
 
         <div className="flex items-center gap-2">
-          {utilityLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-full border border-[#cfd2da99] bg-white/10 px-3.5 py-1.5 text-xs font-bold leading-none transition hover:-translate-y-0.5 hover:border-current hover:bg-white/20"
-            >
-              {link.label}
-            </Link>
+          {utilityLinks.map((link, index) => (
+            <span key={link.href} className="flex items-center gap-2">
+              {index > 0 ? <span className="text-[#cfd2da66]">|</span> : null}
+              <Link href={link.href} className="text-xs font-bold leading-none transition hover:text-white">
+                {link.label}
+              </Link>
+            </span>
           ))}
         </div>
       </div>
