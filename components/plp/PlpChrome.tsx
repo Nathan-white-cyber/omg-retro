@@ -103,10 +103,12 @@ function FilterCheckbox({
 export function PlpChrome({
   children,
   facets,
-  start,
-  end,
   total,
 }: PlpChromeProps) {
+  // Total products in this category scope before the user's own filters.
+  // facets are computed pre-condition/price/genre/sale, so summing one facet
+  // group (each product has exactly one condition) gives the unfiltered total.
+  const unfilteredTotal = Object.values(facets.conditions).reduce((sum, count) => sum + count, 0);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -291,11 +293,9 @@ export function PlpChrome({
           >
             Filters
           </button>
-          <span className="hidden text-[12px] font-extrabold uppercase tracking-[0.08em] text-text-dark lg:block">
-            Filters
-          </span>
-          <p className="text-center text-[13px] font-bold text-text-dark-muted">
-            Showing {start}-{end} of {total} products
+          <p className="text-[13px] text-text-dark-muted">
+            <strong className="font-display text-[16px] font-extrabold text-text-dark">{total}</strong> Games
+            {total === unfilteredTotal ? null : <span> of {unfilteredTotal}</span>}
           </p>
           <div className="flex items-center gap-2">
             <select

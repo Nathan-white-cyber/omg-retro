@@ -11,8 +11,8 @@ function SystemTile({ system, active, count }: { system: SystemRoute; active: bo
   return (
     <Link
       href={system.href}
-      className={`flex min-w-[128px] flex-col items-center justify-center rounded-card border bg-bg-surface p-3 text-center shadow-card transition duration-normal hover:-translate-y-0.5 hover:border-brand-red ${
-        active ? "border-brand-red ring-2 ring-brand-red/25" : "border-border"
+      className={`flex min-w-[128px] flex-col items-center justify-center rounded-card border bg-[var(--omg-surface)] p-3 text-center shadow-card transition duration-normal hover:-translate-y-0.5 hover:border-brand-red ${
+        active ? "border-brand-red ring-2 ring-brand-red/25" : "border-[var(--omg-line)]"
       }`}
     >
       <span
@@ -21,10 +21,10 @@ function SystemTile({ system, active, count }: { system: SystemRoute; active: bo
       >
         {system.code}
       </span>
-      <span className="mt-2 line-clamp-1 text-[12px] font-extrabold uppercase tracking-[0.04em] text-text-primary">
+      <span className="mt-2 line-clamp-1 text-[12px] font-extrabold uppercase tracking-[0.04em] text-[var(--omg-ink)]">
         {system.name}
       </span>
-      <span className="mt-1 text-[11px] font-bold text-text-secondary">{count} items</span>
+      <span className="mt-1 text-[11px] font-bold text-[var(--omg-ink-soft)]">{count} items</span>
     </Link>
   );
 }
@@ -33,7 +33,7 @@ export function ConsoleIconRow({ platform, activeSystemSlug, counts }: ConsoleIc
   const systems = platform?.systems ?? allSystems;
 
   return (
-    <section className="border-b border-border bg-bg-dark">
+    <section className="border-b border-[var(--omg-line)] bg-[var(--omg-bg-page)]">
       <div className="mx-auto max-w-[1240px] px-7 py-5">
         <div className="-mx-7 flex gap-3 overflow-x-auto px-7 pb-1">
           {systems.map((system) => (

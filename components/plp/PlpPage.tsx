@@ -3,7 +3,9 @@ import { CompactHero } from "@/components/plp/CompactHero";
 import { ConsoleIconRow } from "@/components/plp/ConsoleIconRow";
 import { Pagination } from "@/components/plp/Pagination";
 import { PlpChrome } from "@/components/plp/PlpChrome";
+import { PlpTrustStrip } from "@/components/plp/PlpTrustStrip";
 import { ProductGrid } from "@/components/plp/ProductGrid";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { TrustBar } from "@/components/sections/TrustBar";
 import {
   conditionOptions,
@@ -144,10 +146,11 @@ export async function PlpPage({
       <CompactHero
         title={context.title}
         subtitle={context.subtitle}
-        breadcrumbs={breadcrumbsForContext(context)}
         platformCode={context.platformCode}
         platformColor={context.system?.color ?? context.platform?.color}
       />
+      <PlpTrustStrip />
+      <Breadcrumb items={breadcrumbsForContext(context)} variant="cream" />
       {showConsoleRow ? (
         <ConsoleIconRow
           platform={context.kind === "platform" ? context.platform : undefined}
