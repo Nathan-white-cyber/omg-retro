@@ -17,15 +17,17 @@ interface MedusaProductResponse {
     tags?: { value?: string }[] | null;
     created_at?: string;
     variants?: Array<{
+      id?: string;
       title?: string;
       sku?: string | null;
+      compare_at_price?: number | null;
       inventory_quantity?: number;
       metadata?: Record<string, unknown> | null;
       calculated_price?: {
         calculated_amount?: number;
         original_amount?: number;
       };
-      prices?: { amount?: number }[];
+      prices?: { amount?: number; compare_at_price?: number | null }[];
     }>;
   }>;
   count?: number;
@@ -39,13 +41,14 @@ type MedusaVariant = NonNullable<MedusaProduct["variants"]>[number];
 export interface PdpProductVariant {
   id: string;
   title: string;
+  compare_at_price?: number | null;
   inventory_quantity?: number;
   sku?: string | null;
   calculated_price?: {
     calculated_amount?: number;
     original_amount?: number;
   };
-  prices: Array<{ amount: number }>;
+  prices: Array<{ amount: number; compare_at_price?: number | null }>;
 }
 
 export interface PdpProduct {
@@ -292,12 +295,17 @@ function mapPdpProduct(product: MedusaProduct): PdpProduct {
         const calculatedAmount = variant.calculated_price?.calculated_amount ?? variant.prices?.[0]?.amount ?? 0;
 
         return {
-          id: variant.sku ?? `${product.id}:variant:${index}`,
+          id: variant.id ?? variant.sku ?? `${product.id}:variant:${index}`,
           title: variant.title ?? `Variant ${index + 1}`,
+          compare_at_price: variant.compare_at_price ?? variant.prices?.[0]?.compare_at_price,
           inventory_quantity: variant.inventory_quantity,
           sku: variant.sku,
           calculated_price: variant.calculated_price,
-          prices: variant.prices?.length ? variant.prices.filter((price): price is { amount: number } => typeof price.amount === "number") : [{ amount: calculatedAmount }],
+          prices: variant.prices?.length
+            ? variant.prices
+                .filter((price): price is { amount: number; compare_at_price?: number | null } => typeof price.amount === "number")
+                .map((price) => ({ amount: price.amount, compare_at_price: price.compare_at_price }))
+            : [{ amount: calculatedAmount, compare_at_price: variant.compare_at_price }],
         };
       }) ?? [],
   };
@@ -416,7 +424,15 @@ export async function getProductBySlug(slug: string) {
 }
 
 export async function getProductByHandle(handle: string) {
-  const url = medusaUrl(`/store/products?handle=${encodeURIComponent(handle)}&limit=1`);
+  const params = new URLSearchParams({
+    handle,
+    limit: "1",
+    fields: "+collection,+collection.title,+collection.handle,+variants,+variants.id,+variants.prices,+variants.compare_at_price,+type,+metadata",
+  });
+  const regionId = process.env.NEXT_PUBLIC_MEDUSA_REGION_ID ?? process.env.MEDUSA_REGION_ID;
+  if (regionId) params.set("region_id", regionId);
+
+  const url = medusaUrl(`/store/products?${params.toString()}`);
 
   if (url) {
     try {

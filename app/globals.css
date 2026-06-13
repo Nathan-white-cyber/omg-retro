@@ -387,7 +387,8 @@ body {
   object-fit: cover;
 }
 
-.omg-cover-platform {
+.omg-cover-platform,
+.cover-platform {
   position: relative;
   z-index: 2;
   align-self: flex-start;
@@ -402,7 +403,8 @@ body {
   text-transform: uppercase;
 }
 
-.omg-cover-title {
+.omg-cover-title,
+.cover-title {
   position: relative;
   z-index: 2;
   font-family: var(--font-display), Anton, Impact, sans-serif;
@@ -1572,13 +1574,44 @@ body {
 .buy-field { display:flex; flex-direction:column; gap:8px; }
 .field-label { font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:#666; display:flex; align-items:center; gap:8px; }
 .field-hint { font-weight:400; text-transform:none; letter-spacing:0; color:#bbb; font-size:11px; }
-.condition-opts { display:flex; flex-direction:column; gap:8px; }
-.condition-opt { display:grid; grid-template-columns:1fr auto; grid-template-rows:auto auto; column-gap:12px; row-gap:1px; padding:12px 14px; border-radius:10px; border:1.5px solid #e0d9cc; background:#fff; cursor:pointer; text-align:left; width:100%; transition:border-color .15s, background .15s; }
+.condition-opts { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.condition-opt {
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1.5px solid #e0d9cc;
+  background:#fff;
+  cursor:pointer;
+  text-align:left;
+  width:100%;
+  transition:border-color .15s, background .15s;
+}
 .condition-opt[aria-pressed="true"] { border-color:#CC1E1E; background:#fff8f8; }
+.condition-opt[aria-pressed="true"]::after {
+  content:"\2713";
+  position:absolute;
+  top:8px;
+  right:8px;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#CC1E1E;
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  line-height:18px;
+  text-align:center;
+}
 .condition-opt:hover:not([aria-pressed="true"]) { border-color:#aaa; }
-.opt-name { font-weight:700; font-size:13.5px; color:#1a1a1a; grid-column:1; grid-row:1; }
-.opt-desc { font-size:11.5px; color:#888; grid-column:1; grid-row:2; }
-.opt-price { font-weight:800; font-size:14px; color:#1a1a1a; grid-column:2; grid-row:1/3; align-self:center; white-space:nowrap; }
+.opt-name { font-weight:700; font-size:13.5px; color:#1a1a1a; }
+.opt-desc { font-size:11.5px; color:#888; }
+.opt-price { font-weight:800; font-size:14px; color:#1a1a1a; margin-top:4px; }
 
 /* qty + buy controls */
 .buy-controls { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
@@ -1592,13 +1625,40 @@ body {
 .btn-add svg { width:19px; height:19px; }
 .btn-icon { width:46px; height:46px; border-radius:10px; border:1.5px solid #e0d9cc; background:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#888; transition:color .15s, border-color .15s; }
 .btn-icon:hover { color:#CC1E1E; border-color:#CC1E1E; }
-.btn-buynow { display:flex; align-items:center; justify-content:center; height:46px; border-radius:10px; border:2px solid #1a1a1a; background:transparent; color:#1a1a1a; font-weight:800; font-size:14px; text-transform:uppercase; letter-spacing:.06em; cursor:pointer; transition:background .15s, color .15s; width:100%; text-decoration:none; }
-.btn-buynow:hover { background:#1a1a1a; color:#fff; }
+.btn-buynow {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:46px;
+  border-radius:10px;
+  background:#1a1a1a;
+  color:#fff;
+  font-weight:800;
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  cursor:pointer;
+  border:none;
+  transition:opacity .15s;
+  width:100%;
+  text-decoration:none;
+}
+.btn-buynow:hover { opacity:.88; }
 
 /* assurances */
-.buy-assurances { list-style:none; padding:14px 0 0; margin:0; border-top:1px solid #e8e2d4; display:flex; flex-direction:column; gap:8px; }
-.buy-assurances li { display:flex; align-items:flex-start; gap:10px; font-size:13px; color:#666; }
-.buy-assurances li svg { width:17px; height:17px; flex-shrink:0; color:#CC1E1E; margin-top:2px; }
+.buy-assurances {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px 24px;
+  list-style:none;
+  padding:14px 0 0;
+  margin:0;
+  border-top:1px solid #e8e2d4;
+}
+.buy-assurances li { display:flex; align-items:flex-start; gap:10px; }
+.buy-assurances li svg { width:16px; height:16px; flex-shrink:0; color:#CC1E1E; margin-top:2px; }
+.buy-assurances li span { display:flex; flex-direction:column; gap:2px; font-size:12.5px; color:#666; }
+.buy-assurances li strong { color:#1a1a1a; font-size:13px; font-weight:700; display:block; }
 
 /* console: incl-pill */
 .incl-pill { display:flex; align-items:center; gap:12px; background:#f0fdf4; border:1.5px solid #86efac; border-radius:10px; padding:10px 14px; }

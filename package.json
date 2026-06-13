@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "seed:pdp": "ts-node scripts/seed-pdp-products.ts",
+    "seed:pdp": "ts-node --project tsconfig.json scripts/seed-pdp-products.ts",
     "lint": "eslint"
   },
   "dependencies": {
@@ -36,6 +36,7 @@
     "eslint-config-next": "16.2.7",
     "postcss": "^8.5.15",
     "tailwindcss": "^3.4.19",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }

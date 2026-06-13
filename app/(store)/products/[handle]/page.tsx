@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import PdpBuyBox from "@/components/product/PdpBuyBox";
 import PdpGallery from "@/components/product/PdpGallery";
@@ -7,9 +6,9 @@ import PdpReviews from "@/components/product/PdpReviews";
 import PdpTabs from "@/components/product/PdpTabs";
 import RelatedProducts from "@/components/sections/RelatedProducts";
 import SearchCtaBand from "@/components/sections/SearchCtaBand";
-import { getProductByHandle, listProducts, type PdpProduct } from "@/lib/medusa/products";
+import { getProductByHandle, listProducts } from "@/lib/medusa/products";
 import { createMetadata, ogImageUrl } from "@/lib/seo";
-import { getPlatformColor, getProductType } from "@/lib/utils/platform";
+import { getPlatformColor, getPlatformFromProduct, getProductType } from "@/lib/utils/platform";
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -18,36 +17,25 @@ type ProductPageProps = {
   params: Promise<{ handle: string }> | { handle: string };
 };
 
-function variantPrice(product: PdpProduct) {
-  const variant = product.variants[0];
-  return variant?.calculated_price?.calculated_amount ?? variant?.prices[0]?.amount ?? 0;
-}
-
-function comparePrice(product: PdpProduct) {
-  return product.variants[0]?.calculated_price?.original_amount;
-}
-
-function computeDiscountPercent(product: PdpProduct) {
-  const price = variantPrice(product);
-  const original = comparePrice(product);
-
-  if (!original || original <= price) return 0;
-  return Math.round((1 - price / original) * 100);
-}
-
-function parentCategory(collectionTitle: string) {
-  const lower = collectionTitle.toLowerCase();
-  if (lower.includes("console") || lower.includes("accessor")) return "Shop";
-  if (lower.includes("playstation") || lower.includes("ps2") || lower.includes("ps3")) return "PlayStation";
-  if (lower.includes("xbox")) return "Xbox";
-  if (lower.includes("sega") || lower.includes("genesis") || lower.includes("dreamcast") || lower.includes("saturn")) return "Sega";
-  if (lower.includes("nintendo") || lower.includes("snes") || lower.includes("nes") || lower.includes("gamecube") || lower.includes("wii")) return "Nintendo";
+function getParentBrand(platform: string): string {
+  const p = platform.toLowerCase();
+  if (
+    p.includes("nintendo") ||
+    p.includes("nes") ||
+    p.includes("snes") ||
+    p.includes("game boy") ||
+    p.includes("gamecube") ||
+    p.includes("wii") ||
+    p.includes("switch")
+  ) {
+    return "Nintendo";
+  }
+  if (p.includes("playstation") || p.includes("psp")) return "PlayStation";
+  if (p.includes("xbox")) return "Xbox";
+  if (p.includes("sega") || p.includes("genesis") || p.includes("dreamcast") || p.includes("saturn") || p.includes("game gear")) {
+    return "Sega";
+  }
   return "Shop";
-}
-
-function metadataString(metadata: Record<string, unknown> | null | undefined, key: string) {
-  const value = metadata?.[key];
-  return typeof value === "string" ? value : undefined;
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
@@ -79,34 +67,45 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   if (!product) notFound();
 
+  const platform = getPlatformFromProduct(product);
+  const platformColor = getPlatformColor(platform);
   const productType = getProductType(product);
-  const platformTitle = metadataString(product.metadata, "platform") ?? product.collection?.title ?? "";
-  const collectionTitle = product.collection?.title ?? platformTitle;
-  const platformColor = getPlatformColor(platformTitle);
-  const discountPercent = computeDiscountPercent(product);
+  const defaultVariant = product.variants?.find((variant) => variant.title === "CIB") ?? product.variants?.[0];
+  const rawPrice = defaultVariant?.prices?.[0]?.amount ?? 0;
+  const price = rawPrice / 100;
+  const rawCompare = defaultVariant?.compare_at_price ?? defaultVariant?.prices?.[0]?.compare_at_price ?? 0;
+  const comparePrice = typeof rawCompare === "number" && rawCompare > 0 ? rawCompare / 100 : 0;
+  const discountPercent = comparePrice > price && price > 0 ? Math.round((1 - price / comparePrice) * 100) : 0;
+  const parentBrand = productType === "game" ? getParentBrand(platform) : "Shop";
+  const subcategory = productType === "console" ? "Consoles" : productType === "accessory" ? "Accessories" : platform;
   const related = await listProducts({ collection: product.collection?.id, limit: 5 }).then((result) =>
     result.products.filter((relatedProduct) => relatedProduct.id !== product.id).slice(0, 4),
   );
-  const parent = parentCategory(collectionTitle);
 
   return (
     <>
       <div className="pdp-subnav">
         <div className="pdp-wrap">
-          <nav aria-label="Breadcrumb">
-            <ol className="breadcrumb">
-              <li><Link href="/">Home</Link></li>
-              <li><span className="bc-sep" aria-hidden="true">›</span></li>
-              <li><Link href="/products">{parent}</Link></li>
-              <li><span className="bc-sep" aria-hidden="true">›</span></li>
-              <li>
-                <Link href={product.collection?.handle ? `/${product.collection.handle}` : "/products"}>
-                  {collectionTitle || "Products"}
-                </Link>
-              </li>
-              <li><span className="bc-sep" aria-hidden="true">›</span></li>
-              <li><span className="current" aria-current="page">{product.title}</span></li>
-            </ol>
+          <nav className="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">
+              <svg className="bc-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 10.5 12 3l9 7.5" />
+                <path d="M5 9.5V20h14V9.5" />
+              </svg>
+              Home
+            </a>
+            <svg className="bc-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="m9 6 6 6-6 6" />
+            </svg>
+            <a href="#">{parentBrand}</a>
+            <svg className="bc-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="m9 6 6 6-6 6" />
+            </svg>
+            <a href="#">{subcategory}</a>
+            <svg className="bc-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="m9 6 6 6-6 6" />
+            </svg>
+            <span className="current">{product.title}</span>
           </nav>
         </div>
       </div>
@@ -117,12 +116,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="pdp-main">
               <PdpGallery
                 platformColor={platformColor}
-                platformTitle={platformTitle}
+                platformTitle={platform}
                 productTitle={product.title}
                 discountPercent={discountPercent}
                 productType={productType}
               />
-              <PdpBuyBox product={product} productType={productType} />
+              <PdpBuyBox product={product} productType={productType} platform={platform} />
             </div>
           </div>
         </section>
@@ -130,16 +129,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <PdpTabs
           description={product.description ?? ""}
           productType={productType}
-          platform={platformTitle}
-          metadata={product.metadata}
-          productTitle={product.title}
+          platform={platform}
+          metadata={(product.metadata as Record<string, string>) ?? {}}
         />
         <PdpReviews productTitle={product.title} score={4.9} reviewCount={1284} />
         <RelatedProducts
           products={related}
           sectionTitle="You May Also Like"
           viewAllHref={`/${product.collection?.handle ?? "products"}`}
-          viewAllLabel={`View All ${collectionTitle || "Products"}`}
+          viewAllLabel={`View All ${subcategory || "Products"}`}
         />
         <SearchCtaBand />
       </main>

@@ -187,46 +187,104 @@ export function getPlatformGlyph(title: string): { text: string; isPs: boolean }
   return { text: "A", isPs: false };
 }
 
+export function getPlatformFromProduct(product: {
+  title?: string | null;
+  collection?: { title?: string | null } | null;
+  metadata?: Record<string, unknown> | null;
+}): string {
+  if (product.metadata?.platform && typeof product.metadata.platform === "string") {
+    return product.metadata.platform;
+  }
+
+  const col = product.collection?.title ?? "";
+  const knownPlatforms = [
+    "Nintendo 64",
+    "SNES",
+    "Super Nintendo",
+    "NES",
+    "GameCube",
+    "Wii",
+    "Nintendo Switch",
+    "Game Boy Advance",
+    "GBA",
+    "Game Boy",
+    "Nintendo DS",
+    "DS",
+    "PlayStation",
+    "PlayStation 2",
+    "PlayStation 3",
+    "PSP",
+    "Xbox",
+    "Xbox 360",
+    "Original Xbox",
+    "Sega Genesis",
+    "Sega Dreamcast",
+    "Sega Saturn",
+    "Game Gear",
+    "Dreamcast",
+    "Genesis",
+    "Saturn",
+  ];
+  const colLower = col.toLowerCase();
+  const matched = knownPlatforms.find((platform) => colLower.includes(platform.toLowerCase()));
+  if (matched) return col;
+
+  const title = product.title ?? "";
+  const titleLower = title.toLowerCase();
+  const matchedFromTitle = knownPlatforms.find((platform) => titleLower.includes(platform.toLowerCase()));
+  if (matchedFromTitle) return matchedFromTitle;
+
+  return col;
+}
+
+export function getPlatformColor(platform: string): string {
+  const p = platform.toLowerCase();
+  if (p.includes("nintendo 64") || p.includes("n64")) return "#b8902f";
+  if (p.includes("snes") || p.includes("super nintendo")) return "#9b2fae";
+  if (p === "nes" || p.includes("nintendo entertainment")) return "#c0392b";
+  if (p.includes("game boy advance") || p.includes("gba")) return "#5e3f8e";
+  if (p.includes("game boy")) return "#6b6b6b";
+  if (p.includes("gamecube")) return "#1a3a6b";
+  if (p.includes("wii")) return "#b0b0b0";
+  if (p.includes("nintendo ds") || p === "ds") return "#c42d2d";
+  if (p.includes("nintendo switch")) return "#e60012";
+  if (p.includes("playstation 3") || p.includes("ps3")) return "#1a1a2e";
+  if (p.includes("playstation 2") || p.includes("ps2")) return "#1c2733";
+  if (p.includes("playstation") || p.includes("ps1") || p.includes("psp")) return "#1c2733";
+  if (p.includes("xbox 360")) return "#2a5c2a";
+  if (p.includes("xbox")) return "#1a3a1a";
+  if (p.includes("dreamcast")) return "#e67e22";
+  if (p.includes("genesis") || p.includes("mega drive")) return "#2c2c2c";
+  if (p.includes("saturn")) return "#3a3a6b";
+  if (p.includes("game gear")) return "#444444";
+  return "#33373f";
+}
+
 export function getProductType(product: {
-  type?: { value?: string } | null;
-  collection?: { title?: string } | null;
+  type?: { value?: string | null } | null;
+  collection?: { title?: string | null } | null;
+  title?: string | null;
 }): "game" | "console" | "accessory" {
-  const t = product.type?.value?.toLowerCase() ?? "";
+  const t = (product.type?.value ?? "").toLowerCase();
   if (t === "console") return "console";
   if (t === "accessory") return "accessory";
 
-  const col = product.collection?.title?.toLowerCase() ?? "";
+  const col = (product.collection?.title ?? "").toLowerCase();
   if (col.includes("console")) return "console";
   if (col.includes("accessor")) return "accessory";
 
+  const title = (product.title ?? "").toLowerCase();
+  if (title.includes("console")) return "console";
+  if (
+    title.includes("controller") ||
+    title.includes("cable") ||
+    title.includes("memory pak") ||
+    title.includes("accessory")
+  ) {
+    return "accessory";
+  }
+
   return "game";
-}
-
-export function getPlatformColor(collectionTitle: string) {
-  const className = getPlatformCssClass(collectionTitle);
-  const colors: Record<string, string> = {
-    "c-nes": "#8b8b8b",
-    "c-snes": "#9b2fae",
-    "c-n64": "#1fa34a",
-    "c-gcn": "#1fa34a",
-    "c-wii": "#ababab",
-    "c-switch": "#e60012",
-    "c-gb": "#6b6b6b",
-    "c-gba": "#5e3f8e",
-    "c-ds": "#c42d2d",
-    "c-ps1": "#003087",
-    "c-ps2": "#003087",
-    "c-ps3": "#003087",
-    "c-psp": "#003087",
-    "c-xbox": "#107c10",
-    "c-360": "#107c10",
-    "c-gen": "#555555",
-    "c-sat": "#555555",
-    "c-dc": "#e67e22",
-    "c-gg": "#444444",
-  };
-
-  return colors[className] ?? getPlatformConfig(collectionTitle).shopBtnBg;
 }
 
 /**
